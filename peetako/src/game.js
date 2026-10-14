@@ -7,7 +7,7 @@ export const DAY = 24 * HOUR;
 
 // Tiers: [reached at day, organic name, robot name, survives unattended (hours)]
 export const TIERS = [
-  { day: 0,  organic: 'Egg',                           robot: 'Core',        survive: 48,  backdrop: 'Longhouse at night' },
+  { day: 0,  organic: 'Egg',                           robot: 'Core',        survive: 48,  backdrop: 'Longhouse' },
   { day: 1,  organic: 'Hatchling',                     robot: 'Prototype',   survive: 48,  backdrop: 'Kampung garden' },
   { day: 2,  organic: 'Scout',                         robot: 'Unit',        survive: 60,  backdrop: 'Sago garden (Mukah)' },
   { day: 4,  organic: 'Bujang Berani (Brave Warrior)', robot: 'Sentinel',    survive: 72,  backdrop: 'Rainforest (Danum / Bako)' },

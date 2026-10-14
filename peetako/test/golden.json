@@ -69,7 +69,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -132,7 +132,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Core",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Prototype",
@@ -195,7 +195,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -258,7 +258,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Core",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Prototype",
@@ -321,7 +321,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -384,7 +384,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -447,7 +447,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -510,7 +510,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -573,7 +573,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -645,7 +645,7 @@
      "ageHours": 1,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -707,7 +707,7 @@
      "ageHours": 1,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -789,7 +789,7 @@
      "ageHours": 1,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -861,7 +861,7 @@
      "ageHours": 1,
      "tier": 0,
      "tierName": "Core",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Prototype",
@@ -942,7 +942,7 @@
      "ageHours": 1,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",
@@ -5145,7 +5145,7 @@
      "ageHours": 0,
      "tier": 0,
      "tierName": "Egg",
-     "backdrop": "Longhouse at night",
+     "backdrop": "Longhouse",
      "nextTier": {
       "tier": 1,
       "name": "Hatchling",

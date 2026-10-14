@@ -307,8 +307,12 @@ body.immersive .pv-top .leds i { border-color: #000; }
 /* The stage is the free space between the top bar and the dock; the pet stands at its bottom edge. */
 body.immersive .pv-screen { position: relative; flex: 1; min-height: 120px; overflow: visible; }
 body.immersive .pv-screen .scene-layer { position: fixed; inset: 0; z-index: 0; }
-/* CRT look in Immersive: the same scanlines as Classic, fixed over the whole window, plus a soft vignette */
-body.immersive .pv-screen .scan { position: fixed; inset: 0; z-index: 1; }
+/* CRT look in Immersive: scanlines over the whole window (thicker and darker than Classic so they still read
+   at full-screen size), plus a soft vignette */
+body.immersive .pv-screen .scan {
+  position: fixed; inset: 0; z-index: 1;
+  background: repeating-linear-gradient(0deg, rgba(15, 13, 46, .3) 0, rgba(15, 13, 46, .3) 2px, transparent 2px, transparent 4px);
+}
 body.immersive .pv-screen .scan::after {
   content: ''; position: absolute; inset: 0;
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 58%, rgba(15, 13, 46, .55) 100%);
