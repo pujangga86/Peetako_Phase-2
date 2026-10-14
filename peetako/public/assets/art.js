@@ -66,7 +66,7 @@ function sceneTier(t, s, p) {
       <path d="M0 44 L70 32 L122 62 L132 236 L0 236 Z" fill="${s.mid}"/>
       <path d="M14 236 Q22 124 62 112 Q100 124 112 236 Z" fill="#000000" opacity="0.5"/>
       <path d="M0 236 Q150 220 300 236 V300 H0 Z" fill="${s.ground}"/>
-      <g stroke="#120F28" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${bats}</g>`;
+      <g stroke="#120F28" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="${s.glowOp}">${bats}</g>`; // bats fly out at dusk and night, like the Tier 4 fireflies
     }
     case 6: return `
       <path d="M0 176 Q40 150 80 172 Q120 156 150 176 V200 H0 Z" fill="${s.far}"/>
