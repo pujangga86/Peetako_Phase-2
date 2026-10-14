@@ -31,7 +31,7 @@
     "TURNSTILE_SITE_KEY": "",
     // Care alerts: public half of the VAPID key pair (safe to publish). Alerts stay off until
     // the matching VAPID_PRIVATE_KEY secret is set.
-    "VAPID_PUBLIC_KEY": "BM5DiW-XbaYut0Lxl_gXjovAtYpk5w0CNOa6TxN1zP1LlLPl-Pzx6pIbMnDvEydh2_BgMn6FN-4CmjocDSTkChY",
+    "VAPID_PUBLIC_KEY": "BCSqepbxUEwpQSEankpRYelf_Ld_Mk6Nq9QJdxaHc1ugfMZ78Ij8gUe074_EoALfS6hE36RENQm7WzPj7jVz5ro",
     "VAPID_SUBJECT": "mailto:hello@peetako.com",
     // Most alert deliveries per hourly run. Workers Free allows 50 outgoing requests and 10 ms CPU per run;
     // raise this on Workers Paid.
