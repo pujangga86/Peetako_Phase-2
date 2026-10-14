@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Peetako — Raise a square-faced gecko from Malaysian Borneo</title>
 <meta name="description" content="Peetako is a free browser virtual pet: raise a square-faced gecko from Malaysian Borneo with just a four-word Secret Key. No account, no email.">
-<meta name="theme-color" content="#1E1B4B">
+<meta name="theme-color" content="#1A1840">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -58,7 +58,7 @@
 <link rel="apple-touch-startup-image" media="screen and (device-width: 1032px) and (device-height: 1376px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="/splash/apple-splash-2752-2064.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -70,24 +70,24 @@
 </header>
 <main class="wrap">
 
-<section class="card game" aria-label="Peetako game">
+<section id="game" class="game retro" aria-label="Peetako game">
 
   <!-- Welcome -->
-  <div id="screen-welcome" class="screen welcome">
-    <div id="hero-pet" class="hero-pet"></div>
-    <h1>Raise a Peetako</h1>
+  <div id="screen-welcome" class="screen welcome frame">
+    <div class="screen-box hero"><div id="hero-scene" class="scene-layer" aria-hidden="true"></div><div id="hero-pet" class="pet-layer"></div><div class="scan" aria-hidden="true"></div></div>
+    <h1 class="px">Raise a Peetako</h1>
     <p class="lead">A square-faced gecko from Malaysian Borneo that lives as long as you care for it. No account, no email — just four secret words.</p>
-    <div class="btn-row" style="justify-content:center">
-      <button id="go-hatch" class="btn">Hatch a new Peetako</button>
-      <button id="go-login" class="btn secondary">I have a Secret Key</button>
+    <div class="btn-row center">
+      <button id="go-hatch" class="rbtn" style="--b: var(--b1)">Hatch a new Peetako</button>
+      <button id="go-login" class="rbtn light">I have a Secret Key</button>
     </div>
   </div>
 
   <!-- Hatch -->
-  <form id="screen-hatch" class="screen" hidden>
-    <h2>Hatch your Peetako</h2>
-    <fieldset style="border:0;padding:0;margin:0">
-      <legend style="font-weight:800;margin-bottom:6px">Choose a type</legend>
+  <form id="screen-hatch" class="screen frame" hidden>
+    <h2 class="px">Hatch your Peetako</h2>
+    <fieldset class="plain">
+      <legend>Choose a type</legend>
       <div class="type-pick">
         <label class="type-option"><input type="radio" name="type" value="organic" checked>
           <div class="tile"><div id="preview-organic"></div><strong>Organic</strong><span>Rainforest gecko. Eats kelkatu, basks under a lamp.</span></div></label>
@@ -99,33 +99,33 @@
       <label for="pet-name-input">Name</label>
       <div class="input-row">
         <input id="pet-name-input" type="text" maxlength="16" autocomplete="off" required placeholder="e.g. Pitak">
-        <button id="random-name" type="button" class="btn secondary small">Random</button>
+        <button id="random-name" type="button" class="rbtn light small">Random</button>
       </div>
-      <p class="hint">2–16 letters or numbers. Other players will see this name later.</p>
+      <p class="hint">2–16 letters or numbers. Other players will see this name later. Your colour palette is picked at random — change it any time from the menu.</p>
     </div>
     <div id="turnstile"></div>
     <label class="check"><input id="hatch-remember" type="checkbox" checked> Remember this device for 30 days</label>
     <div id="hatch-error" class="error" role="alert"></div>
     <div class="btn-row">
-      <button id="hatch-btn" class="btn green" type="submit">Hatch!</button>
-      <button class="btn secondary" type="button" data-back>Back</button>
+      <button id="hatch-btn" class="rbtn" style="--b: var(--b1)" type="submit">Hatch!</button>
+      <button class="rbtn light" type="button" data-back>Back</button>
     </div>
   </form>
 
   <!-- Key reveal -->
-  <div id="screen-reveal" class="screen" hidden>
-    <h2>Your Secret Key</h2>
+  <div id="screen-reveal" class="screen frame" hidden>
+    <h2 class="px">Your Secret Key</h2>
     <p>This is the <strong>only</strong> way to care for your Peetako from another device or after you leave. It is shown once.</p>
     <div id="key-box" class="key-box" aria-live="polite"></div>
-    <div class="btn-row" style="margin-bottom:14px"><button id="copy-key" class="btn secondary small" type="button">Copy key</button></div>
+    <div class="btn-row"><button id="copy-key" class="rbtn light small" type="button">Copy key</button></div>
     <p class="warn">There is no recovery. Save your key — write it down or keep it in a password manager.</p>
     <label class="check"><input id="saved-check" type="checkbox"> I have saved my Secret Key somewhere safe.</label>
-    <button id="reveal-continue" class="btn green" disabled>Meet my Peetako</button>
+    <button id="reveal-continue" class="rbtn" style="--b: var(--b1)" disabled>Meet my Peetako</button>
   </div>
 
   <!-- Login -->
-  <form id="screen-login" class="screen" hidden>
-    <h2>Welcome back</h2>
+  <form id="screen-login" class="screen frame" hidden>
+    <h2 class="px">Welcome back</h2>
     <div class="field">
       <label for="key-input">Secret Key</label>
       <input id="key-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="river-candle-tiger-mango" required>
@@ -134,57 +134,85 @@
     <label class="check"><input id="login-remember" type="checkbox" checked> Remember this device for 30 days</label>
     <div id="login-error" class="error" role="alert"></div>
     <div class="btn-row">
-      <button id="login-btn" class="btn green" type="submit">Open my Peetako</button>
-      <button class="btn secondary" type="button" data-back>Back</button>
+      <button id="login-btn" class="rbtn" style="--b: var(--b1)" type="submit">Open my Peetako</button>
+      <button class="rbtn light" type="button" data-back>Back</button>
     </div>
   </form>
 
-  <!-- Pet -->
-  <div id="screen-pet" hidden>
-    <div id="stage" class="stage">
-      <div class="scene" aria-hidden="true"><div id="sky" class="sky"></div><div id="land" class="land"></div><div id="shade" class="shade"></div></div>
-      <button id="alerts-btn" class="bell" type="button" hidden aria-pressed="false" aria-label="Turn on care alerts" title="Turn on care alerts"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="bell-body" d="M12 3a6 6 0 0 0-6 6v3.6L4.3 16a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 12.6V9a6 6 0 0 0-6-6Z" fill="currentColor"/><path d="M9.5 19.5a2.5 2.5 0 0 0 5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-      <div class="pet-wrap"><div id="pet-art"></div><div id="mood-fx" class="mood-fx"></div></div>
-      <div class="stage-head">
-        <h2 id="pet-name" class="pet-name"></h2>
-        <span id="pet-status" class="badge"></span>
-        <span id="pet-mood" class="badge mood" hidden></span>
+  <!-- Pet: one set of parts, laid out as "immersive" (full screen) or "classic" (retro frame) by CSS -->
+  <div id="screen-pet" class="pv" hidden>
+    <div class="pv-top">
+      <div class="pv-title">
+        <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
+        <h2 id="pet-name" class="pv-name"></h2>
+        <span id="pet-tier" class="pv-tier"></span>
       </div>
-      <p class="stage-sub"><span id="pet-tier" class="pet-tier"></span><span id="pet-backdrop" class="backdrop-name"></span></p>
-    </div>
-    <div class="panel">
-      <div id="pet-alive">
-        <p id="dormant-note" class="warn" hidden>Your Peetako has gone dormant after a day without care. Look after it to wake it up.</p>
-        <div id="stats" class="stats"></div>
-        <div id="actions" class="actions"></div>
-        <div id="facts" class="facts"></div>
-        <div id="ascension" class="ascension" hidden>
-          <p id="ascension-text"></p>
-          <button id="ascend-open" class="btn small" type="button" hidden>Ascend…</button>
-        </div>
-      </div>
-      <div id="pet-dead" hidden>
-        <h3>A legend has fallen</h3>
-        <p id="dead-text"></p>
-        <button id="dead-new" class="btn green" data-new-pet>Hatch a new Peetako</button>
-      </div>
-      <div id="pet-ascended" hidden>
-        <h3>Ascended to the Hall of Legends</h3>
-        <p id="ascended-text"></p>
-        <button class="btn green" data-new-pet>Hatch a new Peetako</button>
-      </div>
-      <div class="footer-actions">
-        <span id="care-hint">Any care action resets the survival timer.</span>
-        <button class="btn secondary small" data-logout>Leave this device</button>
+      <div class="pv-tools">
+        <button id="alerts-btn" class="icon-btn bell" type="button" hidden aria-pressed="false" aria-label="Turn on care alerts" title="Turn on care alerts"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="bell-body" d="M12 3a6 6 0 0 0-6 6v3.6L4.3 16a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 12.6V9a6 6 0 0 0-6-6Z" fill="currentColor"/><path d="M9.5 19.5a2.5 2.5 0 0 0 5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button id="menu-btn" class="icon-btn" type="button" aria-haspopup="dialog" aria-label="Menu" title="Menu"><svg viewBox="0 0 8 8" width="20" height="20" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="1" width="8" height="1.4" fill="currentColor"/><rect x="0" y="3.3" width="8" height="1.4" fill="currentColor"/><rect x="0" y="5.6" width="8" height="1.4" fill="currentColor"/></svg></button>
       </div>
     </div>
+
+    <div id="stage" class="pv-screen">
+      <div id="scene" class="scene-layer"></div>
+      <div class="pet-box"><div id="pet-art" class="pet-layer"></div><div id="mood-fx" class="fx-layer"></div></div>
+      <div class="scan" aria-hidden="true"></div>
+      <div class="pv-badges"><span id="pet-status" class="chip"></span><span id="pet-mood" class="chip mood" hidden></span></div>
+      <p id="pet-backdrop" class="pv-place"></p>
+    </div>
+
+    <div id="pet-alive" class="pv-alive">
+      <p id="dormant-note" class="warn" hidden>Your Peetako has gone dormant after a day without care. Look after it to wake it up.</p>
+      <div id="stats" class="pv-stats"></div>
+      <div id="actions" class="pv-dock"></div>
+      <div id="facts" class="pv-facts"></div>
+      <div id="ascension" class="ascension" hidden>
+        <p id="ascension-text"></p>
+        <button id="ascend-open" class="rbtn small" style="--b: var(--gold)" type="button" hidden>Ascend…</button>
+      </div>
+    </div>
+    <div id="pet-dead" class="pv-end" hidden>
+      <h3 class="px">A legend has fallen</h3>
+      <p id="dead-text"></p>
+      <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+    </div>
+    <div id="pet-ascended" class="pv-end" hidden>
+      <h3 class="px">Ascended to the Hall of Legends</h3>
+      <p id="ascended-text"></p>
+      <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+    </div>
+    <div class="pv-code"><span class="px">Call Code</span><span id="call-code"></span></div>
   </div>
 </section>
 
-<!-- Ascension: optional and permanent, so the owner confirms it here first. -->
-<dialog id="ascend-dialog" class="dialog" aria-labelledby="ascend-title">
+<!-- Menu sheet (both views). The view choice is saved on this device only. -->
+<dialog id="menu" class="sheet retro" aria-labelledby="menu-title">
   <form method="dialog">
-    <h2 id="ascend-title">Ascend <span data-pet-name></span>?</h2>
+    <div class="sheet-head"><h2 id="menu-title" class="px">Menu</h2><button class="icon-btn" value="close" aria-label="Close menu">✕</button></div>
+    <fieldset class="plain">
+      <legend class="px">View</legend>
+      <div class="seg">
+        <label><input type="radio" name="view" value="immersive"><span>Immersive</span></label>
+        <label><input type="radio" name="view" value="classic"><span>Classic</span></label>
+      </div>
+    </fieldset>
+    <fieldset class="plain">
+      <legend class="px">Colour</legend>
+      <div id="palette-pick" class="palette-pick"></div>
+    </fieldset>
+    <div class="sheet-row">
+      <button id="sound-btn" type="button" class="rbtn light small" aria-pressed="false">Sound: off</button>
+      <button id="fullscreen-btn" type="button" class="rbtn light small" hidden>Full screen</button>
+    </div>
+    <nav class="sheet-links" aria-label="Pages"><a href="/faq">FAQ</a><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></nav>
+    <button type="button" class="rbtn light small wide" data-logout>Leave this device</button>
+  </form>
+</dialog>
+
+<!-- Ascension: optional and permanent, so the owner confirms it here first. -->
+<dialog id="ascend-dialog" class="sheet retro" aria-labelledby="ascend-title">
+  <form method="dialog">
+    <h2 id="ascend-title" class="px">Ascend <span data-pet-name></span>?</h2>
     <p><span data-pet-name></span> retires to the Hall of Legends with a Legacy Score of <strong id="ascend-score"></strong> (days lived plus days of care).</p>
     <ul>
       <li>Care stops for good: no more feeding, decay or survival timer.</li>
@@ -195,13 +223,14 @@
     <label class="check"><input id="ascend-check" type="checkbox"> I understand Ascension is permanent.</label>
     <div id="ascend-error" class="error" role="alert"></div>
     <div class="btn-row">
-      <button id="ascend-confirm" class="btn" value="confirm" disabled>Ascend</button>
-      <button class="btn secondary" value="cancel" formnovalidate>Not now</button>
+      <button id="ascend-confirm" class="rbtn" style="--b: var(--gold)" value="confirm" disabled>Ascend</button>
+      <button class="rbtn light" value="cancel" formnovalidate>Not now</button>
     </div>
   </form>
 </dialog>
 
-<!-- Ad slot reserved: add AdSense here only after approval, away from the game buttons. -->
+<!-- Ad slot reserved: add AdSense here only after approval, below the game and never over the pet. -->
+
 
 <section class="content">
   <h2>What is Peetako?</h2>
@@ -239,6 +268,7 @@
   </div>
 </footer>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="/assets/sound.js"></script>
 <script type="module" src="/assets/app.js"></script>
 </body>
 </html>

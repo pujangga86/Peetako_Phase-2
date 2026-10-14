@@ -1,14 +1,19 @@
-// Peetako day and night sky (Phase 2A). Cosmetic only and browser only: it reads the device clock.
-// Survival and hunger timers stay on server time; nothing here touches game state.
+// Peetako day and night sky (Phase 2A, recoloured in 2B). Cosmetic only and browser only:
+// it reads the device clock. Survival and hunger timers stay on server time.
 //
 // Phases (GDD): dawn 05:30–07:00, day 07:00–17:30, dusk 17:30–19:30, night 19:30–05:30,
-// blending over 30 minutes around each change. Tier sets the scenery; time of day sets sky and light.
+// blending over 30 minutes around each change. Tier sets the scenery; time of day sets the
+// sky, the scenery colours and the light. Colours come from the "Tiers 0-8 x 5 palettes" mockup.
 
 const PHASES = {
-  night: { top: '#0B1026', mid: '#1E1B4B', low: '#3B2F6B', shade: 0.55, stars: 1 },
-  dawn:  { top: '#3B4A8C', mid: '#E9A0B0', low: '#FDBA74', shade: 0.25, stars: 0.25 },
-  day:   { top: '#2BA8E8', mid: '#7DD3FC', low: '#E0F2FE', shade: 0,    stars: 0 },
-  dusk:  { top: '#312E81', mid: '#C2410C', low: '#FB923C', shade: 0.3,  stars: 0.15 },
+  dawn:  { sky1: '#6C6FB8', sky2: '#FFB38A', far: '#8C7BB0', mid: '#5E5A95', near: '#3E3A70', ground: '#4F6A4A', water: '#7C93C8', sunC: '#FFD18A',
+           starOp: 0.25, moonOp: 0, sunOp: 1, sunX: 236, sunY: 168, cloudOp: 0.35, glowOp: 0.5 },
+  day:   { sky1: '#5CBDEB', sky2: '#CFF1FA', far: '#8FBFCB', mid: '#4E9A6E', near: '#2F7350', ground: '#5DA35A', water: '#3FB6D8', sunC: '#FFE066',
+           starOp: 0, moonOp: 0, sunOp: 1, sunX: 236, sunY: 56, cloudOp: 0.9, glowOp: 0 },
+  dusk:  { sky1: '#3D2D6B', sky2: '#F2885B', far: '#A0607A', mid: '#6A3D63', near: '#3C2546', ground: '#4A3A3E', water: '#6A4E8A', sunC: '#FF9F5A',
+           starOp: 0.4, moonOp: 0, sunOp: 1, sunX: 64, sunY: 176, cloudOp: 0.3, glowOp: 0.85 },
+  night: { sky1: '#14123A', sky2: '#2B2770', far: '#3B3787', mid: '#2A2766', near: '#1C1A4A', ground: '#173A2A', water: '#1E3A6A', sunC: '#FFE066',
+           starOp: 1, moonOp: 1, sunOp: 0, sunX: 236, sunY: 56, cloudOp: 0, glowOp: 1 },
 };
 // Phase that starts at each boundary, in minutes after local midnight.
 const BOUNDARIES = [[330, 'dawn'], [420, 'day'], [1050, 'dusk'], [1170, 'night']];
@@ -20,10 +25,13 @@ const mixHex = (a, b, t) => {
   const A = hexToRgb(a), B = hexToRgb(b);
   return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join('');
 };
-const mix = (a, b, t) => ({
-  top: mixHex(a.top, b.top, t), mid: mixHex(a.mid, b.mid, t), low: mixHex(a.low, b.low, t),
-  shade: a.shade + (b.shade - a.shade) * t, stars: a.stars + (b.stars - a.stars) * t,
-});
+function mix(a, b, t) {
+  const out = {};
+  for (const k of Object.keys(a)) {
+    out[k] = typeof a[k] === 'number' ? a[k] + (b[k] - a[k]) * t : mixHex(a[k], b[k], t);
+  }
+  return out;
+}
 
 function phaseAt(min) {
   let phase = 'night';
@@ -43,47 +51,14 @@ export function skyAt(minute) {
       colours = mix(PHASES[prev], PHASES[next], (d + BLEND_MIN / 2) / BLEND_MIN);
     }
   }
-  // Sun crosses from 06:00 to 18:30; moon from 18:30 to 06:00. pos = 0 (left horizon) … 1 (right).
-  const sunPos = (m - 360) / 750;
-  const moonPos = (((m - 1110) + 1440) % 1440) / 690;
-  return {
-    phase,
-    ...colours,
-    sun: sunPos >= 0 && sunPos <= 1 ? sunPos : null,
-    moon: moonPos >= 0 && moonPos <= 1 ? moonPos : null,
-  };
+  return { phase, ...colours };
 }
 
 // For testing on a phone without changing the clock: add ?sky=dawn|day|dusk|night to the address.
-const OVERRIDE = { dawn: 380, day: 720, dusk: 1080, night: 1380 };
+const OVERRIDE = { dawn: 380, day: 720, dusk: 1110, night: 1380 };
 export function localMinute(date = new Date()) {
-  const forced = new URLSearchParams(location.search).get('sky');
+  let forced = null;
+  try { forced = new URLSearchParams(location.search).get('sky'); } catch { /* not in a browser */ }
   if (forced in OVERRIDE) return OVERRIDE[forced];
   return date.getHours() * 60 + date.getMinutes();
-}
-
-// Fixed star field (no randomness, so it does not jump between renders).
-const STARS = [[8, 12], [18, 30], [27, 8], [36, 22], [44, 6], [52, 34], [61, 14], [70, 26], [78, 9], [88, 20], [94, 36], [14, 44], [66, 42], [40, 46]];
-
-export function skyLayer(sky) {
-  // Percent of the stage. The sun and moon keep to the side bands so they never sit behind the pet:
-  // the first half of the arc climbs on the left, the second half descends on the right.
-  const arc = (p) => ({
-    x: p < 0.5 ? 6 + p * 44 : 72 + (p - 0.5) * 44,
-    y: 44 - Math.sin(p * Math.PI) * 32,
-  });
-  let html = `<div class="sky-grad" style="background:linear-gradient(180deg,${sky.top} 0%,${sky.mid} 55%,${sky.low} 100%)"></div>`;
-  if (sky.stars > 0.02) {
-    html += `<svg class="sky-stars" viewBox="0 0 100 50" preserveAspectRatio="none" aria-hidden="true" style="opacity:${sky.stars.toFixed(2)}">${
-      STARS.map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 0.35 : 0.55}" fill="#fff"/>`).join('')}</svg>`;
-  }
-  if (sky.sun !== null) {
-    const { x, y } = arc(sky.sun);
-    html += `<span class="sky-body sun" style="left:${x}%;top:${y}%"></span>`;
-  }
-  if (sky.moon !== null) {
-    const { x, y } = arc(sky.moon);
-    html += `<span class="sky-body moon" style="left:${x}%;top:${y}%"></span>`;
-  }
-  return html;
 }

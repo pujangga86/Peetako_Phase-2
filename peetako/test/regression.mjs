@@ -8,7 +8,7 @@
 //   npm run test:update       rewrite the golden after an INTENDED behaviour change (review the diff!)
 //   node test/regression.mjs --src <dir>   run the same scenario against another copy of src/
 //
-// Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension).
+// Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes.
 // Nothing here touches the real database; it needs no secrets and no network.
 
 import { execFileSync } from 'node:child_process';
@@ -129,6 +129,10 @@ async function scenario() {
   await call('get pet A', 'GET', '/api/pet', { who: 'A' });
   await call('care A feed', 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' });
   await call('care A bad', 'POST', '/api/care', { who: 'A', body: { action: 'nope' }, ip: '2.2.2.2' });
+  // Phase 2B: palette switch (cosmetic)
+  await call('palette A bad', 'POST', '/api/palette', { who: 'A', body: { palette: 'neon' }, ip: '2.2.2.2' });
+  await call('palette A tokay', 'POST', '/api/palette', { who: 'A', body: { palette: 'tokay' }, ip: '2.2.2.2' });
+  await call('palette no session', 'POST', '/api/palette', { body: { palette: 'laut' }, ip: '2.2.2.2' });
   await call('care B charge', 'POST', '/api/care', { who: 'B', body: { action: 'charge' }, ip: '3.3.3.3' });
 
   await call('logout A', 'POST', '/api/logout', { who: 'A' });
@@ -181,6 +185,7 @@ async function scenario() {
   await call('ascend E ok', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
   await call('ascend E again', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
   await call('care E after ascension', 'POST', '/api/care', { who: 'E', body: { action: 'feed' }, ip: '8.8.8.8' });
+  await call('palette E after ascension', 'POST', '/api/palette', { who: 'E', body: { palette: 'kenyalang' }, ip: '8.8.8.8' });
   T += 400 * H; await cron('daily after ascension', '0 18 * * *'); // 400 h > Tier 8 survival window: an ascended pet must not fall
   await call('login E after ascension', 'POST', '/api/login', { body: { key: e.key, remember: false }, who: 'E', ip: '8.8.8.8' });
 }

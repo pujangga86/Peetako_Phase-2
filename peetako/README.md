@@ -8,9 +8,18 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 
 | Slice | Contents | Status |
 |---|---|---|
-| **2A — foundation** | 6-character Call Codes (`PTK-XXXXXX`), compressed tiers (Day 0/1/2/4/7/14/21/30/60), Ascension soft cap at Tier 8 (Day 90), "Immortal" renamed "Ageless", no halo on fallen pets, five mood faces with floating symbols, sky that follows the device clock | **this release** |
-| 2B — look | Retro frame, five palettes (Hijau Rimba, Tokay, Kenyalang, Pua Kumbu, Laut Borneo), random palette at hatch, Immersive / Classic layout, Robot line art per tier and palette, full tier backdrops, sound | next |
+| 2A — foundation | 6-character Call Codes (`PTK-XXXXXX`), compressed tiers (Day 0/1/2/4/7/14/21/30/60), Ascension soft cap at Tier 8 (Day 90), "Immortal" renamed "Ageless", no halo on fallen pets, five mood faces with floating symbols, sky that follows the device clock | live since 14 Oct 2026 |
+| **2B — look** | Retro frame, five palettes (Hijau Rimba, Tokay, Kenyalang, Pua Kumbu, Laut Borneo), random palette at hatch, Immersive / Classic views, Robot line art per tier and palette, nine tier backdrops, sound | **this release** |
 | 2C — social and economy | Coins (care +10 each, max 30/day; daily check-in +10; 7-day streak +30; mini-game 1 per 5 fireflies, max 50/day; tier-up +50 × tier; referral +100, max 3/day), cosmetics (100 / 300 / 800, backdrop 500), gifts (max 5/day), Tangkap Kelip-kelip and leaderboards, name filter and Report, share and invite buttons, Pamper and battle animations on a neutral arena | later |
+
+### What 2B changes
+
+- **Art** (`public/assets/art.js`, `palettes.js`): the gecko from the "Peetako Retro Frame" mockups, in five palettes, for Organic and Robot, with tier accessories and the nine tier backdrops; mood faces follow the "Character Concepts" mood boards. Tier 7 shows an orbit of fireflies (Robot: small drones) and Tier 8 a gold aura with awan larat curls and a gold headcloth (Robot: glowing core and floating diamonds) — no halo, rays or crown (GDD, Cultural sensitivity). The tanjak, Terabai shield and hornbill feathers still need the cultural reviewers.
+- **Palettes**: new column `pet.palette` (migration `0002_palette.sql`, already applied to `peetako-p2`). A new pet gets one at random; `POST /api/palette` with `{ "palette": "tokay" }` switches it (cosmetic only, also for fallen or ascended pets). The frame, buttons and page colour follow the palette.
+- **Views**: *Immersive* (default) — the scene fills the window, a thin top bar with name, tier, bell and menu, and a dock with four buttons that each carry their stat as a bar and a pulsing "!" below 40, over a gold tumpal trim. *Classic* — the retro frame with a square screen, segmented stat bars, the four buttons and the Call Code. Desktop: Classic puts the controls beside the frame; Immersive puts a 2×2 control panel on the right. The choice lives in `localStorage` (`peetako_view`) on that device.
+- **Menu** (☰): view, colour, sound on/off, full screen (where the browser supports it), FAQ/About/Privacy/Contact, Leave this device.
+- **Sound** (`public/assets/sound.js`): the synthesized module from 11 Oct 2026, off by default; plays on care, hatch, tier up and errors.
+- **Stats** keep their four server names; on screen they read FOOD / CLEAN / WARM / FUN (Organic) and POWER / OIL / COOL / FUN (Robot).
 
 ### What 2A changes
 
@@ -19,7 +28,7 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 - **Ascension** (`POST /api/ascend` with `{ "confirm": true }`): open to an *active* Tier 8 pet after Day 90. Permanent. The pet stops decaying and can no longer fall; it keeps its record with a **Legacy Score** = whole days lived + 2 × distinct UTC days with care. Bond and battle wins join the score in Phase 3, with the stronger Legacy Egg. Declining is the default: the pet simply keeps living.
 - **Soft cap**: `rankAgeHours` in the pet view stops at Day 90, ready for rankings.
 - **Mood** (browser only, `public/assets/mood.js`): a stat under 40 shows its need — Hunger → *hungry* (thought bubble with kelkatu, or a battery for Robot), Warmth/Cooling → *sleepy* (Z letters), Hygiene/Maintenance or Mood → *sad* (rain cloud). No needs: *happy* (hearts), or *excited* (sparkles) when every stat is 85+ or for 8 seconds after a care action. Dormant pets look sleepy. At most two symbols. Each mood has its own face shape and a text chip, so it reads without colour; animations stop for reduced motion. Robot uses LED-eye shapes and the antenna bulb.
-- **Sky** (browser only, `public/assets/sky.js`): dawn 05:30–07:00, day 07:00–17:30, dusk 17:30–19:30, night 19:30–05:30 by the device clock, blended over 30 minutes; sun, moon and stars; the land darkens at night. Test any phase with `?sky=dawn`, `?sky=day`, `?sky=dusk` or `?sky=night` in the address. Tier land is a simple placeholder until 2B.
+- **Sky** (browser only, `public/assets/sky.js`): dawn 05:30–07:00, day 07:00–17:30, dusk 17:30–19:30, night 19:30–05:30 by the device clock, blended over 30 minutes. Test any phase with `?sky=dawn`, `?sky=day`, `?sky=dusk` or `?sky=night` in the address. (2B recoloured the scenery per phase from the mockup.)
 
 ## Project layout
 
@@ -31,7 +40,7 @@ src/game.js         All game rules and tunable numbers (tiers, decay, actions, A
 src/wordlist.js     EFF Large Wordlist (7,776 words) for Secret Keys
 migrations/         D1 schema
 public/             Static site: game (index.html), FAQ, About, Privacy, Contact, 404, ads.txt
-public/assets/      app.js (client), pet.js (gecko art, mood faces and symbols, tier land), mood.js, sky.js, style.css
+public/assets/      app.js (client), art.js (gecko, Robot, accessories, backdrops, mood symbols), palettes.js, mood.js, sky.js, sound.js, style.css
 public/sw.js        Service worker: install/offline shell, shows care alerts
 public/icons/       App icons; public/splash/ iOS launch images
 wrangler.jsonc      Worker config (D1 binding, cron, vars)

@@ -28,11 +28,16 @@ export async function rateLimitHit(env, bucket, expiresAt) {
 // ---------- pets ----------
 // Creates a pet and returns the full row. Throws a unique violation (see isUniqueViolation)
 // when the call code or key hash already exists.
-export async function createPet(env, { callCode, keyHash, name, type, now, stats }) {
+export async function createPet(env, { callCode, keyHash, name, type, palette, now, stats }) {
   return env.DB.prepare(
-    `INSERT INTO pet (call_code, key_hash, name, type, born_at, last_cared_at, stats_at, energy, health, temperature, mood, tier)
-     VALUES (?1, ?2, ?3, ?4, ?5, ?5, ?5, ?6, ?7, ?8, ?9, 0) RETURNING *`
-  ).bind(callCode, keyHash, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood).first();
+    `INSERT INTO pet (call_code, key_hash, name, type, born_at, last_cared_at, stats_at, energy, health, temperature, mood, tier, palette)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?5, ?5, ?6, ?7, ?8, ?9, 0, ?10) RETURNING *`
+  ).bind(callCode, keyHash, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood, palette).first();
+}
+
+// Cosmetic only; allowed for fallen and ascended pets too, so their record shows the colour the owner chose.
+export async function savePalette(env, petId, palette) {
+  await env.DB.prepare('UPDATE pet SET palette = ?1 WHERE id = ?2').bind(palette, petId).run();
 }
 
 export async function petByKeyHash(env, keyHash) {

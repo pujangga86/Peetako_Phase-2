@@ -1,10 +1,10 @@
 // Peetako Worker — serves the API under /api/*; static pages come from ./public.
 import { WORDS } from './wordlist.js';
-import { advance, applyCare, ascend, ascensionBlock, view, tierAt, START_STATS, DAY, HOUR } from './game.js';
+import { advance, applyCare, ascend, ascensionBlock, view, tierAt, START_STATS, PALETTES, DAY, HOUR } from './game.js';
 import { pushRun, validSubscription, validTimeZone } from './push.js';
 import {
   isUniqueViolation, rateLimitHit, createPet, petByKeyHash, savePet, petBySession, createSession, deleteSession,
-  saveAscension, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
+  saveAscension, savePalette, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
 } from './store.js';
 
 const COOKIE = 'ptk_session';
@@ -118,13 +118,14 @@ async function register(env, req) {
   if (!(await rateLimit(env, req, 'register'))) return fail(429, 'rate_limited', 'Too many new pets from this network today. Try again tomorrow.');
   if (!(await verifyTurnstile(env, b.turnstileToken, req))) return fail(403, 'turnstile', 'Human check failed. Please try again.');
 
+  const palette = PALETTES[randInt(PALETTES.length)]; // random colour at hatch (Phase 2B)
   const now = Date.now();
   for (let attempt = 0; attempt < 5; attempt++) {
     const key = newKey();
     const callCode = newCallCode(env);
     try {
       const row = await createPet(env, {
-        callCode, keyHash: await hmac(env, 'key:' + key), name, type: b.type, now, stats: START_STATS,
+        callCode, keyHash: await hmac(env, 'key:' + key), name, type: b.type, palette, now, stats: START_STATS,
       });
       const cookie = await startSession(env, row.id, !!b.remember);
       return json({ key, pet: view(row, now) }, 201, { 'set-cookie': cookie });
@@ -197,6 +198,20 @@ async function ascendPet(env, req) {
   return json({ pet: view(done, now) });
 }
 
+// Palette switch from the menu (Phase 2B). Cosmetic only.
+async function setPalette(env, req) {
+  const row = await petFromSession(env, req);
+  if (!row) return fail(401, 'no_session', 'Enter your Secret Key to continue.');
+  if (!(await rateLimit(env, req, 'care'))) return fail(429, 'rate_limited', 'Slow down a little — your Peetako needs rest too.');
+  const b = await readBody(req);
+  if (!PALETTES.includes(b.palette)) return fail(400, 'bad_palette', 'Unknown palette.');
+  const now = Date.now();
+  const p = advance(row, now);
+  if (!p.ascended_at) await savePet(env, p);
+  await savePalette(env, p.id, b.palette);
+  return json({ pet: view({ ...p, palette: b.palette }, now) });
+}
+
 async function logout(env, req) {
   const token = readCookie(req);
   if (token) await deleteSession(env, await sha256(token));
@@ -255,6 +270,7 @@ async function route(req, env) {
   if (path === '/api/pet' && m === 'GET') return getPet(env, req);
   if (path === '/api/care' && m === 'POST') return care(env, req);
   if (path === '/api/ascend' && m === 'POST') return ascendPet(env, req);
+  if (path === '/api/palette' && m === 'POST') return setPalette(env, req);
   if (path === '/api/logout' && m === 'POST') return logout(env, req);
   if (path === '/api/push/subscribe' && m === 'POST') return pushSubscribe(env, req);
   if (path === '/api/push/unsubscribe' && m === 'POST') return pushUnsubscribe(env, req);

@@ -19,6 +19,11 @@ export const TIERS = [
 ];
 export const TOP_TIER = TIERS.length - 1;
 
+// Colour palettes (Phase 2B). Cosmetic only: never affects stats, survival or battles.
+// A new pet gets one at random; the owner can switch any time from the menu.
+export const PALETTES = ['hijau', 'tokay', 'kenyalang', 'puakumbu', 'laut'];
+export const DEFAULT_PALETTE = 'hijau';
+
 // Soft cap and Ascension (Tier 8). No maximum lifespan: after this many days at Tier 8, age stops
 // counting for rankings and power, and the owner may choose Ascension (optional, cannot be undone).
 export const ASCENSION_AFTER_DAYS_AT_TOP = 30;
@@ -137,6 +142,7 @@ export function view(pet, now) {
   return {
     name: pet.name,
     type: pet.type,
+    palette: PALETTES.includes(pet.palette) ? pet.palette : DEFAULT_PALETTE,
     callCode: pet.call_code,
     status,
     bornAt: pet.born_at,

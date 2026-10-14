@@ -2,12 +2,14 @@
 // Strategy: network first, cache as fallback. Online players always get the latest deploy;
 // the cache is only used when the network fails.
 // The game API (/api/*) is never touched: pet state must always come live from the server.
-const CACHE = 'peetako-p2-v1';
+const CACHE = 'peetako-p2-v2';
 const SHELL = [
   '/',
   '/assets/style.css',
   '/assets/app.js',
-  '/assets/pet.js',
+  '/assets/art.js',
+  '/assets/palettes.js',
+  '/assets/sound.js',
   '/assets/mood.js',
   '/assets/sky.js',
   '/favicon.svg',
