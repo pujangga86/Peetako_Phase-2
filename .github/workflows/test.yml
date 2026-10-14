@@ -1,0 +1,34 @@
+# Runs the Peetako regression test on every push to main and on pull requests.
+# Warning only: it does not stop Cloudflare Workers Builds from deploying.
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: peetako
+    env:
+      WRANGLER_SEND_METRICS: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: peetako/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
