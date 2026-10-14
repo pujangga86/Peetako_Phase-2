@@ -1,4 +1,5 @@
-// Peetako game client (Phase 2B). Talks to the Worker API under /api/*.
+// Peetako game client (Phase 2B). The colour palette is chosen once, at hatch.
+// Talks to the Worker API under /api/*.
 // One set of pet-screen parts, laid out as Classic (retro frame, default) or Immersive (full screen, CRT)
 // by CSS; the choice is saved on this device only (Peetako has no login).
 import { drawPet, drawMoodSymbols, drawScene } from './art.js';
@@ -257,17 +258,8 @@ function openPet(pet) {
 }
 
 // ---------- menu ----------
-function renderPalettePick() {
-  const current = state.pet?.palette;
-  $('#palette-pick').innerHTML = PALETTE_IDS.map((id) => {
-    const p = PALETTES[id];
-    return `<button type="button" class="pal${id === current ? ' on' : ''}" data-palette="${id}" aria-pressed="${id === current}" style="--sw:${p.body};--sh:${p.spot};--sb:${p.belly}">
-      <span class="sw" aria-hidden="true"></span><span>${p.name}</span></button>`;
-  }).join('');
-}
 function openMenu() {
   Sound.play('tap');
-  renderPalettePick();
   applyView();
   setSoundLabel();
   $('#fullscreen-btn').hidden = !document.fullscreenEnabled;
@@ -279,23 +271,6 @@ function setSoundLabel() {
   b.textContent = `Sound: ${on ? 'on' : 'off'}`;
   b.setAttribute('aria-pressed', String(on));
 }
-async function choosePalette(id) {
-  if (!state.pet || id === state.pet.palette) return;
-  const before = state.pet.palette;
-  applyTheme(id);
-  try {
-    const data = await api('/api/palette', { palette: id });
-    Sound.play('tap');
-    renderPet(data.pet);
-    renderPalettePick();
-    toast(`Colour: ${PALETTES[id].name}`);
-  } catch (e) {
-    applyTheme(before);
-    Sound.play('error');
-    toast(e.message);
-  }
-}
-
 // ---------- Ascension ----------
 function openAscend() {
   const pet = state.pet;
@@ -407,9 +382,26 @@ function renderHero() {
   $('#hero-scene').innerHTML = drawScene(3, skyAt(localMinute()), 'hijau');
   $('#hero-pet').innerHTML = drawPet({ type: 'organic', tier: 3, pal: 'hijau', mood: 'happy' });
 }
+// The colour is chosen once, here. Nothing is pre-selected so the choice is deliberate.
+const chosenPalette = () => document.querySelector('input[name="palette"]:checked')?.value || null;
+function renderHatchPalettes() {
+  $('#hatch-palette').innerHTML = PALETTE_IDS.map((id) => {
+    const p = PALETTES[id];
+    return `<label class="pal" style="--sw:${p.body};--sh:${p.spot};--sb:${p.belly}">
+      <input type="radio" name="palette" value="${id}" aria-label="${p.name}: ${p.sub}"><span class="sw" aria-hidden="true"></span><span>${p.name}</span></label>`;
+  }).join('');
+}
 function updateTypePreviews() {
-  $('#preview-organic').innerHTML = drawPet({ type: 'organic', tier: 1, pal: 'hijau' });
-  $('#preview-robot').innerHTML = drawPet({ type: 'robot', tier: 1, pal: 'tokay' });
+  const pal = chosenPalette() || 'hijau';
+  $('#preview-organic').innerHTML = drawPet({ type: 'organic', tier: 1, pal });
+  $('#preview-robot').innerHTML = drawPet({ type: 'robot', tier: 1, pal });
+  for (const l of document.querySelectorAll('#hatch-palette label.pal')) l.classList.toggle('on', l.querySelector('input').checked);
+}
+function openHatch() {
+  renderHatchPalettes();
+  updateTypePreviews();
+  loadTurnstile();
+  show('hatch');
 }
 
 function loadTurnstile() {
@@ -430,6 +422,8 @@ async function hatch(ev) {
   err.textContent = '';
   const type = document.querySelector('input[name="type"]:checked')?.value;
   const name = $('#pet-name-input').value;
+  const palette = chosenPalette();
+  if (!palette) { err.textContent = 'Choose a colour for your Peetako. You can only choose it once.'; return; }
   let turnstileToken = null;
   if (state.turnstileSiteKey) {
     turnstileToken = window.turnstile?.getResponse(state.turnstileId);
@@ -438,7 +432,7 @@ async function hatch(ev) {
   const btn = $('#hatch-btn');
   btn.disabled = true;
   try {
-    const data = await api('/api/register', { name, type, turnstileToken, remember: $('#hatch-remember').checked });
+    const data = await api('/api/register', { name, type, palette, turnstileToken, remember: $('#hatch-remember').checked });
     state.pendingPet = data.pet;
     $('#key-box').textContent = data.key;
     $('#saved-check').checked = false;
@@ -474,7 +468,8 @@ async function login(ev) {
 
 // ---------- wiring ----------
 function wire() {
-  $('#go-hatch').addEventListener('click', () => { Sound.play('tap'); updateTypePreviews(); loadTurnstile(); show('hatch'); });
+  $('#go-hatch').addEventListener('click', () => { Sound.play('tap'); openHatch(); });
+  $('#hatch-palette').addEventListener('change', () => { Sound.play('tap'); updateTypePreviews(); });
   $('#go-login').addEventListener('click', () => { Sound.play('tap'); show('login'); });
   for (const b of document.querySelectorAll('[data-back]')) b.addEventListener('click', () => show('welcome'));
 
@@ -532,7 +527,7 @@ function wire() {
     try { await api('/api/logout', {}); } catch { /* ignore */ }
     clearInterval(state.skyTimer);
     applyTheme('hijau');
-    updateTypePreviews(); loadTurnstile(); show('hatch');
+    openHatch();
   });
   $('#alerts-btn').addEventListener('click', toggleAlerts);
   $('#ascend-open').addEventListener('click', openAscend);
@@ -542,7 +537,6 @@ function wire() {
   // menu
   $('#menu-btn').addEventListener('click', openMenu);
   for (const r of document.querySelectorAll('input[name="view"]')) r.addEventListener('change', (e) => { Sound.play('tap'); setView(e.target.value); });
-  $('#palette-pick').addEventListener('click', (e) => { const b = e.target.closest('[data-palette]'); if (b) choosePalette(b.dataset.palette); });
   $('#sound-btn').addEventListener('click', () => { Sound.toggle(); setSoundLabel(); });
   $('#fullscreen-btn').addEventListener('click', async () => {
     try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch { toast('Full screen is not available here.'); }

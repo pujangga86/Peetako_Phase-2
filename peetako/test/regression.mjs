@@ -8,7 +8,7 @@
 //   npm run test:update       rewrite the golden after an INTENDED behaviour change (review the diff!)
 //   node test/regression.mjs --src <dir>   run the same scenario against another copy of src/
 //
-// Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes.
+// Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes; the palette is now chosen once at hatch and locked.
 // Nothing here touches the real database; it needs no secrets and no network.
 
 import { execFileSync } from 'node:child_process';
@@ -119,20 +119,22 @@ async function scenario() {
   await call('bad type', 'POST', '/api/register', { body: { name: 'Valid', type: 'x' } });
   await call('bad origin', 'POST', '/api/register', { body: { name: 'Valid', type: 'robot' }, origin: 'https://evil.test' });
 
-  const a = await call('register A', 'POST', '/api/register', { body: { name: 'Gecko One', type: 'organic', remember: true }, who: 'A', ip: '2.2.2.2' });
-  await call('register B', 'POST', '/api/register', { body: { name: 'Robo Two', type: 'robot', remember: false }, who: 'B', ip: '3.3.3.3' });
-  await call('register C', 'POST', '/api/register', { body: { name: 'Cee', type: 'organic', remember: true }, who: 'C', ip: '4.4.4.4' });
-  await call('register D', 'POST', '/api/register', { body: { name: 'Dee', type: 'robot', remember: true }, who: 'D', ip: '5.5.5.5' });
-  for (let i = 0; i < 6; i++) await call('register burst ' + i, 'POST', '/api/register', { body: { name: 'Burst' + i, type: 'organic' }, who: 'burst' + i, ip: '9.9.9.9' }); // 6th is rate limited
+  await call('register no palette', 'POST', '/api/register', { body: { name: 'NoColour', type: 'organic' }, ip: '2.2.2.2' });
+  await call('register bad palette', 'POST', '/api/register', { body: { name: 'BadColour', type: 'robot', palette: 'neon' }, ip: '2.2.2.2' });
+  const a = await call('register A', 'POST', '/api/register', { body: { name: 'Gecko One', type: 'organic', palette: 'puakumbu', remember: true }, who: 'A', ip: '2.2.2.2' });
+  await call('register B', 'POST', '/api/register', { body: { name: 'Robo Two', type: 'robot', palette: 'laut', remember: false }, who: 'B', ip: '3.3.3.3' });
+  await call('register C', 'POST', '/api/register', { body: { name: 'Cee', type: 'organic', palette: 'hijau', remember: true }, who: 'C', ip: '4.4.4.4' });
+  await call('register D', 'POST', '/api/register', { body: { name: 'Dee', type: 'robot', palette: 'tokay', remember: true }, who: 'D', ip: '5.5.5.5' });
+  for (let i = 0; i < 6; i++) await call('register burst ' + i, 'POST', '/api/register', { body: { name: 'Burst' + i, type: 'organic', palette: 'laut' }, who: 'burst' + i, ip: '9.9.9.9' }); // 6th is rate limited
 
   T += 1 * H;
   await call('get pet A', 'GET', '/api/pet', { who: 'A' });
   await call('care A feed', 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' });
   await call('care A bad', 'POST', '/api/care', { who: 'A', body: { action: 'nope' }, ip: '2.2.2.2' });
-  // Phase 2B: palette switch (cosmetic)
-  await call('palette A bad', 'POST', '/api/palette', { who: 'A', body: { palette: 'neon' }, ip: '2.2.2.2' });
-  await call('palette A tokay', 'POST', '/api/palette', { who: 'A', body: { palette: 'tokay' }, ip: '2.2.2.2' });
+  // The palette is chosen once at hatch: every switch is refused and the pet keeps its colour.
+  await call('palette A locked', 'POST', '/api/palette', { who: 'A', body: { palette: 'tokay' }, ip: '2.2.2.2' });
   await call('palette no session', 'POST', '/api/palette', { body: { palette: 'laut' }, ip: '2.2.2.2' });
+  await call('get pet A after locked', 'GET', '/api/pet', { who: 'A' });
   await call('care B charge', 'POST', '/api/care', { who: 'B', body: { action: 'charge' }, ip: '3.3.3.3' });
 
   await call('logout A', 'POST', '/api/logout', { who: 'A' });
@@ -170,7 +172,7 @@ async function scenario() {
   await call('get pet C late', 'GET', '/api/pet', { who: 'C' });
 
   // Phase 2A: compressed tiers, care days and Ascension (Tier 8, Day 90 soft cap)
-  const e = await call('register E', 'POST', '/api/register', { body: { name: 'Elder', type: 'organic', remember: true }, who: 'E', ip: '8.8.8.8' });
+  const e = await call('register E', 'POST', '/api/register', { body: { name: 'Elder', type: 'organic', palette: 'kenyalang', remember: true }, who: 'E', ip: '8.8.8.8' });
   await call('ascend E unconfirmed', 'POST', '/api/ascend', { who: 'E', body: {}, ip: '8.8.8.8' });
   await call('ascend E too young', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
   for (let d = 1; d <= 93; d++) {

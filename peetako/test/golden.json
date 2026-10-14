@@ -51,17 +51,37 @@
    }
   },
   {
+   "label": "register no palette",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_palette",
+    "message": "Choose a colour for your Peetako."
+   }
+  },
+  {
+   "label": "register bad palette",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_palette",
+    "message": "Choose a colour for your Peetako."
+   }
+  },
+  {
    "label": "register A",
    "t": 1791590400000,
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
    "data": {
-    "key": "washstand-remote-paralegal-gas",
+    "key": "clumsy-washstand-remote-paralegal",
     "pet": {
      "name": "Gecko One",
      "type": "organic",
      "palette": "puakumbu",
-     "callCode": "PTK-96GX2D",
+     "callCode": "PTK-B96GX2",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -119,12 +139,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "irritant-unfair-turret-humid",
+    "key": "browbeat-omen-irritant-unfair",
     "pet": {
      "name": "Robo Two",
      "type": "robot",
      "palette": "laut",
-     "callCode": "PTK-X72KGR",
+     "callCode": "PTK-NPX72K",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -182,12 +202,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
    "data": {
-    "key": "overstuff-fame-sternness-opulently",
+    "key": "oversight-shoptalk-arrival-overstuff",
     "pet": {
      "name": "Cee",
      "type": "organic",
-     "palette": "puakumbu",
-     "callCode": "PTK-4YHPTK",
+     "palette": "hijau",
+     "callCode": "PTK-6CT4YH",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -245,12 +265,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
    "data": {
-    "key": "seldom-target-composure-unlovely",
+    "key": "grieving-reliably-levers-erasable",
     "pet": {
      "name": "Dee",
      "type": "robot",
      "palette": "tokay",
-     "callCode": "PTK-HSX4FT",
+     "callCode": "PTK-6RDTHS",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -308,12 +328,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "irritably-outpost-cancel-student",
+    "key": "sternum-marine-probing-procurer",
     "pet": {
      "name": "Burst0",
      "type": "organic",
-     "palette": "puakumbu",
-     "callCode": "PTK-M76968",
+     "palette": "laut",
+     "callCode": "PTK-6TSEDM",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -371,12 +391,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "gush-overall-relapsing-nintendo",
+    "key": "duvet-screen-sterility-slate",
     "pet": {
      "name": "Burst1",
      "type": "organic",
      "palette": "laut",
-     "callCode": "PTK-YDJQ6E",
+     "callCode": "PTK-WNMC84",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -434,12 +454,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "safehouse-singing-backtrack-angular",
+    "key": "baguette-swimmable-reload-cuddle",
     "pet": {
      "name": "Burst2",
      "type": "organic",
-     "palette": "hijau",
-     "callCode": "PTK-R3Q4TZ",
+     "palette": "laut",
+     "callCode": "PTK-JSX2TE",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -497,12 +517,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "unloader-grimy-tiring-multitude",
+    "key": "aviator-multiply-justifier-shampoo",
     "pet": {
      "name": "Burst3",
      "type": "organic",
      "palette": "laut",
-     "callCode": "PTK-BRE3EJ",
+     "callCode": "PTK-ASSTC3",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -560,12 +580,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
-    "key": "oversold-bullseye-rink-unsuited",
+    "key": "strenuous-emporium-sharpness-activator",
     "pet": {
      "name": "Burst4",
      "type": "organic",
      "palette": "laut",
-     "callCode": "PTK-U9MK2Q",
+     "callCode": "PTK-3Q8TPJ",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -637,7 +657,7 @@
      "name": "Gecko One",
      "type": "organic",
      "palette": "puakumbu",
-     "callCode": "PTK-96GX2D",
+     "callCode": "PTK-B96GX2",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -699,7 +719,7 @@
      "name": "Gecko One",
      "type": "organic",
      "palette": "puakumbu",
-     "callCode": "PTK-96GX2D",
+     "callCode": "PTK-B96GX2",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -762,17 +782,27 @@
    }
   },
   {
-   "label": "palette A bad",
+   "label": "palette A locked",
    "t": 1791594000000,
-   "status": 400,
+   "status": 403,
    "setCookie": null,
    "data": {
-    "error": "bad_palette",
-    "message": "Unknown palette."
+    "error": "palette_locked",
+    "message": "Your Peetako’s colour is chosen once, when it hatches, and cannot be changed."
    }
   },
   {
-   "label": "palette A tokay",
+   "label": "palette no session",
+   "t": 1791594000000,
+   "status": 403,
+   "setCookie": null,
+   "data": {
+    "error": "palette_locked",
+    "message": "Your Peetako’s colour is chosen once, when it hatches, and cannot be changed."
+   }
+  },
+  {
+   "label": "get pet A after locked",
    "t": 1791594000000,
    "status": 200,
    "setCookie": null,
@@ -780,8 +810,8 @@
     "pet": {
      "name": "Gecko One",
      "type": "organic",
-     "palette": "tokay",
-     "callCode": "PTK-96GX2D",
+     "palette": "puakumbu",
+     "callCode": "PTK-B96GX2",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -834,16 +864,6 @@
    }
   },
   {
-   "label": "palette no session",
-   "t": 1791594000000,
-   "status": 401,
-   "setCookie": null,
-   "data": {
-    "error": "no_session",
-    "message": "Enter your Secret Key to continue."
-   }
-  },
-  {
    "label": "care B charge",
    "t": 1791594000000,
    "status": 200,
@@ -853,7 +873,7 @@
      "name": "Robo Two",
      "type": "robot",
      "palette": "laut",
-     "callCode": "PTK-X72KGR",
+     "callCode": "PTK-NPX72K",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -933,8 +953,8 @@
     "pet": {
      "name": "Gecko One",
      "type": "organic",
-     "palette": "tokay",
-     "callCode": "PTK-96GX2D",
+     "palette": "puakumbu",
+     "callCode": "PTK-B96GX2",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1233,8 +1253,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1253,12 +1273,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -1281,8 +1301,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1301,12 +1321,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -1329,8 +1349,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1349,12 +1369,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1377,8 +1397,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1397,12 +1417,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1425,8 +1445,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1450,58 +1470,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -1621,8 +1641,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1641,12 +1661,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -1669,8 +1689,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1689,12 +1709,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -1717,8 +1737,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1737,12 +1757,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1765,8 +1785,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1785,12 +1805,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1813,8 +1833,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -1838,58 +1858,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -1996,8 +2016,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2016,12 +2036,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2044,8 +2064,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2064,12 +2084,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2092,8 +2112,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2112,12 +2132,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2140,8 +2160,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2160,12 +2180,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2188,8 +2208,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2213,58 +2233,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -2371,8 +2391,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2391,12 +2411,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2419,8 +2439,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2439,12 +2459,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2467,8 +2487,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2487,12 +2507,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2515,8 +2535,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2535,12 +2555,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2563,8 +2583,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2588,58 +2608,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -2737,8 +2757,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2757,12 +2777,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2785,8 +2805,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2805,12 +2825,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -2833,8 +2853,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2853,12 +2873,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2881,8 +2901,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2901,12 +2921,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2929,8 +2949,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -2954,58 +2974,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -3103,8 +3123,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3123,12 +3143,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3151,8 +3171,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3171,12 +3191,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3199,8 +3219,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3219,12 +3239,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3247,8 +3267,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3267,12 +3287,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3295,8 +3315,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3320,58 +3340,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -3469,8 +3489,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3489,12 +3509,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3517,8 +3537,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3537,12 +3557,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3565,8 +3585,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3585,12 +3605,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3613,8 +3633,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3633,12 +3653,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3661,8 +3681,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3686,58 +3706,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -3835,8 +3855,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3855,12 +3875,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3883,8 +3903,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3903,12 +3923,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -3931,8 +3951,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3951,12 +3971,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3979,8 +3999,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -3999,12 +4019,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4027,8 +4047,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4052,58 +4072,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -4211,8 +4231,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4231,12 +4251,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4259,8 +4279,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4279,12 +4299,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4307,8 +4327,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4327,12 +4347,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4355,8 +4375,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4375,12 +4395,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4403,8 +4423,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4428,58 +4448,58 @@
     ],
     "sessions": [
      {
-      "token_hash": "16f1d43ed1de0165a52e47d6883019df6e533769a46bc1feafe41e9a8c7071de",
-      "pet_id": 7,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
-      "pet_id": 4,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
-      "pet_id": 3,
-      "created_at": 1791590400000,
-      "expires_at": 1794182400000
-     },
-     {
-      "token_hash": "63964ad276415ec2409706271deb44774af3c6b564bc416ae9fa8449d5d42688",
-      "pet_id": 8,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "73188df6deaee4cd1b1111ed28e23d24033d9d8e49b60ba0cd4334e49d97ede9",
-      "pet_id": 2,
-      "created_at": 1791590400000,
-      "expires_at": 1791633600000
-     },
-     {
-      "token_hash": "ad9949729aaaa214689301e09e87d4fb19f59e5d7ff983d75a6af522e7f6d579",
+      "token_hash": "1a8e43719092359c5f69aa985bd0f24dc59f6226319aaed008bfa8890f828c7c",
       "pet_id": 5,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f245c3c1b6bac9f41f718556a6aac348153e8772c16499f60aba50fd8e46d2b8",
-      "pet_id": 6,
+      "token_hash": "5043585a0b5a05d70d6a42aaaeb5a72d8877ec31fbe8723642fb8994cb50a3e4",
+      "pet_id": 2,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "f586087402196235221f1c4ce5588b6a2fe079c12612d4a3621f8909e99a945a",
+      "token_hash": "57012b814155adef8f60ad67770473a9d04d1ca937d6c51081ba6f98022e9f2e",
+      "pet_id": 7,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "5d09b1b46060b688d7059bcd71f7b5b88a1fa95cb862b5a119f59d014e29f642",
       "pet_id": 9,
       "created_at": 1791590400000,
       "expires_at": 1791633600000
      },
      {
-      "token_hash": "fcb94fd108986d93f649de494face71707e7270ebd9db1ed4e2ff29f7143a867",
+      "token_hash": "6e97a970f0fb03ea06d56e24a6dea1eb97fd70121d937077f1e5d74a110cbed1",
       "pet_id": 1,
       "created_at": 1791594000000,
       "expires_at": 1791637200000
+     },
+     {
+      "token_hash": "7ae37410c7aab2dc75aa9d71f4365eb3ed8409d1be63b5fd2efbef66dc5845b2",
+      "pet_id": 6,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "c55686253fdf6ed25d8c2075873d032683ec0c42fd5ca9d641a1d34c1c7bd06b",
+      "pet_id": 8,
+      "created_at": 1791590400000,
+      "expires_at": 1791633600000
+     },
+     {
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
+      "pet_id": 4,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
+     },
+     {
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
+      "pet_id": 3,
+      "created_at": 1791590400000,
+      "expires_at": 1794182400000
      }
     ],
     "push_subscriptions": [
@@ -4577,8 +4597,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4597,12 +4617,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4625,8 +4645,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4645,12 +4665,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4673,8 +4693,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4693,12 +4713,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4721,8 +4741,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4741,12 +4761,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4769,8 +4789,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4794,13 +4814,13 @@
     ],
     "sessions": [
      {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
       "pet_id": 4,
       "created_at": 1791590400000,
       "expires_at": 1794182400000
      },
      {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
       "pet_id": 3,
       "created_at": 1791590400000,
       "expires_at": 1794182400000
@@ -4852,8 +4872,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4872,12 +4892,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4900,8 +4920,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4920,12 +4940,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -4948,8 +4968,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4968,12 +4988,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -4996,8 +5016,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -5016,12 +5036,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -5044,8 +5064,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -5069,13 +5089,13 @@
     ],
     "sessions": [
      {
-      "token_hash": "3db1aeb6b77e75753a0ffc08dc67f6c5132f6231474cadb920fa7d3c40ea16af",
+      "token_hash": "e3be421b4cde2bdc2da84612fe0ab9c195e1abbdc1e1f6e20478abcfbc3efb21",
       "pet_id": 4,
       "created_at": 1791590400000,
       "expires_at": 1794182400000
      },
      {
-      "token_hash": "513ec2db3b47ac7a7997e02254f40b67d510d3cc2cf3a52816c8326a70d64726",
+      "token_hash": "f697bfabe40e6d9c9f342b29ff6b765f4463a8361847ded78a65ab7f7c5fca5f",
       "pet_id": 3,
       "created_at": 1791590400000,
       "expires_at": 1794182400000
@@ -5094,8 +5114,8 @@
     "pet": {
      "name": "Cee",
      "type": "organic",
-     "palette": "puakumbu",
-     "callCode": "PTK-4YHPTK",
+     "palette": "hijau",
+     "callCode": "PTK-6CT4YH",
      "status": "dead",
      "bornAt": 1791590400000,
      "diedAt": 1791763200000,
@@ -5132,12 +5152,12 @@
    "status": 201,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
    "data": {
-    "key": "structure-brussels-lent-underhand",
+    "key": "shiny-quilt-clay-outdated",
     "pet": {
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5219,7 +5239,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5281,7 +5301,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5343,7 +5363,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5405,7 +5425,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5467,7 +5487,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5529,7 +5549,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5591,7 +5611,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5653,7 +5673,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5715,7 +5735,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5777,7 +5797,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5839,7 +5859,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5901,7 +5921,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -5963,7 +5983,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6025,7 +6045,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6087,7 +6107,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6156,7 +6176,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6218,7 +6238,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6280,7 +6300,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6342,7 +6362,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6404,7 +6424,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6466,7 +6486,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6528,7 +6548,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6590,7 +6610,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6652,7 +6672,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6714,7 +6734,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6776,7 +6796,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6838,7 +6858,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6900,7 +6920,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -6962,7 +6982,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7024,7 +7044,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7086,7 +7106,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7155,7 +7175,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7217,7 +7237,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7279,7 +7299,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7341,7 +7361,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7403,7 +7423,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7465,7 +7485,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7527,7 +7547,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7589,7 +7609,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7651,7 +7671,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7713,7 +7733,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7775,7 +7795,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7837,7 +7857,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7899,7 +7919,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -7961,7 +7981,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8023,7 +8043,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8092,7 +8112,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8154,7 +8174,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8216,7 +8236,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8278,7 +8298,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8340,7 +8360,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8402,7 +8422,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8464,7 +8484,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8526,7 +8546,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8588,7 +8608,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8650,7 +8670,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8712,7 +8732,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8774,7 +8794,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8836,7 +8856,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8898,7 +8918,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -8960,7 +8980,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9022,7 +9042,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9091,7 +9111,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9153,7 +9173,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9216,7 +9236,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9279,7 +9299,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9342,7 +9362,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9405,7 +9425,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9468,7 +9488,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9531,7 +9551,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9594,7 +9614,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9657,7 +9677,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9720,7 +9740,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9783,7 +9803,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9846,7 +9866,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9909,7 +9929,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -9972,7 +9992,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10035,7 +10055,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10105,7 +10125,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10168,7 +10188,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10231,7 +10251,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10294,7 +10314,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10357,7 +10377,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10420,7 +10440,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10483,7 +10503,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10546,7 +10566,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10609,7 +10629,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10672,7 +10692,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10735,7 +10755,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10798,7 +10818,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10861,7 +10881,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10924,7 +10944,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -10987,7 +11007,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11057,7 +11077,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11120,7 +11140,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11183,7 +11203,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11256,7 +11276,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "active",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11319,7 +11339,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "ascended",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11366,7 +11386,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "ascended",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11396,38 +11416,11 @@
   {
    "label": "palette E after ascension",
    "t": 1801512006000,
-   "status": 200,
+   "status": 403,
    "setCookie": null,
    "data": {
-    "pet": {
-     "name": "Elder",
-     "type": "organic",
-     "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
-     "status": "ascended",
-     "bornAt": 1793574006000,
-     "diedAt": null,
-     "lastCaredAt": 1801512006000,
-     "ageHours": 2205,
-     "tier": 8,
-     "tierName": "Ageless",
-     "backdrop": "Kinabalu summit",
-     "nextTier": null,
-     "survivesUnattendedHours": 336,
-     "hoursLeftUnattended": 0,
-     "rankAgeHours": 2160,
-     "careDays": 92,
-     "ascendedAt": 1801512006000,
-     "legacyScore": 275,
-     "ascension": null,
-     "stats": {
-      "energy": 0,
-      "health": 0,
-      "temperature": 0,
-      "mood": 30
-     },
-     "actions": []
-    }
+    "error": "palette_locked",
+    "message": "Your Peetako’s colour is chosen once, when it hatches, and cannot be changed."
    }
   },
   {
@@ -11442,8 +11435,8 @@
     "pet": [
      {
       "id": 1,
-      "call_code": "PTK-96GX2D",
-      "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+      "call_code": "PTK-B96GX2",
+      "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
       "name": "Gecko One",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11462,12 +11455,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "tokay"
+      "palette": "puakumbu"
      },
      {
       "id": 2,
-      "call_code": "PTK-X72KGR",
-      "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+      "call_code": "PTK-NPX72K",
+      "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
       "name": "Robo Two",
       "type": "robot",
       "born_at": 1791590400000,
@@ -11490,8 +11483,8 @@
      },
      {
       "id": 3,
-      "call_code": "PTK-4YHPTK",
-      "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+      "call_code": "PTK-6CT4YH",
+      "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
       "name": "Cee",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11510,12 +11503,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "hijau"
      },
      {
       "id": 4,
-      "call_code": "PTK-HSX4FT",
-      "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+      "call_code": "PTK-6RDTHS",
+      "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
       "name": "Dee",
       "type": "robot",
       "born_at": 1791590400000,
@@ -11538,8 +11531,8 @@
      },
      {
       "id": 5,
-      "call_code": "PTK-M76968",
-      "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+      "call_code": "PTK-6TSEDM",
+      "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
       "name": "Burst0",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11558,12 +11551,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "puakumbu"
+      "palette": "laut"
      },
      {
       "id": 6,
-      "call_code": "PTK-YDJQ6E",
-      "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+      "call_code": "PTK-WNMC84",
+      "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
       "name": "Burst1",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11586,8 +11579,8 @@
      },
      {
       "id": 7,
-      "call_code": "PTK-R3Q4TZ",
-      "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+      "call_code": "PTK-JSX2TE",
+      "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
       "name": "Burst2",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11606,12 +11599,12 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "palette": "hijau"
+      "palette": "laut"
      },
      {
       "id": 8,
-      "call_code": "PTK-BRE3EJ",
-      "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+      "call_code": "PTK-ASSTC3",
+      "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
       "name": "Burst3",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11634,8 +11627,8 @@
      },
      {
       "id": 9,
-      "call_code": "PTK-U9MK2Q",
-      "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+      "call_code": "PTK-3Q8TPJ",
+      "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
       "name": "Burst4",
       "type": "organic",
       "born_at": 1791590400000,
@@ -11658,8 +11651,8 @@
      },
      {
       "id": 10,
-      "call_code": "PTK-UQJFSC",
-      "key_hash": "a2c0f32326d90d1d55d1afe864648d2e4b4c7d68d6b2aa93f1d9e0bd1868cb02",
+      "call_code": "PTK-SFQ5T4",
+      "key_hash": "9e44e19f35236fa5716abad5d8bf2d0a95d2861a8106c93af243162185edf34e",
       "name": "Elder",
       "type": "organic",
       "born_at": 1793574006000,
@@ -11696,7 +11689,7 @@
      "name": "Elder",
      "type": "organic",
      "palette": "kenyalang",
-     "callCode": "PTK-UQJFSC",
+     "callCode": "PTK-SFQ5T4",
      "status": "ascended",
      "bornAt": 1793574006000,
      "diedAt": null,
@@ -11873,8 +11866,8 @@
   "pet": [
    {
     "id": 1,
-    "call_code": "PTK-96GX2D",
-    "key_hash": "e3ee5e047b4b7e74a13420c6ba7c5775cbf3a4c8396030eed3ce0ffc08ca8e1d",
+    "call_code": "PTK-B96GX2",
+    "key_hash": "8e372f9cb6ba62b2523d168bc28e58e9a070fd3db0ec7218be36cc28b4cc5c14",
     "name": "Gecko One",
     "type": "organic",
     "born_at": 1791590400000,
@@ -11893,12 +11886,12 @@
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
-    "palette": "tokay"
+    "palette": "puakumbu"
    },
    {
     "id": 2,
-    "call_code": "PTK-X72KGR",
-    "key_hash": "1a369fd0d548fd4f976974150931dfbf0d4a4525f3d180e80b55f9039f9c95d5",
+    "call_code": "PTK-NPX72K",
+    "key_hash": "e6a39226ae58dbdde6b9bd691e38d206c3c315f9c6522440a0a38aae48d29177",
     "name": "Robo Two",
     "type": "robot",
     "born_at": 1791590400000,
@@ -11921,8 +11914,8 @@
    },
    {
     "id": 3,
-    "call_code": "PTK-4YHPTK",
-    "key_hash": "3f69bcef1535418d02a36af7724e48f41fa72d73c809c0b4c17f9ea714dc1a0b",
+    "call_code": "PTK-6CT4YH",
+    "key_hash": "52b177a0d029f57ef45d4f552b4a6fa28d7a1008f310cee59156d18b584de1b2",
     "name": "Cee",
     "type": "organic",
     "born_at": 1791590400000,
@@ -11941,12 +11934,12 @@
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
-    "palette": "puakumbu"
+    "palette": "hijau"
    },
    {
     "id": 4,
-    "call_code": "PTK-HSX4FT",
-    "key_hash": "52a0cbacc1e16ab2d66255b5cb8abca00c8a91257c5e51237965d3c6d3bd97ee",
+    "call_code": "PTK-6RDTHS",
+    "key_hash": "b294b55634c834c4956c49eaf014f150e805db0d579d5138c902e8e7d053669e",
     "name": "Dee",
     "type": "robot",
     "born_at": 1791590400000,
@@ -11969,8 +11962,8 @@
    },
    {
     "id": 5,
-    "call_code": "PTK-M76968",
-    "key_hash": "6541ceabb1e07e3d70ca0aff0da36d3cd46e6992d5224613a739486cec8481c2",
+    "call_code": "PTK-6TSEDM",
+    "key_hash": "7ac333b2e172c8839a9917573f72f0ad043afc7aff3e13e4b3886f157dd45f63",
     "name": "Burst0",
     "type": "organic",
     "born_at": 1791590400000,
@@ -11989,12 +11982,12 @@
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
-    "palette": "puakumbu"
+    "palette": "laut"
    },
    {
     "id": 6,
-    "call_code": "PTK-YDJQ6E",
-    "key_hash": "f233dd296b4308331c588db0af8063fce7445f6b9ca781c8d57285f450e75e64",
+    "call_code": "PTK-WNMC84",
+    "key_hash": "3c716c15de3b23c188a872b9d9e9aa1953c401e9fdb594b679a1d22ce940cadb",
     "name": "Burst1",
     "type": "organic",
     "born_at": 1791590400000,
@@ -12017,8 +12010,8 @@
    },
    {
     "id": 7,
-    "call_code": "PTK-R3Q4TZ",
-    "key_hash": "8e237e74ce332af0a44b219c96458ae61ec58c87cd424dbdff145b6a1c64ca97",
+    "call_code": "PTK-JSX2TE",
+    "key_hash": "68e09ad7b7d09fd2ea5fedb722e0b492a53b14e3ae02c11bebe92a9d4a9a5f04",
     "name": "Burst2",
     "type": "organic",
     "born_at": 1791590400000,
@@ -12037,12 +12030,12 @@
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
-    "palette": "hijau"
+    "palette": "laut"
    },
    {
     "id": 8,
-    "call_code": "PTK-BRE3EJ",
-    "key_hash": "0d893a7280c78284b56efd8f54dec5046caab0719b2c00bf9d23d575e230c8ad",
+    "call_code": "PTK-ASSTC3",
+    "key_hash": "e86286ae59fc7104f83c406a53f62b1b0f444421856148cf977cd19c0114a8e1",
     "name": "Burst3",
     "type": "organic",
     "born_at": 1791590400000,
@@ -12065,8 +12058,8 @@
    },
    {
     "id": 9,
-    "call_code": "PTK-U9MK2Q",
-    "key_hash": "e6f7e6cc341e5a49db08f7bc41155f32bbc644972b8a0ace1cc16471a1f380ca",
+    "call_code": "PTK-3Q8TPJ",
+    "key_hash": "acf3b016faa7b01cbc47e70ba92a47767c98420231abd4745b35488fc76ace6e",
     "name": "Burst4",
     "type": "organic",
     "born_at": 1791590400000,
@@ -12089,8 +12082,8 @@
    },
    {
     "id": 10,
-    "call_code": "PTK-UQJFSC",
-    "key_hash": "a2c0f32326d90d1d55d1afe864648d2e4b4c7d68d6b2aa93f1d9e0bd1868cb02",
+    "call_code": "PTK-SFQ5T4",
+    "key_hash": "9e44e19f35236fa5716abad5d8bf2d0a95d2861a8106c93af243162185edf34e",
     "name": "Elder",
     "type": "organic",
     "born_at": 1793574006000,
@@ -12114,7 +12107,7 @@
   ],
   "sessions": [
    {
-    "token_hash": "7a13e32bf679294dac71ab26fee72a38ab79da61b24a368da7ee86154eadc483",
+    "token_hash": "c52b6a2e1a7299377dfa4bbc8d2d788a6e7db5361c45f4d7db73352b6a625e6c",
     "pet_id": 10,
     "created_at": 1802952006000,
     "expires_at": 1802995206000

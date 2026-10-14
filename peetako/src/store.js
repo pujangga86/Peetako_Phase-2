@@ -35,11 +35,6 @@ export async function createPet(env, { callCode, keyHash, name, type, palette, n
   ).bind(callCode, keyHash, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood, palette).first();
 }
 
-// Cosmetic only; allowed for fallen and ascended pets too, so their record shows the colour the owner chose.
-export async function savePalette(env, petId, palette) {
-  await env.DB.prepare('UPDATE pet SET palette = ?1 WHERE id = ?2').bind(palette, petId).run();
-}
-
 export async function petByKeyHash(env, keyHash) {
   return env.DB.prepare('SELECT * FROM pet WHERE key_hash = ?1').bind(keyHash).first();
 }

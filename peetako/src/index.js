@@ -4,7 +4,7 @@ import { advance, applyCare, ascend, ascensionBlock, view, tierAt, START_STATS, 
 import { pushRun, validSubscription, validTimeZone } from './push.js';
 import {
   isUniqueViolation, rateLimitHit, createPet, petByKeyHash, savePet, petBySession, createSession, deleteSession,
-  saveAscension, savePalette, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
+  saveAscension, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
 } from './store.js';
 
 const COOKIE = 'ptk_session';
@@ -115,10 +115,11 @@ async function register(env, req) {
   const name = cleanName(b.name);
   if (!name) return fail(400, 'bad_name', 'Name must be 2–16 letters, numbers, spaces, hyphens or apostrophes.');
   if (!['organic', 'robot'].includes(b.type)) return fail(400, 'bad_type', 'Choose Organic or Robot.');
+  if (!PALETTES.includes(b.palette)) return fail(400, 'bad_palette', 'Choose a colour for your Peetako.');
   if (!(await rateLimit(env, req, 'register'))) return fail(429, 'rate_limited', 'Too many new pets from this network today. Try again tomorrow.');
   if (!(await verifyTurnstile(env, b.turnstileToken, req))) return fail(403, 'turnstile', 'Human check failed. Please try again.');
 
-  const palette = PALETTES[randInt(PALETTES.length)]; // random colour at hatch (Phase 2B)
+  const palette = b.palette; // chosen once at hatch; it cannot be changed afterwards
   const now = Date.now();
   for (let attempt = 0; attempt < 5; attempt++) {
     const key = newKey();
@@ -198,18 +199,9 @@ async function ascendPet(env, req) {
   return json({ pet: view(done, now) });
 }
 
-// Palette switch from the menu (Phase 2B). Cosmetic only.
-async function setPalette(env, req) {
-  const row = await petFromSession(env, req);
-  if (!row) return fail(401, 'no_session', 'Enter your Secret Key to continue.');
-  if (!(await rateLimit(env, req, 'care'))) return fail(429, 'rate_limited', 'Slow down a little — your Peetako needs rest too.');
-  const b = await readBody(req);
-  if (!PALETTES.includes(b.palette)) return fail(400, 'bad_palette', 'Unknown palette.');
-  const now = Date.now();
-  const p = advance(row, now);
-  if (!p.ascended_at) await savePet(env, p);
-  await savePalette(env, p.id, b.palette);
-  return json({ pet: view({ ...p, palette: b.palette }, now) });
+// The colour is chosen once, at hatch. The old 2B switch route now always refuses.
+function setPalette() {
+  return fail(403, 'palette_locked', 'Your Peetako’s colour is chosen once, when it hatches, and cannot be changed.');
 }
 
 async function logout(env, req) {
@@ -270,7 +262,7 @@ async function route(req, env) {
   if (path === '/api/pet' && m === 'GET') return getPet(env, req);
   if (path === '/api/care' && m === 'POST') return care(env, req);
   if (path === '/api/ascend' && m === 'POST') return ascendPet(env, req);
-  if (path === '/api/palette' && m === 'POST') return setPalette(env, req);
+  if (path === '/api/palette' && m === 'POST') return setPalette();
   if (path === '/api/logout' && m === 'POST') return logout(env, req);
   if (path === '/api/push/subscribe' && m === 'POST') return pushSubscribe(env, req);
   if (path === '/api/push/unsubscribe' && m === 'POST') return pushUnsubscribe(env, req);

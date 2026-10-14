@@ -101,8 +101,13 @@
         <input id="pet-name-input" type="text" maxlength="16" autocomplete="off" required placeholder="e.g. Pitak">
         <button id="random-name" type="button" class="rbtn light small">Random</button>
       </div>
-      <p class="hint">2–16 letters or numbers. Other players will see this name later. Your colour palette is picked at random — change it any time from the menu.</p>
+      <p class="hint">2–16 letters or numbers. Other players will see this name later.</p>
     </div>
+    <fieldset class="plain">
+      <legend>Choose a colour</legend>
+      <div id="hatch-palette" class="palette-pick"></div>
+      <p class="hint warn-hint">You choose the colour once. It cannot be changed after your Peetako hatches.</p>
+    </fieldset>
     <div id="turnstile"></div>
     <label class="check"><input id="hatch-remember" type="checkbox" checked> Remember this device for 30 days</label>
     <div id="hatch-error" class="error" role="alert"></div>
@@ -195,10 +200,6 @@
         <label><input type="radio" name="view" value="classic" checked><span>Classic</span></label>
         <label><input type="radio" name="view" value="immersive"><span>Immersive</span></label>
       </div>
-    </fieldset>
-    <fieldset class="plain">
-      <legend class="px">Colour</legend>
-      <div id="palette-pick" class="palette-pick"></div>
     </fieldset>
     <div class="sheet-row">
       <button id="sound-btn" type="button" class="rbtn light small" aria-pressed="false">Sound: off</button>
