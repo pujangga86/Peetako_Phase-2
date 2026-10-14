@@ -148,7 +148,7 @@ input[type="text"]:focus { outline: 3px solid var(--cyan); outline-offset: 2px; 
    Peetako game — retro frame (Phase 2B)
    Colours come from the pet's palette as CSS variables set by app.js:
    --pg (page around the frame), --card (frame card), --ink (outline/text), --gold, --body, --spot, --b1..--b4.
-   Two views of the same parts: Classic (framed, like the retro mockup) and Immersive (full screen, default).
+   Two views of the same parts: Classic (framed, like the retro mockup, default) and Immersive (full screen, CRT look).
    ===================================================================================================== */
 .game.retro {
   --pg: #1A1840; --card: #FEF3C7; --ink: #1E1B4B; --gold: #F5B700; --body: #4ADE80; --spot: #16A34A;
@@ -307,7 +307,12 @@ body.immersive .pv-top .leds i { border-color: #000; }
 /* The stage is the free space between the top bar and the dock; the pet stands at its bottom edge. */
 body.immersive .pv-screen { position: relative; flex: 1; min-height: 120px; overflow: visible; }
 body.immersive .pv-screen .scene-layer { position: fixed; inset: 0; z-index: 0; }
-body.immersive .pv-screen .scan { display: none; }
+/* CRT look in Immersive: the same scanlines as Classic, fixed over the whole window, plus a soft vignette */
+body.immersive .pv-screen .scan { position: fixed; inset: 0; z-index: 1; }
+body.immersive .pv-screen .scan::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 58%, rgba(15, 13, 46, .55) 100%);
+}
 body.immersive .pet-box { inset: auto; left: 50%; bottom: -6%; height: 106%; max-width: 92vw; aspect-ratio: 1 / 1; transform: translateX(-50%); z-index: 1; }
 body.immersive .pv-badges { top: 8px; left: 2px; }
 body.immersive .pv-place { top: 10px; right: 2px; bottom: auto; max-width: 55%; }

@@ -1,5 +1,5 @@
 // Peetako game client (Phase 2B). Talks to the Worker API under /api/*.
-// One set of pet-screen parts, laid out as Immersive (full screen, default) or Classic (retro frame)
+// One set of pet-screen parts, laid out as Classic (retro frame, default) or Immersive (full screen, CRT)
 // by CSS; the choice is saved on this device only (Peetako has no login).
 import { drawPet, drawMoodSymbols, drawScene } from './art.js';
 import { PALETTES, PALETTE_IDS, palette } from './palettes.js';
@@ -10,7 +10,9 @@ const $ = (sel) => document.querySelector(sel);
 const screens = ['welcome', 'hatch', 'reveal', 'login', 'pet'];
 const NAMES = ['Pitak', 'Tako', 'Bujang', 'Dayang', 'Awang', 'Sago', 'Rajang', 'Bako', 'Mulu', 'Danum', 'Lundu', 'Ranau',
   'Kapit', 'Kudat', 'Sape', 'Pandan', 'Durian', 'Langsat', 'Midin', 'Tuhau', 'Kelkatu', 'Chikchak', 'Bintang', 'Gelam'];
-const VIEW_KEY = 'peetako_view';
+// v2 key: Classic became the default, so devices that saved an earlier choice get the new default once.
+const VIEW_KEY = 'peetako_view_v2';
+const VIEW_DEFAULT = 'classic';
 const Sound = window.PeetakoSound || { play() {}, toggle() { return false; }, isEnabled() { return false; } };
 
 // Retro labels per stat (the four stats stay; only the names on screen are short).
@@ -41,7 +43,7 @@ const pixelIcon = (name, ink) => `<svg viewBox="0 0 8 8" width="22" height="22" 
 
 let state = {
   pet: null, turnstileSiteKey: null, turnstileId: null, pendingPet: null, poll: null, vapidKey: null, alertsOn: false,
-  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: 'immersive',
+  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: VIEW_DEFAULT,
 };
 
 // iPadOS Safari reports itself as a Mac, so also check for a touch screen.
@@ -102,8 +104,9 @@ function applyTheme(id) {
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', p.page);
 }
 
-// ---------- view: immersive (default) or classic ----------
+// ---------- view: classic (default) or immersive ----------
 function loadView() {
+  state.view = VIEW_DEFAULT;
   try { const v = localStorage.getItem(VIEW_KEY); if (v === 'classic' || v === 'immersive') state.view = v; } catch { /* storage blocked */ }
 }
 function setView(v) {
