@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "phase-2",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "observability": { "enabled": true },
+
+  // Static pages in ./public; the Worker only runs first for /api/*
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "peetako-p2",
+      "database_id": "a35021c8-2f48-4939-b0f7-79523983f199",
+      "migrations_dir": "migrations"
+    }
+  ],
+
+  // "0 18 * * *": daily at 18:00 UTC = 02:00 Malaysia time — mark fallen pets, clean old rows.
+  // "5 * * * *":  hourly at minute 5 — send care alerts (Web Push).
+  "triggers": { "crons": ["0 18 * * *", "5 * * * *"] },
+
+  "vars": {
+    "CALL_CODE_PREFIX": "PTK",
+    "TURNSTILE_SITE_KEY": "",
+    // Care alerts: public half of the VAPID key pair (safe to publish). Alerts stay off until
+    // the matching VAPID_PRIVATE_KEY secret is set.
+    "VAPID_PUBLIC_KEY": "BM5DiW-XbaYut0Lxl_gXjovAtYpk5w0CNOa6TxN1zP1LlLPl-Pzx6pIbMnDvEydh2_BgMn6FN-4CmjocDSTkChY",
+    "VAPID_SUBJECT": "mailto:hello@peetako.com",
+    // Most alert deliveries per hourly run. Workers Free allows 50 outgoing requests and 10 ms CPU per run;
+    // raise this on Workers Paid.
+    "PUSH_MAX_PER_RUN": "20"
+  }
+  // Secrets (set in the Cloudflare dashboard, never in this file):
+  //   KEY_PEPPER         — required; long random string used to hash Secret Keys.
+  //                        Phase 2 has its OWN value, different from Phase 1, and it must never change after launch.
+  //   VAPID_PRIVATE_KEY  — optional; enables care alerts (private half of the VAPID key pair)
+  //   TURNSTILE_SECRET   — optional; when set, registration requires a Turnstile check
+}

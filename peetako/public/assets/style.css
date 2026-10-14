@@ -1,0 +1,331 @@
+/* Peetako — shared styles. Palette from GDD v0.1. */
+:root {
+  --night: #1E1B4B;
+  --night-2: #2E2A6B;
+  --jungle: #16A34A;
+  --gold: #F5B700;
+  --hibiscus: #E11D48;
+  --sunset: #FB923C;
+  --cyan: #67E8F9;
+  --paper: #FFF8EC;
+  --ink: #1B1A2E;
+  --muted: #5B587A;
+  --card: #FFFFFF;
+  --line: #1B1A2E;
+  --radius: 18px;
+  --shadow: 4px 4px 0 var(--line);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: 'Nunito', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+}
+a { color: #4338CA; }
+a[href^="mailto:"] { display: inline-block; padding: 12px 0; } /* finger-sized tap area */
+img, svg { max-width: 100%; }
+
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+/* Header */
+.site-header {
+  background: var(--night);
+  color: #fff;
+  border-bottom: 4px solid var(--gold);
+}
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+.logo { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; }
+.logo-mark { width: 38px; height: 38px; }
+.logo-text { font-family: 'Bangers', 'Nunito', sans-serif; font-size: 30px; letter-spacing: 1.5px; color: var(--gold); text-shadow: 2px 2px 0 #000; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav a { display: inline-flex; align-items: center; min-height: 44px; color: #E0E7FF; text-decoration: none; font-weight: 700; padding: 6px 10px; border-radius: 10px; font-size: 15px; }
+.nav a[aria-current="page"] { background: var(--night-2); color: #fff; }
+/* Hover effects only on devices that really hover (mouse/trackpad), so they don't stick after a tap on iPad/iPhone. */
+@media (hover: hover) { .nav a:hover { background: var(--night-2); color: #fff; } }
+
+/* Footer */
+.site-footer { margin-top: 48px; background: var(--night); color: #C7D2FE; font-size: 14px; }
+.site-footer .wrap { padding-top: 20px; padding-bottom: 28px; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+.site-footer a { color: #E0E7FF; display: inline-block; padding: 10px 6px; margin: -10px -6px; }
+.linkbtn { font: inherit; color: #E0E7FF; background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 10px 6px; margin: -10px -6px; touch-action: manipulation; }
+.linkbtn[hidden] { display: none; }
+
+/* Headings */
+h1, h2, h3 { font-family: 'Bangers', 'Nunito', sans-serif; letter-spacing: 1px; font-weight: 400; line-height: 1.15; }
+h1 { font-size: 42px; margin: 28px 0 8px; }
+h2 { font-size: 30px; margin: 32px 0 8px; }
+h3 { font-size: 22px; margin: 20px 0 6px; }
+.lead { font-size: 18px; color: var(--muted); margin-top: 0; }
+
+/* Comic card */
+.card {
+  background: var(--card);
+  border: 3px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font: 800 16px/1.2 'Nunito', sans-serif;
+  padding: 12px 18px;
+  border: 3px solid var(--line);
+  border-radius: 14px;
+  background: var(--gold);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--line);
+  cursor: pointer;
+  touch-action: manipulation; /* no double-tap zoom on iPad/iPhone when tapping care buttons quickly */
+  text-decoration: none;
+  transition: transform .06s, box-shadow .06s;
+  min-height: 48px;
+}
+@media (hover: hover) { .btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--line); } }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--line); }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: 3px 3px 0 var(--line); }
+.btn.secondary { background: #fff; }
+.btn.green { background: var(--jungle); color: #fff; }
+.btn.red { background: var(--hibiscus); color: #fff; }
+.btn.small { font-size: 14px; padding: 6px 12px; min-height: 44px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Forms */
+label { font-weight: 800; display: block; margin-bottom: 4px; }
+input[type="text"] {
+  width: 100%;
+  font: 600 17px 'Nunito', sans-serif;
+  padding: 9px 12px;
+  border: 3px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+input[type="text"]:focus { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.check { display: flex; align-items: flex-start; gap: 10px; font-weight: 600; font-size: 14px; line-height: 1.3; margin: 8px 0; cursor: pointer; }
+.check input { width: 22px; height: 22px; margin-top: 0; flex: none; }
+.field { margin: 10px 0; }
+.input-row { display: flex; gap: 8px; }
+.input-row input { flex: 1; min-width: 0; }
+.game .screen .hint { font-size: 12px; color: var(--muted); margin: 4px 0 0; }
+.error { background: #FFE4E6; border: 2px solid var(--hibiscus); color: #881337; border-radius: 12px; padding: 8px 10px; font-weight: 700; margin: 8px 0; }
+.error:empty { display: none; }
+
+/* Game */
+/* Compact on purpose: every game screen should fit one phone screen without scrolling. */
+.game { --art: clamp(80px, 18dvh, 160px); margin: 10px auto 0; padding: 0; overflow: hidden; max-width: 480px; }
+@supports not (height: 1dvh) { .game { --art: clamp(80px, 18vh, 160px); } }
+.game .screen { padding: 14px 16px; }
+.game .screen h1 { font-size: 30px; margin: 4px 0; }
+.game .screen h2 { font-size: 24px; margin: 0 0 6px; }
+.game .screen p { font-size: 15px; line-height: 1.4; margin: 6px 0; }
+.game .screen .lead { font-size: 15px; margin: 0 0 12px; }
+.screen[hidden] { display: none !important; }
+
+.welcome { text-align: center; }
+.welcome .hero-pet { width: var(--art); height: var(--art); margin: 0 auto; }
+.welcome .hero-pet svg { width: 100%; height: 100%; display: block; }
+.stage .pet-wrap #pet-art svg { width: 100%; height: 100%; }
+
+.type-pick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.type-option { position: relative; }
+.type-option input { position: absolute; opacity: 0; inset: 0; }
+.type-option .tile {
+  border: 3px solid var(--line); border-radius: 16px; padding: 8px; text-align: center;
+  background: #F8FAFC; cursor: pointer; transition: background .1s;
+}
+.type-option .tile svg { width: 76px; height: 76px; display: block; margin: 0 auto; }
+.type-option .tile strong { font-family: 'Bangers', sans-serif; font-size: 20px; letter-spacing: 1px; display: block; line-height: 1.2; }
+.type-option .tile span { font-size: 12px; line-height: 1.3; color: var(--muted); display: block; }
+.type-option input:checked + .tile { background: #FEF3C7; box-shadow: inset 0 0 0 3px var(--gold); }
+.type-option input:focus-visible + .tile { outline: 3px solid var(--cyan); outline-offset: 2px; }
+
+.key-box {
+  font: 800 clamp(18px, 5.2vw, 26px)/1.3 ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  background: var(--night); color: var(--gold);
+  border: 3px solid var(--line); border-radius: 14px;
+  padding: 10px 12px; text-align: center; word-break: break-word; margin: 8px 0;
+  user-select: all;
+}
+.warn { background: #FEF3C7; border: 2px dashed #B45309; border-radius: 12px; padding: 8px 10px; font-weight: 700; font-size: 14px; }
+
+/* Pet stage */
+.stage { position: relative; padding: 10px 14px 8px; color: #fff; text-align: center; background: #1E1B4B; isolation: isolate; overflow: hidden; }
+/* Scene layers (Phase 2A): sky by device clock, land by tier, and a shade that darkens the land at night. */
+.scene { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.scene > div { position: absolute; inset: 0; }
+.sky-grad { position: absolute; inset: 0; transition: background 1s; }
+.sky-stars { position: absolute; left: 0; top: 0; width: 100%; height: 60%; }
+.sky-body { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; border: 2px solid rgba(27, 26, 46, .5); }
+.sky-body.sun { background: radial-gradient(circle at 40% 40%, #FEF9C3, #FACC15 70%); box-shadow: 0 0 18px 6px rgba(253, 224, 71, .45); }
+.sky-body.moon { background: #F1F5F9; box-shadow: inset -7px -3px 0 0 #CBD5E1; }
+.land { top: auto !important; height: 48%; }
+.land svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; display: block; }
+.shade { top: auto !important; height: 48%; background: #0B1026; opacity: 0; transition: opacity 1s; }
+.stage.dead .scene { filter: grayscale(1) brightness(.6); }
+/* White text always sits on a soft dark shadow so it stays readable on the bright day sky. */
+.stage .pet-name, .stage .stage-sub { text-shadow: 2px 2px 0 #000, 0 0 6px rgba(0, 0, 0, .55); }
+.pet-wrap { position: relative; width: var(--art); height: var(--art); margin: 0 auto; }
+.mood-fx { position: absolute; inset: -14%; pointer-events: none; }
+.mood-fx svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.stage #pet-art svg { width: var(--art); height: var(--art); display: block; margin: 0 auto; filter: drop-shadow(0 4px 0 rgba(0,0,0,.25)); }
+/* Care-alerts bell: floats in the scene corner so it never adds height to the game screen. */
+.bell { position: absolute; top: 8px; right: 8px; z-index: 2; width: 44px; height: 44px; padding: 0; display: grid; place-items: center;
+  border-radius: 999px; border: 2px solid var(--line); background: rgba(255, 255, 255, .92); color: var(--ink);
+  box-shadow: 2px 2px 0 var(--line); cursor: pointer; touch-action: manipulation; }
+.bell[hidden] { display: none; }
+.bell[aria-pressed="true"] { background: var(--gold); }
+.bell[aria-pressed="false"] .bell-body { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; }
+.bell:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.stage-head { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 2px; }
+.stage .pet-name { font-family: 'Bangers', sans-serif; font-size: 28px; letter-spacing: 1.5px; margin: 0; text-shadow: 2px 2px 0 #000; line-height: 1.1; }
+.game .stage .stage-sub { margin: 2px 0 0; font-size: 13px; line-height: 1.3; }
+.stage .pet-tier { font-weight: 800; }
+.stage .backdrop-name { opacity: .85; }
+.stage .backdrop-name::before { content: " · "; }
+.badge { display: inline-block; font-size: 12px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; border: 2px solid #000; }
+.badge.active { background: #BBF7D0; color: #14532D; }
+.badge.dormant { background: #FDE68A; color: #78350F; }
+.badge.dead { background: #E5E7EB; color: #374151; }
+.badge.ascended { background: #FDE68A; color: #713F12; }
+.badge.mood { background: #fff; color: var(--ink); }
+.badge[hidden], .footer-actions > span[hidden] { display: none; }
+
+/* Floating mood symbols. Each kind moves differently, and all of it stops for reduced motion. */
+.fx { transform-box: fill-box; transform-origin: center; }
+.fx-rise { animation: fx-rise 2.8s ease-in infinite; }
+.fx-pulse { animation: fx-pulse 2.4s ease-in-out infinite; }
+.fx-bob { animation: fx-bob 3s ease-in-out infinite; }
+.fx-rain { animation: fx-rain 1.1s linear infinite; }
+.fx-twinkle { animation: fx-twinkle 1.6s ease-in-out infinite; }
+.fx.d2 { animation-delay: .9s; }
+.fx.d3 { animation-delay: 1.8s; }
+@keyframes fx-rise { 0% { transform: translateY(10px); opacity: 0; } 20% { opacity: .9; } 100% { transform: translateY(-22px); opacity: 0; } }
+@keyframes fx-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes fx-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes fx-rain { 0% { transform: translateY(-3px); opacity: 1; } 100% { transform: translateY(7px); opacity: .2; } }
+@keyframes fx-twinkle { 0%, 100% { transform: scale(.6) rotate(0); opacity: .5; } 50% { transform: scale(1.1) rotate(20deg); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .fx, .fx-rain { animation: none !important; opacity: 1; } }
+
+/* Ascension */
+.ascension { margin-top: 10px; padding: 8px 10px; border: 2px dashed #B45309; border-radius: 12px; background: #FFFBEB; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ascension[hidden] { display: none; }
+.ascension p { margin: 0; flex: 1 1 200px; font-size: 13.5px; line-height: 1.35; font-weight: 700; }
+.dialog { max-width: min(440px, calc(100% - 32px)); border: 3px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; }
+.dialog::backdrop { background: rgba(11, 16, 38, .6); }
+.dialog h2 { margin-top: 0; font-size: 26px; }
+.dialog ul { padding-left: 20px; margin: 6px 0 10px; }
+.dialog li, .dialog p { font-size: 15px; line-height: 1.4; }
+.stage .bob { animation: bob 2.6s ease-in-out infinite; transform-origin: 50% 90%; }
+.stage.dormant .bob, .stage.dead .bob { animation: none; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@media (prefers-reduced-motion: reduce) { .stage .bob { animation: none; } }
+
+.panel { padding: 10px 14px 12px; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; margin: 0 0 10px; }
+.stat-label { display: flex; justify-content: space-between; font-weight: 800; font-size: 13px; line-height: 1.25; }
+.bar { height: 10px; border: 2px solid var(--line); border-radius: 999px; background: #F1F5F9; overflow: hidden; }
+.bar > i { display: block; height: 100%; border-radius: 999px; transition: width .4s; }
+.bar.low > i { background: var(--hibiscus) !important; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.actions .btn { width: 100%; font-size: 14px; line-height: 1.15; padding: 8px 10px; min-height: 44px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+.fact { background: #F8FAFC; border: 2px solid #CBD5E1; border-radius: 10px; padding: 3px 10px; }
+.fact b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .4px; line-height: 1.3; color: var(--muted); }
+.fact span { font-weight: 800; font-size: 13.5px; line-height: 1.25; display: block; }
+.fact.urgent { background: #FFE4E6; border-color: var(--hibiscus); }
+.toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--night); color: #fff; padding: 10px 16px; border-radius: 12px; font-weight: 800; border: 2px solid var(--gold); z-index: 10; width: max-content; max-width: min(calc(100% - 32px), 440px); text-align: center; }
+.toast[hidden] { display: none; }
+.footer-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 8px; font-size: 11.5px; line-height: 1.25; color: var(--muted); }
+.footer-actions > span { flex: 1 1 140px; }
+.footer-actions .btn { flex: none; }
+
+/* Content sections */
+.content { margin-top: 12px; }
+.content p, .content li { font-size: 17px; }
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.faq dt { font-weight: 900; font-size: 18px; margin-top: 18px; }
+.faq dd { margin: 4px 0 0; }
+.tier-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.tier-table th, .tier-table td { border-bottom: 2px solid #E2E8F0; padding: 6px 8px; text-align: left; }
+.table-scroll { overflow-x: auto; }
+
+@media (max-width: 520px) {
+  h1 { font-size: 34px; }
+  /* Single-row header: wordmark hidden (the mark still links home) to keep the game above the fold. */
+  .site-header .wrap { flex-wrap: nowrap; padding-top: 4px; padding-bottom: 4px; gap: 8px; }
+  .logo-text { display: none; }
+  .logo-mark { width: 34px; height: 34px; }
+  .nav { flex-wrap: nowrap; gap: 0; }
+  .nav a { padding: 6px 7px; font-size: 14px; }
+  .site-footer .wrap > span:last-child { display: flex; flex-wrap: wrap; gap: 0 14px; }}
+
+/* Short screens (browser bars eat height): tighten further so the game still fits. */
+@media (max-height: 700px) {
+  .game { --art: clamp(60px, 14dvh, 110px); margin-top: 6px; }
+  .game .screen { padding: 8px 14px; }
+  .game .screen h1 { font-size: 26px; }
+  .game .screen h2 { font-size: 22px; margin-bottom: 4px; }
+  .game .screen .lead { font-size: 14px; margin-bottom: 8px; }
+  .game .screen .hint { display: none; }
+  .stage { padding-top: 6px; padding-bottom: 6px; }
+  .stage .pet-name { font-size: 24px; }
+  .panel { padding-top: 8px; padding-bottom: 8px; }
+  .stats { margin-bottom: 8px; }
+  .facts { margin-top: 8px; }
+  .type-option .tile svg { width: 56px; height: 56px; }
+  .type-option .tile span { font-size: 11px; }
+  .site-footer { margin-top: 32px; }
+}
+
+/* Desktop and iPad landscape (>= 900px wide): pet screen becomes two columns — the scene on the
+   left, the controls beside it — so the whole game fits one window without scrolling. The card
+   grows with the window height (dvh) so it fills a tablet screen; controls scale up for touch.
+   Scoped with :has() so browsers without support simply keep the compact single column above. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .game:has(#screen-pet:not([hidden])) { max-width: 960px; margin-top: 14px; --art: clamp(150px, 38dvh, 340px); --ctl: clamp(52px, 7.5dvh, 72px); }
+  .game:has(#screen-pet:not([hidden])) #screen-pet { display: grid; grid-template-columns: 5fr 6fr; min-height: clamp(380px, calc(100dvh - 118px), 580px); }
+  .game:has(#screen-pet:not([hidden])) .stage { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+  .game:has(#screen-pet:not([hidden])) .stage .pet-name { font-size: 36px; }
+  .game:has(#screen-pet:not([hidden])) .stage .stage-sub { font-size: 14px; margin-top: 4px; }
+  .game:has(#screen-pet:not([hidden])) .panel { display: flex; flex-direction: column; justify-content: center; padding: 22px 26px; }
+  .game:has(#screen-pet:not([hidden])) .stats { gap: 10px 20px; margin-bottom: 16px; }
+  .game:has(#screen-pet:not([hidden])) .stat-label { font-size: 14px; }
+  .game:has(#screen-pet:not([hidden])) .bar { height: 12px; }
+  .game:has(#screen-pet:not([hidden])) .actions { gap: 10px; }
+  .game:has(#screen-pet:not([hidden])) .actions .btn { min-height: var(--ctl); font-size: 16px; }
+  .game:has(#screen-pet:not([hidden])) .facts { gap: 8px; margin-top: 16px; }
+  .game:has(#screen-pet:not([hidden])) .fact { padding: 5px 12px; }
+  .game:has(#screen-pet:not([hidden])) .fact b { font-size: 11px; }
+  .game:has(#screen-pet:not([hidden])) .fact span { font-size: 15px; }
+  .game:has(#screen-pet:not([hidden])) .footer-actions { margin-top: 14px; font-size: 12.5px; }
+}
+
+/* iPad portrait and other tall windows (>= 700px wide): keep the scene above the controls, but
+   use a wider card with a bigger gecko and larger touch targets, scaled to the window height. */
+@media (min-width: 700px) and (orientation: portrait) {
+  .game:has(#screen-pet:not([hidden])) { max-width: 720px; margin-top: 14px; --art: clamp(130px, 28dvh, 340px); --ctl: clamp(50px, 6.2dvh, 66px); }
+  .game:has(#screen-pet:not([hidden])) .stage { padding: 16px 20px 12px; }
+  .game:has(#screen-pet:not([hidden])) .stage .pet-name { font-size: 38px; }
+  .game:has(#screen-pet:not([hidden])) .stage .stage-sub { font-size: 15px; margin-top: 4px; }
+  .game:has(#screen-pet:not([hidden])) .panel { padding: 18px 26px 20px; }
+  .game:has(#screen-pet:not([hidden])) .stats { gap: 12px 24px; margin-bottom: 18px; }
+  .game:has(#screen-pet:not([hidden])) .stat-label { font-size: 15px; }
+  .game:has(#screen-pet:not([hidden])) .bar { height: 12px; }
+  .game:has(#screen-pet:not([hidden])) .actions { gap: 12px; }
+  .game:has(#screen-pet:not([hidden])) .actions .btn { min-height: var(--ctl); font-size: 17px; }
+  .game:has(#screen-pet:not([hidden])) .facts { gap: 10px; margin-top: 18px; }
+  .game:has(#screen-pet:not([hidden])) .fact { padding: 6px 14px; }
+  .game:has(#screen-pet:not([hidden])) .fact b { font-size: 11.5px; }
+  .game:has(#screen-pet:not([hidden])) .fact span { font-size: 16px; }
+  .game:has(#screen-pet:not([hidden])) .footer-actions { margin-top: 16px; font-size: 13px; }
+}
+
+/* Very narrow phones: logo already links home, so drop the redundant "Play" link. */
+@media (max-width: 340px) { .nav a[href="/"] { display: none; } }
+
+[tabindex="-1"]:focus { outline: none; }

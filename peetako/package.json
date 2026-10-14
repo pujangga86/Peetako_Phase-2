@@ -1,0 +1,19 @@
+{
+  "name": "peetako-phase-2",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Peetako — raise a square-faced gecko from Malaysian Borneo. Phase 2.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply peetako-p2 --local",
+    "db:migrate:remote": "wrangler d1 migrations apply peetako-p2 --remote",
+    "cron:test": "curl \"http://localhost:8787/cdn-cgi/handler/scheduled?cron=0+18+*+*+*\"",
+    "test": "node test/regression.mjs",
+    "test:update": "node test/regression.mjs --update"
+  },
+  "devDependencies": {
+    "wrangler": "^4.40.0"
+  },
+  "type": "module"
+}
