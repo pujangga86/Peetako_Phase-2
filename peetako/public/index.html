@@ -115,6 +115,11 @@
       <div id="code-ideas" class="chips"></div>
     </div>
     <fieldset class="plain">
+      <legend>Choose your country</legend>
+      <div id="hatch-country"></div>
+      <p class="hint warn-hint">You choose your country once. It cannot be changed after your Peetako hatches. It is shown next to your Peetako on the leaderboards; choose “Prefer not to say” to keep it private.</p>
+    </fieldset>
+    <fieldset class="plain">
       <legend>Choose a colour</legend>
       <div id="hatch-palette" class="palette-pick"></div>
       <p class="hint warn-hint">You choose the colour once. It cannot be changed after your Peetako hatches.</p>
@@ -218,7 +223,7 @@
       <p id="ascended-text"></p>
       <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
     </div>
-    <div class="pv-code"><span class="px">Call Code</span><span id="call-code"></span></div>
+    <div class="pv-code"><span class="px">Call Code</span><span id="call-code"></span><span id="pet-country" class="pv-country" hidden></span></div>
   </div>
 </section>
 
@@ -300,12 +305,38 @@
 
 <dialog id="board-dialog" class="sheet retro" aria-labelledby="board-title">
   <div class="sheet-head"><h2 id="board-title" class="px">Top catchers</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <div class="seg grid4" role="radiogroup" aria-label="Which leaderboard">
+    <label><input type="radio" name="bscope" value="global" checked><span>Global</span></label>
+    <label><input type="radio" name="bscope" value="mine"><span>My country</span></label>
+    <label><input type="radio" name="bscope" value="country"><span>Other country</span></label>
+    <label><input type="radio" name="bscope" value="countries"><span>Countries</span></label>
+  </div>
   <div class="seg">
     <label><input type="radio" name="board" value="day" checked><span>Today</span></label>
     <label><input type="radio" name="board" value="all"><span>All time</span></label>
   </div>
+  <div class="board-filters">
+    <div id="board-country-row" class="field" hidden><label for="board-country">Country</label><select id="board-country" class="cp-select"></select></div>
+    <div id="board-sort-row" class="field"><label for="board-sort">Sort by</label>
+      <select id="board-sort" class="cp-select">
+        <option value="score">Score</option>
+        <option value="age">Oldest Peetako</option>
+        <option value="recent">Latest score</option>
+      </select></div>
+  </div>
   <p id="board-note" class="hint"></p>
   <div id="board-list"></div>
+</dialog>
+
+<dialog id="country-dialog" class="sheet retro" aria-labelledby="country-title">
+  <div class="sheet-head"><h2 id="country-title" class="px">Your country</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <p>Peetako now shows each player’s country, with its flag, on the leaderboards. Choose yours once: it cannot be changed afterwards. Choose “Prefer not to say” to keep it private.</p>
+  <div id="country-pick"></div>
+  <p id="country-error" class="error" role="alert"></p>
+  <div class="btn-row">
+    <button id="country-save" class="rbtn" style="--b: var(--b1)" type="button">Save country</button>
+    <button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Maybe later</button>
+  </div>
 </dialog>
 
 <dialog id="share-dialog" class="sheet retro" aria-labelledby="share-title">

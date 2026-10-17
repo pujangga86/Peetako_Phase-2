@@ -8,9 +8,10 @@ import {
 } from './economy.js';
 import { isBlocked } from './filter.js';
 import { codeSuffix, codeKeyOf } from './codes.js';
+import { isCountry, normCountry, UNDISCLOSED, MIN_COUNTRY_PLAYERS } from './countries.js';
 import {
   petByCodeKey, petById, dailyCounts, countDaily, earnCapped, checkIn, inventoryOf, buyItem, giftItem, saveEquipped,
-  unseenEvents, markEventsSeen, addEvent, startRun, runsStartedSince, finishRun, saveScore, leaderboard, rankOf,
+  unseenEvents, markEventsSeen, addEvent, startRun, runsStartedSince, finishRun, saveScore, leaderboard, rankOf, countryBoard, countryPlayerCount, BOARD_SORT_KEYS,
   bestScoreOf, saveTitle, reportField, openReports, resolveReport, recordBattle, saveMood,
 } from './store.js';
 import {
@@ -62,6 +63,7 @@ export function publicView(row, now) {
     title: v.title && v.titleStatus !== 'hidden' ? v.title : null,
     titleHidden: !!v.title && v.titleStatus === 'hidden',
     canReport: { name: v.nameStatus === 'ok', title: !!v.title && v.titleStatus === 'ok' },
+    country: v.country && v.country !== UNDISCLOSED ? v.country : null, // null: prefers not to say (or not chosen yet)
     type: v.type, palette: v.palette, tier: v.tier, tierName: v.tierName, backdrop: v.backdrop, status: v.status,
     ageHours: v.ageHours, careDays: v.careDays, stats: v.stats, equipped: v.equipped, battles: v.battles,
     legacyScore: v.legacyScore,
@@ -325,21 +327,66 @@ async function gameFinish(env, req) {
   return json({ score, coins, best: best.best, allTime: best.allTime, rankDay: rankDay?.rank ?? null, rankAll: rankAll?.rank ?? null, me: await buildMe(env, fresh, now) });
 }
 
+const BOARD_LIMIT = 20;
+const COUNTRY_BOARD_LIMIT = 50;
+const periodDay = (url, now) => (url.searchParams.get('period') === 'all' ? null : mytDay(now));
+
+// Pet leaderboard. scope: global (everyone), mine (the player's own country) or country (any ISO country, with ?country=MY).
+// sort: score (default), age (oldest Peetako first) or recent (latest score first). Rank is the position in the list.
 async function board(env, req, url) {
   if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
   const now = Date.now();
-  const period = url.searchParams.get('period') === 'all' ? 'all' : 'day';
-  const day = period === 'day' ? mytDay(now) : null;
-  const rows = await leaderboard(env, { day, limit: 20 });
+  const day = periodDay(url, now);
+  const period = day ? 'day' : 'all';
+  const sortRaw = url.searchParams.get('sort') || 'score';
+  if (!BOARD_SORT_KEYS.includes(sortRaw)) return fail(400, 'bad_sort', 'Sort by score, age or recent.');
+  const sort = sortRaw;
+  const scope = url.searchParams.get('scope') || 'global';
+  if (!['global', 'mine', 'country'].includes(scope)) return fail(400, 'bad_scope', 'Choose global, mine or country.');
   const row = await petFromSession(env, req);
-  const mine = row ? await rankOf(env, { petId: row.id, day }) : null;
+
+  let country = null;
+  if (scope === 'mine') {
+    if (!row) return NO_SESSION();
+    if (!row.country) return fail(409, 'no_country', 'Choose your country first to see its leaderboard.');
+    if (row.country === UNDISCLOSED) return fail(409, 'no_country', 'You chose not to share a country, so there is no country leaderboard for you.');
+    country = row.country;
+  } else if (scope === 'country') {
+    country = normCountry(url.searchParams.get('country'));
+    if (!country || !isCountry(country)) return fail(400, 'bad_country', 'Choose a country from the list.');
+  }
+
+  const rows = await leaderboard(env, { day, country, sort, limit: BOARD_LIMIT });
+  const mine = row && sort === 'score' ? await rankOf(env, { petId: row.id, day, country }) : null;
   return json({
-    period, day, resetsInMs: period === 'day' ? msToReset(now) : null,
+    period, day, scope, country, sort, resetsInMs: day ? msToReset(now) : null,
     rows: rows.map((r, i) => ({
       rank: i + 1, callCode: r.call_code, name: r.name_status === 'hidden' ? null : r.name, score: r.score,
       type: r.type, palette: r.palette, tier: r.tier, status: r.died_at ? 'dead' : r.ascended_at ? 'ascended' : 'alive',
+      country: r.country && r.country !== UNDISCLOSED ? r.country : null,
+      ageHours: Math.floor(((r.died_at || r.ascended_at || now) - r.born_at) / 3600000),
     })),
     me: mine && row ? { callCode: row.call_code, rank: mine.rank, score: mine.score } : null,
+  });
+}
+
+// Country-to-country board: the median of each player's best score, countries with at least
+// MIN_COUNTRY_PLAYERS players only. The player's own country is reported even when it is not listed yet.
+async function countriesBoard(env, req, url) {
+  if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
+  const now = Date.now();
+  const day = periodDay(url, now);
+  const rows = await countryBoard(env, { day, minPlayers: MIN_COUNTRY_PLAYERS, limit: COUNTRY_BOARD_LIMIT });
+  const row = await petFromSession(env, req);
+  let mine = null;
+  if (row?.country && row.country !== UNDISCLOSED) {
+    mine = { country: row.country, players: await countryPlayerCount(env, { day, country: row.country }) };
+    mine.listed = rows.some((r) => r.country === row.country);
+  }
+  return json({
+    period: day ? 'day' : 'all', day, resetsInMs: day ? msToReset(now) : null, minPlayers: MIN_COUNTRY_PLAYERS,
+    rows: rows.map((r, i) => ({ rank: i + 1, country: r.country, players: r.players, median: Math.round(r.median * 10) / 10 })),
+    mine,
   });
 }
 
@@ -449,6 +496,7 @@ export async function socialRoute(env, req, url) {
     if (p === '/api/shop') return shop(env, req);
     if (p === '/api/visit') return visit(env, req, url);
     if (p === '/api/leaderboard') return board(env, req, url);
+    if (p === '/api/leaderboard/countries') return countriesBoard(env, req, url);
     if (p === '/api/public') {
       if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
       const t = await targetFrom(env, url.searchParams.get('code'));

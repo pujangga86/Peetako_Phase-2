@@ -9,6 +9,7 @@ import { moodOf, MOOD_LABEL, EXCITED_AFTER_CARE_MS, NEED_BELOW } from './mood.js
 import { skyAt, localMinute } from './sky.js';
 import { attachAntics } from './antics.js';
 import { initSocial } from './social.js';
+import { mountCountryPicker, countryHtml } from './flags.js';
 
 const $ = (sel) => document.querySelector(sel);
 const screens = ['welcome', 'hatch', 'reveal', 'login', 'pet'];
@@ -50,7 +51,7 @@ const pixelIcon = (name, ink) => `<svg viewBox="0 0 8 8" width="22" height="22" 
 let state = {
   pet: null, turnstileSiteKey: null, turnstileId: null, pendingPet: null, poll: null, vapidKey: null, alertsOn: false,
   caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: VIEW_DEFAULT, me: null, social: null,
-  codePrefix: 'PTK-',
+  codePrefix: 'PTK-', countries: null, suggestedCountry: null, hatchPicker: null,
 };
 
 // iPadOS Safari reports itself as a Mac, so also check for a touch screen.
@@ -178,6 +179,9 @@ function renderPet(pet) {
   $('#pet-tier').textContent = `T${pet.tier} ${shortTier(pet.tierName).toUpperCase()}`;
   $('#pet-backdrop').textContent = BACKDROP_NAMES[pet.equipped?.backdrop] || pet.backdrop;
   $('#call-code').textContent = pet.callCode;
+  const cEl = $('#pet-country');
+  cEl.hidden = !pet.country;
+  cEl.innerHTML = pet.country ? countryHtml(pet.country) : '';
   const title = $('#pet-title');
   title.hidden = !pet.title;
   title.textContent = pet.title ? `“${pet.title}”${pet.titleStatus === 'hidden' ? ' (under review)' : ''}` : '';
@@ -292,6 +296,7 @@ function openPet(pet, me, earned) {
   startSky();
   if (pet.status === 'active' || pet.status === 'dormant') startPolling();
   refreshAlerts({ bind: true });
+  state.social.askCountry(pet); // only pets that hatched before countries existed
 }
 
 // ---------- menu ----------
@@ -463,7 +468,23 @@ async function suggestCodes() {
   } catch (e) { toast(e.message); }
 }
 
+// The country list comes from the server (ISO 3166-1). Fetched again here if the first request failed.
+async function ensureCountries() {
+  if (state.countries) return true;
+  try {
+    const cfg = await api('/api/config');
+    state.countries = cfg.countries || null;
+    state.suggestedCountry = cfg.suggestedCountry || null;
+  } catch { /* offline */ }
+  return !!state.countries;
+}
+async function mountHatchCountry() {
+  if (state.hatchPicker || !(await ensureCountries())) return;
+  state.hatchPicker = mountCountryPicker($('#hatch-country'), { codes: state.countries, suggested: state.suggestedCountry, label: 'Your country' });
+}
+
 function openHatch() {
+  mountHatchCountry();
   renderHatchPalettes();
   updateTypePreviews();
   loadTurnstile();
@@ -490,6 +511,8 @@ async function hatch(ev) {
   const name = $('#pet-name-input').value;
   const palette = chosenPalette();
   if (!palette) { err.textContent = 'Choose a colour for your Peetako. You can only choose it once.'; return; }
+  const country = state.hatchPicker?.value();
+  if (!country) { err.textContent = 'Choose your country, or “Prefer not to say”. You can only choose it once.'; return; }
   const code = cleanCode($('#code-input').value);
   if (code.length < 6) { err.textContent = 'Choose a Call Code: 6 to 8 letters or numbers.'; return; }
   const pin = $('#pin-input').value;
@@ -505,7 +528,7 @@ async function hatch(ev) {
   const btn = $('#hatch-btn');
   btn.disabled = true;
   try {
-    const data = await api('/api/register', { name, type, palette, code, pin, ref, turnstileToken, remember: $('#hatch-remember').checked });
+    const data = await api('/api/register', { name, type, palette, country, code, pin, ref, turnstileToken, remember: $('#hatch-remember').checked });
     try { localStorage.removeItem(REF_KEY); } catch { /* ignore */ }
     $('#pin-input').value = ''; $('#pin-input2').value = '';
     state.pendingPet = data.pet;
@@ -694,6 +717,7 @@ async function init() {
   state.social = initSocial({
     $, api, toast, Sound,
     getPet: () => state.pet, getMe: () => state.me,
+    getCountries: async () => ((await ensureCountries()) ? state.countries : null),
     onPet: (p) => renderPet(p), onMe: (m) => renderMe(m),
   });
   loadView();
@@ -706,6 +730,8 @@ async function init() {
     const cfg = await api('/api/config');
     state.turnstileSiteKey = cfg.turnstileSiteKey;
     state.vapidKey = cfg.vapidPublicKey || null;
+    state.countries = cfg.countries || null;
+    state.suggestedCountry = cfg.suggestedCountry || null;
   } catch { /* ignore */ }
   try {
     const data = await api('/api/pet');

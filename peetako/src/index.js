@@ -12,8 +12,9 @@ import {
   isUniqueViolation, createPet, petByCodeKey, petById, savePet, createSession, deleteSession, deleteOtherSessions,
   saveAscension, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
   savePinFailure, savePinSuccess, savePinHash, codeKeysTaken, payTierReward, earnCapped, settleReferral, countDaily,
-  addEvent, purgeSocial,
+  addEvent, purgeSocial, setCountryOnce,
 } from './store.js';
+import { COUNTRIES, UNDISCLOSED, countryChoice, suggestedCountry } from './countries.js';
 import {
   hmac, sha256, newToken, json, fail, readBody, readCookie, rateLimit, petFromSession, ipHash, COOKIE,
   NO_SESSION, SLOW_DOWN,
@@ -101,6 +102,8 @@ async function register(env, req) {
   if (isBlocked(name)) return fail(400, 'name_blocked', 'Please choose a kinder name.');
   if (!['organic', 'robot'].includes(b.type)) return fail(400, 'bad_type', 'Choose Organic or Robot.');
   if (!PALETTES.includes(b.palette)) return fail(400, 'bad_palette', 'Choose a colour for your Peetako.');
+  const country = countryChoice(b.country);
+  if (!country) return fail(400, 'bad_country', 'Choose your country, or “Prefer not to say”. You can only choose it once.');
   const suffix = codeSuffix(env, b.code);
   if (!suffix) return fail(400, 'bad_code', `A Call Code is ${CODE_MIN} to ${CODE_MAX} letters or digits after ${prefix(env)}-.`);
   if (isBlocked(suffix)) return fail(400, 'code_blocked', 'Please choose a different Call Code.');
@@ -123,7 +126,7 @@ async function register(env, req) {
   try {
     row = await createPet(env, {
       callCode: `${prefix(env)}-${suffix}`, codeKey, pinHash: await pinHash(env, codeKey, b.pin), regIp,
-      name, type: b.type, palette: b.palette, now, stats: START_STATS, referredBy,
+      name, type: b.type, palette: b.palette, country, now, stats: START_STATS, referredBy,
     });
   } catch (e) {
     if (isUniqueViolation(e)) return fail(409, 'code_taken', 'That Call Code is taken (or looks too much like one that is). Try another.');
@@ -278,6 +281,23 @@ function setPalette() {
   return fail(403, 'palette_locked', 'Your Peetako’s colour is chosen once, when it hatches, and cannot be changed.');
 }
 
+// The country is chosen once, at hatch. This route exists for pets that hatched before countries did
+// (country not set yet): they get one chance. After that, and for every new pet, it always refuses.
+async function setCountry(env, req) {
+  const row = await petFromSession(env, req);
+  if (!row) return NO_SESSION();
+  if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
+  const locked = () => fail(403, 'country_locked', 'Your Peetako’s country is chosen once and cannot be changed.');
+  if (row.country) return locked();
+  const b = await readBody(req);
+  const country = countryChoice(b.country);
+  if (!country) return fail(400, 'bad_country', 'Choose your country, or “Prefer not to say”. You can only choose it once.');
+  if (!(await setCountryOnce(env, row.id, country))) return locked();
+  const fresh = await petById(env, row.id);
+  const now = Date.now();
+  return json({ pet: view(advance(fresh, now), now), me: await buildMe(env, fresh, now) });
+}
+
 async function logout(env, req) {
   const token = readCookie(req);
   if (token) await deleteSession(env, await sha256(token));
@@ -325,6 +345,8 @@ async function route(req, env) {
       turnstileSiteKey: env.TURNSTILE_SITE_KEY || null,
       vapidPublicKey: pushReady(env) ? env.VAPID_PUBLIC_KEY : null,
       codePrefix: `${prefix(env)}-`, codeMin: CODE_MIN, codeMax: CODE_MAX,
+      // ISO 3166-1 list for the hatch picker; the network's guess is only a suggestion the player confirms.
+      countries: COUNTRIES, undisclosed: UNDISCLOSED, suggestedCountry: suggestedCountry(req),
     });
   }
   if (!env.KEY_PEPPER) return fail(500, 'not_configured', 'Server secret KEY_PEPPER is not set.');
@@ -346,6 +368,7 @@ async function route(req, env) {
   if (path === '/api/care' && m === 'POST') return care(env, req);
   if (path === '/api/ascend' && m === 'POST') return ascendPet(env, req);
   if (path === '/api/palette' && m === 'POST') return setPalette();
+  if (path === '/api/country' && m === 'POST') return setCountry(env, req);
   if (path === '/api/logout' && m === 'POST') return logout(env, req);
   if (path === '/api/push/subscribe' && m === 'POST') return pushSubscribe(env, req);
   if (path === '/api/push/unsubscribe' && m === 'POST') return pushUnsubscribe(env, req);

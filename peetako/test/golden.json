@@ -10,7 +10,260 @@
     "vapidPublicKey": "<vapid-public>",
     "codePrefix": "PTK-",
     "codeMin": 6,
-    "codeMax": 8
+    "codeMax": 8,
+    "countries": [
+     "AD",
+     "AE",
+     "AF",
+     "AG",
+     "AI",
+     "AL",
+     "AM",
+     "AO",
+     "AQ",
+     "AR",
+     "AS",
+     "AT",
+     "AU",
+     "AW",
+     "AX",
+     "AZ",
+     "BA",
+     "BB",
+     "BD",
+     "BE",
+     "BF",
+     "BG",
+     "BH",
+     "BI",
+     "BJ",
+     "BL",
+     "BM",
+     "BN",
+     "BO",
+     "BQ",
+     "BR",
+     "BS",
+     "BT",
+     "BV",
+     "BW",
+     "BY",
+     "BZ",
+     "CA",
+     "CC",
+     "CD",
+     "CF",
+     "CG",
+     "CH",
+     "CI",
+     "CK",
+     "CL",
+     "CM",
+     "CN",
+     "CO",
+     "CR",
+     "CU",
+     "CV",
+     "CW",
+     "CX",
+     "CY",
+     "CZ",
+     "DE",
+     "DJ",
+     "DK",
+     "DM",
+     "DO",
+     "DZ",
+     "EC",
+     "EE",
+     "EG",
+     "EH",
+     "ER",
+     "ES",
+     "ET",
+     "FI",
+     "FJ",
+     "FK",
+     "FM",
+     "FO",
+     "FR",
+     "GA",
+     "GB",
+     "GD",
+     "GE",
+     "GF",
+     "GG",
+     "GH",
+     "GI",
+     "GL",
+     "GM",
+     "GN",
+     "GP",
+     "GQ",
+     "GR",
+     "GS",
+     "GT",
+     "GU",
+     "GW",
+     "GY",
+     "HK",
+     "HM",
+     "HN",
+     "HR",
+     "HT",
+     "HU",
+     "ID",
+     "IE",
+     "IL",
+     "IM",
+     "IN",
+     "IO",
+     "IQ",
+     "IR",
+     "IS",
+     "IT",
+     "JE",
+     "JM",
+     "JO",
+     "JP",
+     "KE",
+     "KG",
+     "KH",
+     "KI",
+     "KM",
+     "KN",
+     "KP",
+     "KR",
+     "KW",
+     "KY",
+     "KZ",
+     "LA",
+     "LB",
+     "LC",
+     "LI",
+     "LK",
+     "LR",
+     "LS",
+     "LT",
+     "LU",
+     "LV",
+     "LY",
+     "MA",
+     "MC",
+     "MD",
+     "ME",
+     "MF",
+     "MG",
+     "MH",
+     "MK",
+     "ML",
+     "MM",
+     "MN",
+     "MO",
+     "MP",
+     "MQ",
+     "MR",
+     "MS",
+     "MT",
+     "MU",
+     "MV",
+     "MW",
+     "MX",
+     "MY",
+     "MZ",
+     "NA",
+     "NC",
+     "NE",
+     "NF",
+     "NG",
+     "NI",
+     "NL",
+     "NO",
+     "NP",
+     "NR",
+     "NU",
+     "NZ",
+     "OM",
+     "PA",
+     "PE",
+     "PF",
+     "PG",
+     "PH",
+     "PK",
+     "PL",
+     "PM",
+     "PN",
+     "PR",
+     "PS",
+     "PT",
+     "PW",
+     "PY",
+     "QA",
+     "RE",
+     "RO",
+     "RS",
+     "RU",
+     "RW",
+     "SA",
+     "SB",
+     "SC",
+     "SD",
+     "SE",
+     "SG",
+     "SH",
+     "SI",
+     "SJ",
+     "SK",
+     "SL",
+     "SM",
+     "SN",
+     "SO",
+     "SR",
+     "SS",
+     "ST",
+     "SV",
+     "SX",
+     "SY",
+     "SZ",
+     "TC",
+     "TD",
+     "TF",
+     "TG",
+     "TH",
+     "TJ",
+     "TK",
+     "TL",
+     "TM",
+     "TN",
+     "TO",
+     "TR",
+     "TT",
+     "TV",
+     "TW",
+     "TZ",
+     "UA",
+     "UG",
+     "UM",
+     "US",
+     "UY",
+     "UZ",
+     "VA",
+     "VC",
+     "VE",
+     "VG",
+     "VI",
+     "VN",
+     "VU",
+     "WF",
+     "WS",
+     "YE",
+     "YT",
+     "ZA",
+     "ZM",
+     "ZW"
+    ],
+    "undisclosed": "ZZ",
+    "suggestedCountry": null
    }
   },
   {
@@ -183,6 +436,46 @@
    }
   },
   {
+   "label": "register no country",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose your country, or “Prefer not to say”. You can only choose it once."
+   }
+  },
+  {
+   "label": "register country XK not ISO",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose your country, or “Prefer not to say”. You can only choose it once."
+   }
+  },
+  {
+   "label": "register country XX unknown",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose your country, or “Prefer not to say”. You can only choose it once."
+   }
+  },
+  {
+   "label": "register country too long",
+   "t": 1791590400000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose your country, or “Prefer not to say”. You can only choose it once."
+   }
+  },
+  {
    "label": "register A",
    "t": 1791590400000,
    "status": 201,
@@ -202,6 +495,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -320,6 +614,7 @@
      "type": "robot",
      "palette": "laut",
      "callCode": "PTK-RIMBA21",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -416,6 +711,7 @@
      "type": "organic",
      "palette": "hijau",
      "callCode": "PTK-BUKITKU",
+     "country": "ID",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -512,6 +808,7 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-DEEROBOT",
+     "country": "SG",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -608,6 +905,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-BURST000",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -704,6 +1002,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-BURST001",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -800,6 +1099,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-BURST002",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -896,6 +1196,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-BURST003",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -992,6 +1293,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-BURST004",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1098,6 +1400,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1194,6 +1497,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1293,6 +1597,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1392,6 +1697,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1491,6 +1797,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1802,6 +2109,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -1883,6 +2191,7 @@
      "type": "robot",
      "palette": "laut",
      "callCode": "PTK-RIMBA21",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -2001,6 +2310,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -2097,6 +2407,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -2295,6 +2606,7 @@
      "type": "robot",
      "palette": "laut",
      "callCode": "PTK-RIMBA21",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -2650,6 +2962,7 @@
      "type": "organic",
      "palette": "puakumbu",
      "callCode": "PTK-TOKAY88",
+     "country": "MY",
      "status": "active",
      "bornAt": 1791590400000,
      "diedAt": null,
@@ -2881,7 +3194,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -2923,7 +3237,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -2965,7 +3280,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -3007,7 +3323,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -3049,7 +3366,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -3091,7 +3409,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -3133,7 +3452,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -3175,7 +3495,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -3217,7 +3538,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -3475,7 +3797,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -3517,7 +3840,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -3559,7 +3883,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -3601,7 +3926,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -3643,7 +3969,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -3685,7 +4012,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -3727,7 +4055,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -3769,7 +4098,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -3811,7 +4141,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -4056,7 +4387,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -4098,7 +4430,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -4140,7 +4473,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -4182,7 +4516,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -4224,7 +4559,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -4266,7 +4602,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -4308,7 +4645,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -4350,7 +4688,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -4392,7 +4731,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -4637,7 +4977,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -4679,7 +5020,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -4721,7 +5063,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -4763,7 +5106,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -4805,7 +5149,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -4847,7 +5192,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -4889,7 +5235,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -4931,7 +5278,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -4973,7 +5321,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -5209,7 +5558,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -5251,7 +5601,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -5293,7 +5644,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -5335,7 +5687,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -5377,7 +5730,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -5419,7 +5773,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -5461,7 +5816,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -5503,7 +5859,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -5545,7 +5902,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -5781,7 +6139,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -5823,7 +6182,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -5865,7 +6225,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -5907,7 +6268,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -5949,7 +6311,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -5991,7 +6354,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -6033,7 +6397,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -6075,7 +6440,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -6117,7 +6483,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -6353,7 +6720,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -6395,7 +6763,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -6437,7 +6806,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -6479,7 +6849,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -6521,7 +6892,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -6563,7 +6935,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -6605,7 +6978,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -6647,7 +7021,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -6689,7 +7064,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -6925,7 +7301,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -6967,7 +7344,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -7009,7 +7387,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -7051,7 +7430,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -7093,7 +7473,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -7135,7 +7516,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -7177,7 +7559,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -7219,7 +7602,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -7261,7 +7645,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -7507,7 +7892,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -7549,7 +7935,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -7591,7 +7978,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -7633,7 +8021,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -7675,7 +8064,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -7717,7 +8107,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -7759,7 +8150,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -7801,7 +8193,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -7843,7 +8236,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -8079,7 +8473,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -8121,7 +8516,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -8163,7 +8559,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -8205,7 +8602,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -8247,7 +8645,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -8289,7 +8688,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -8331,7 +8731,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -8373,7 +8774,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -8415,7 +8817,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -8558,7 +8961,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -8600,7 +9004,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -8642,7 +9047,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -8684,7 +9090,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -8726,7 +9133,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -8768,7 +9176,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -8810,7 +9219,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -8852,7 +9262,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -8894,7 +9305,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      }
     ],
     "sessions": [
@@ -8942,6 +9354,7 @@
      "type": "organic",
      "palette": "hijau",
      "callCode": "PTK-BUKITKU",
+     "country": "ID",
      "status": "dead",
      "bornAt": 1791590400000,
      "diedAt": 1791763200000,
@@ -9017,6 +9430,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9143,6 +9557,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9279,6 +9694,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9415,6 +9831,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9514,6 +9931,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9650,6 +10068,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9786,6 +10205,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -9922,6 +10342,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10058,6 +10479,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10194,6 +10616,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10330,6 +10753,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10466,6 +10890,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10602,6 +11027,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10738,6 +11164,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10837,6 +11264,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -10973,6 +11401,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11117,6 +11546,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11253,6 +11683,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11389,6 +11820,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11525,6 +11957,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11661,6 +12094,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11797,6 +12231,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -11933,6 +12368,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12069,6 +12505,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12168,6 +12605,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12304,6 +12742,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12400,6 +12839,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12536,6 +12976,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12672,6 +13113,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12808,6 +13250,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -12944,6 +13387,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13080,6 +13524,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13224,6 +13669,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13360,6 +13806,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13496,6 +13943,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13595,6 +14043,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13731,6 +14180,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -13867,6 +14317,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14003,6 +14454,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14139,6 +14591,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14275,6 +14728,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14411,6 +14865,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14547,6 +15002,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14683,6 +15139,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14819,6 +15276,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -14918,6 +15376,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15054,6 +15513,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15198,6 +15658,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15334,6 +15795,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15470,6 +15932,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15606,6 +16069,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15742,6 +16206,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15838,6 +16303,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -15974,6 +16440,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16110,6 +16577,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16246,6 +16714,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16345,6 +16814,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16481,6 +16951,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16617,6 +17088,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16726,6 +17198,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16862,6 +17335,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -16998,6 +17472,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17134,6 +17609,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17278,6 +17754,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17414,6 +17891,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17551,6 +18029,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17651,6 +18130,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17788,6 +18268,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -17925,6 +18406,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18062,6 +18544,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18199,6 +18682,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18336,6 +18820,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18473,6 +18958,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18610,6 +19096,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18747,6 +19234,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18884,6 +19372,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -18984,6 +19473,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19121,6 +19611,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19218,6 +19709,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19363,6 +19855,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19500,6 +19993,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19637,6 +20131,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19774,6 +20269,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -19911,6 +20407,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20048,6 +20545,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20185,6 +20683,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20322,6 +20821,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20422,6 +20922,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20559,6 +21060,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20696,6 +21198,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20833,6 +21336,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -20970,6 +21474,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21107,6 +21612,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21244,6 +21750,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21389,6 +21896,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21526,6 +22034,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21663,6 +22172,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21784,6 +22294,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21860,6 +22371,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -21963,6 +22475,7 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
@@ -22072,6 +22585,7 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-FIFI2026",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
@@ -22168,6 +22682,7 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-FAFA2026",
+     "country": "ZZ",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
@@ -22264,6 +22779,7 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-GIGIPTK",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
@@ -22360,6 +22876,7 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-FAFA2026",
+     "country": "ZZ",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
@@ -22455,6 +22972,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -22533,6 +23051,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -22601,6 +23120,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -22669,6 +23189,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -22767,6 +23288,7 @@
       "name": true,
       "title": true
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -22801,6 +23323,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -22879,6 +23402,7 @@
       "name": true,
       "title": true
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -22913,6 +23437,7 @@
       "name": true,
       "title": false
      },
+     "country": null,
      "type": "robot",
      "palette": "tokay",
      "tier": 0,
@@ -22981,6 +23506,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 0,
@@ -23012,6 +23538,7 @@
       "name": true,
       "title": true
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -23174,6 +23701,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -23310,6 +23838,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -23780,6 +24309,9 @@
    "data": {
     "period": "day",
     "day": "2027-02-01",
+    "scope": "global",
+    "country": null,
+    "sort": "score",
     "resetsInMs": 74358000,
     "rows": [
      {
@@ -23790,7 +24322,9 @@
       "type": "organic",
       "palette": "laut",
       "tier": 0,
-      "status": "alive"
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
      },
      {
       "rank": 2,
@@ -23800,7 +24334,9 @@
       "type": "organic",
       "palette": "kenyalang",
       "tier": 8,
-      "status": "alive"
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
      }
     ],
     "me": {
@@ -23818,6 +24354,9 @@
    "data": {
     "period": "all",
     "day": null,
+    "scope": "global",
+    "country": null,
+    "sort": "score",
     "resetsInMs": null,
     "rows": [
      {
@@ -23828,7 +24367,9 @@
       "type": "organic",
       "palette": "laut",
       "tier": 0,
-      "status": "alive"
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
      },
      {
       "rank": 2,
@@ -23838,15 +24379,1222 @@
       "type": "organic",
       "palette": "kenyalang",
       "tier": 8,
-      "status": "alive"
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
      }
     ],
     "me": null
    }
   },
   {
+   "label": "login B for board",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
+   "data": {
+    "pet": {
+     "name": "Robo Two",
+     "nameStatus": "ok",
+     "title": null,
+     "titleStatus": "ok",
+     "canSetTitle": false,
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "type": "robot",
+     "palette": "laut",
+     "callCode": "PTK-RIMBA21",
+     "country": "MY",
+     "status": "dead",
+     "bornAt": 1791590400000,
+     "diedAt": 1791766800000,
+     "lastCaredAt": 1791594000000,
+     "ageHours": 49,
+     "tier": 2,
+     "tierName": "Unit",
+     "backdrop": "Sago garden (Mukah)",
+     "nextTier": {
+      "tier": 3,
+      "name": "Sentinel",
+      "atHours": 96
+     },
+     "survivesUnattendedHours": 60,
+     "hoursLeftUnattended": 0,
+     "rankAgeHours": 49,
+     "careDays": 1,
+     "ascendedAt": null,
+     "legacyScore": null,
+     "ascension": null,
+     "stats": {
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0
+     },
+     "actions": []
+    },
+    "me": {
+     "coins": 10,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": false,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 0,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74358000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    },
+    "earned": null
+   }
+  },
+  {
+   "label": "leaderboard mine without country",
+   "t": 1801423242000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "no_country",
+    "message": "Choose your country first to see its leaderboard."
+   }
+  },
+  {
+   "label": "country B bad",
+   "t": 1801423242000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose your country, or “Prefer not to say”. You can only choose it once."
+   }
+  },
+  {
+   "label": "country B no session",
+   "t": 1801423242000,
+   "status": 401,
+   "setCookie": null,
+   "data": {
+    "error": "no_session",
+    "message": "Enter your Call Code and PIN to continue."
+   }
+  },
+  {
+   "label": "country B set once",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "pet": {
+     "name": "Robo Two",
+     "nameStatus": "ok",
+     "title": null,
+     "titleStatus": "ok",
+     "canSetTitle": false,
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "type": "robot",
+     "palette": "laut",
+     "callCode": "PTK-RIMBA21",
+     "country": "MY",
+     "status": "dead",
+     "bornAt": 1791590400000,
+     "diedAt": 1791766800000,
+     "lastCaredAt": 1791594000000,
+     "ageHours": 49,
+     "tier": 2,
+     "tierName": "Unit",
+     "backdrop": "Sago garden (Mukah)",
+     "nextTier": {
+      "tier": 3,
+      "name": "Sentinel",
+      "atHours": 96
+     },
+     "survivesUnattendedHours": 60,
+     "hoursLeftUnattended": 0,
+     "rankAgeHours": 49,
+     "careDays": 1,
+     "ascendedAt": null,
+     "legacyScore": null,
+     "ascension": null,
+     "stats": {
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0
+     },
+     "actions": []
+    },
+    "me": {
+     "coins": 10,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": false,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 0,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74358000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    }
+   }
+  },
+  {
+   "label": "country B locked",
+   "t": 1801423242000,
+   "status": 403,
+   "setCookie": null,
+   "data": {
+    "error": "country_locked",
+    "message": "Your Peetako’s country is chosen once and cannot be changed."
+   }
+  },
+  {
+   "label": "country E locked",
+   "t": 1801423242000,
+   "status": 403,
+   "setCookie": null,
+   "data": {
+    "error": "country_locked",
+    "message": "Your Peetako’s country is chosen once and cannot be changed."
+   }
+  },
+  {
+   "label": "leaderboard mine undisclosed F",
+   "t": 1801423242000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "no_country",
+    "message": "You chose not to share a country, so there is no country leaderboard for you."
+   }
+  },
+  {
+   "label": "leaderboard mine no session",
+   "t": 1801423242000,
+   "status": 401,
+   "setCookie": null,
+   "data": {
+    "error": "no_session",
+    "message": "Enter your Call Code and PIN to continue."
+   }
+  },
+  {
+   "label": "leaderboard bad scope",
+   "t": 1801423242000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_scope",
+    "message": "Choose global, mine or country."
+   }
+  },
+  {
+   "label": "leaderboard bad country",
+   "t": 1801423242000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose a country from the list."
+   }
+  },
+  {
+   "label": "leaderboard country missing",
+   "t": 1801423242000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_country",
+    "message": "Choose a country from the list."
+   }
+  },
+  {
+   "label": "leaderboard bad sort",
+   "t": 1801423242000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_sort",
+    "message": "Sort by score, age or recent."
+   }
+  },
+  {
+   "label": "leaderboard mine E",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "scope": "mine",
+    "country": "MY",
+    "sort": "score",
+    "resetsInMs": null,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     }
+    ],
+    "me": {
+     "callCode": "PTK-KINABALU",
+     "rank": 2,
+     "score": 120
+    }
+   }
+  },
+  {
+   "label": "leaderboard country SG empty",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "day",
+    "day": "2027-02-01",
+    "scope": "country",
+    "country": "SG",
+    "sort": "score",
+    "resetsInMs": 74358000,
+    "rows": [],
+    "me": null
+   }
+  },
+  {
+   "label": "countries board (E and G only)",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "resetsInMs": null,
+    "minPlayers": 3,
+    "rows": [],
+    "mine": {
+     "country": "MY",
+     "players": 2,
+     "listed": false
+    }
+   }
+  },
+  {
+   "label": "register H",
+   "t": 1801423242000,
+   "status": 201,
+   "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
+   "data": {
+    "pet": {
+     "name": "Hana",
+     "nameStatus": "ok",
+     "title": null,
+     "titleStatus": "ok",
+     "canSetTitle": false,
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "type": "organic",
+     "palette": "laut",
+     "callCode": "PTK-HANA2026",
+     "country": "MY",
+     "status": "active",
+     "bornAt": 1801423242000,
+     "diedAt": null,
+     "lastCaredAt": 1801423242000,
+     "ageHours": 0,
+     "tier": 0,
+     "tierName": "Egg",
+     "backdrop": "Longhouse",
+     "nextTier": {
+      "tier": 1,
+      "name": "Hatchling",
+      "atHours": 24
+     },
+     "survivesUnattendedHours": 48,
+     "hoursLeftUnattended": 48,
+     "rankAgeHours": 0,
+     "careDays": 0,
+     "ascendedAt": null,
+     "legacyScore": null,
+     "ascension": null,
+     "stats": {
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80
+     },
+     "actions": [
+      {
+       "id": "feed",
+       "label": "Feed kelkatu",
+       "stat": "energy"
+      },
+      {
+       "id": "shed",
+       "label": "Help shed skin",
+       "stat": "health"
+      },
+      {
+       "id": "bask",
+       "label": "Bask under lamp",
+       "stat": "temperature"
+      },
+      {
+       "id": "play",
+       "label": "Play",
+       "stat": "mood"
+      }
+     ]
+    },
+    "me": {
+     "coins": 0,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 0,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74358000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    },
+    "invited": false
+   }
+  },
+  {
+   "label": "register I",
+   "t": 1801423242000,
+   "status": 201,
+   "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
+   "data": {
+    "pet": {
+     "name": "Ivan",
+     "nameStatus": "ok",
+     "title": null,
+     "titleStatus": "ok",
+     "canSetTitle": false,
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "type": "organic",
+     "palette": "laut",
+     "callCode": "PTK-IVAN2026",
+     "country": "MY",
+     "status": "active",
+     "bornAt": 1801423242000,
+     "diedAt": null,
+     "lastCaredAt": 1801423242000,
+     "ageHours": 0,
+     "tier": 0,
+     "tierName": "Egg",
+     "backdrop": "Longhouse",
+     "nextTier": {
+      "tier": 1,
+      "name": "Hatchling",
+      "atHours": 24
+     },
+     "survivesUnattendedHours": 48,
+     "hoursLeftUnattended": 48,
+     "rankAgeHours": 0,
+     "careDays": 0,
+     "ascendedAt": null,
+     "legacyScore": null,
+     "ascension": null,
+     "stats": {
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80
+     },
+     "actions": [
+      {
+       "id": "feed",
+       "label": "Feed kelkatu",
+       "stat": "energy"
+      },
+      {
+       "id": "shed",
+       "label": "Help shed skin",
+       "stat": "health"
+      },
+      {
+       "id": "bask",
+       "label": "Bask under lamp",
+       "stat": "temperature"
+      },
+      {
+       "id": "play",
+       "label": "Play",
+       "stat": "mood"
+      }
+     ]
+    },
+    "me": {
+     "coins": 0,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 0,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74358000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    },
+    "invited": false
+   }
+  },
+  {
+   "label": "register J",
+   "t": 1801423242000,
+   "status": 201,
+   "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000",
+   "data": {
+    "pet": {
+     "name": "Jaya",
+     "nameStatus": "ok",
+     "title": null,
+     "titleStatus": "ok",
+     "canSetTitle": false,
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "type": "organic",
+     "palette": "laut",
+     "callCode": "PTK-JAYA2026",
+     "country": "SG",
+     "status": "active",
+     "bornAt": 1801423242000,
+     "diedAt": null,
+     "lastCaredAt": 1801423242000,
+     "ageHours": 0,
+     "tier": 0,
+     "tierName": "Egg",
+     "backdrop": "Longhouse",
+     "nextTier": {
+      "tier": 1,
+      "name": "Hatchling",
+      "atHours": 24
+     },
+     "survivesUnattendedHours": 48,
+     "hoursLeftUnattended": 48,
+     "rankAgeHours": 0,
+     "careDays": 0,
+     "ascendedAt": null,
+     "legacyScore": null,
+     "ascension": null,
+     "stats": {
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80
+     },
+     "actions": [
+      {
+       "id": "feed",
+       "label": "Feed kelkatu",
+       "stat": "energy"
+      },
+      {
+       "id": "shed",
+       "label": "Help shed skin",
+       "stat": "health"
+      },
+      {
+       "id": "bask",
+       "label": "Bask under lamp",
+       "stat": "temperature"
+      },
+      {
+       "id": "play",
+       "label": "Play",
+       "stat": "mood"
+      }
+     ]
+    },
+    "me": {
+     "coins": 0,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 0,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74358000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    },
+    "invited": false
+   }
+  },
+  {
+   "label": "game start H",
+   "t": 1801423242000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "1d0ad4d8a4bf3258396ef1ec69cebb01548d865d09924bdb28244869bfcae0b3",
+    "durationMs": 45000
+   }
+  },
+  {
+   "label": "game finish H",
+   "t": 1801423287000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "score": 60,
+    "coins": 12,
+    "best": 60,
+    "allTime": 60,
+    "rankDay": 3,
+    "rankAll": 3,
+    "me": {
+     "coins": 12,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 12,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74313000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    }
+   }
+  },
+  {
+   "label": "countries board all, 3 players",
+   "t": 1801423287000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "resetsInMs": null,
+    "minPlayers": 3,
+    "rows": [
+     {
+      "rank": 1,
+      "country": "MY",
+      "players": 3,
+      "median": 120
+     }
+    ],
+    "mine": {
+     "country": "MY",
+     "players": 3,
+     "listed": true
+    }
+   }
+  },
+  {
+   "label": "game start I",
+   "t": 1801423287000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "5fdd2e23c118d70f9aa0bd40695a9a3b4a79a0e73b9fa7714e0b94a4ae99e303",
+    "durationMs": 45000
+   }
+  },
+  {
+   "label": "game finish I",
+   "t": 1801423332000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "score": 75,
+    "coins": 15,
+    "best": 75,
+    "allTime": 75,
+    "rankDay": 3,
+    "rankAll": 3,
+    "me": {
+     "coins": 15,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 15,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 0
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3
+     },
+     "resetsInMs": 74268000,
+     "owned": [],
+     "referral": null,
+     "events": []
+    }
+   }
+  },
+  {
+   "label": "game start J",
+   "t": 1801423332000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "7697a358cdb4379bbc8fad47a5a9899267b9462b85b1fa4ce7e9d96307417ba5",
+    "durationMs": 45000
+   }
+  },
+  {
+   "label": "game finish J",
+   "t": 1801423377000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "countries board all, 4 players",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "resetsInMs": null,
+    "minPlayers": 3,
+    "rows": [
+     {
+      "rank": 1,
+      "country": "MY",
+      "players": 4,
+      "median": 97.5
+     }
+    ],
+    "mine": {
+     "country": "MY",
+     "players": 4,
+     "listed": true
+    }
+   }
+  },
+  {
+   "label": "leaderboard mine H today",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "day",
+    "day": "2027-02-01",
+    "scope": "mine",
+    "country": "MY",
+    "sort": "score",
+    "resetsInMs": 74223000,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     },
+     {
+      "rank": 3,
+      "callCode": "PTK-IVAN2026",
+      "name": "Ivan",
+      "score": 75,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 4,
+      "callCode": "PTK-HANA2026",
+      "name": "Hana",
+      "score": 60,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": {
+     "callCode": "PTK-HANA2026",
+     "rank": 4,
+     "score": 60
+    }
+   }
+  },
+  {
+   "label": "leaderboard country SG today",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "day",
+    "day": "2027-02-01",
+    "scope": "country",
+    "country": "SG",
+    "sort": "score",
+    "resetsInMs": 74223000,
+    "rows": [],
+    "me": null
+   }
+  },
+  {
+   "label": "countries board day",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "day",
+    "day": "2027-02-01",
+    "resetsInMs": 74223000,
+    "minPlayers": 3,
+    "rows": [
+     {
+      "rank": 1,
+      "country": "MY",
+      "players": 4,
+      "median": 97.5
+     }
+    ],
+    "mine": null
+   }
+  },
+  {
+   "label": "leaderboard country MY by score",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "scope": "country",
+    "country": "MY",
+    "sort": "score",
+    "resetsInMs": null,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     },
+     {
+      "rank": 3,
+      "callCode": "PTK-IVAN2026",
+      "name": "Ivan",
+      "score": 75,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 4,
+      "callCode": "PTK-HANA2026",
+      "name": "Hana",
+      "score": 60,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": null
+   }
+  },
+  {
+   "label": "leaderboard country MY by age",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "scope": "country",
+    "country": "MY",
+    "sort": "age",
+    "resetsInMs": null,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 3,
+      "callCode": "PTK-IVAN2026",
+      "name": "Ivan",
+      "score": 75,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 4,
+      "callCode": "PTK-HANA2026",
+      "name": "Hana",
+      "score": 60,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": null
+   }
+  },
+  {
+   "label": "leaderboard country MY recent",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "all",
+    "day": null,
+    "scope": "country",
+    "country": "MY",
+    "sort": "recent",
+    "resetsInMs": null,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-IVAN2026",
+      "name": "Ivan",
+      "score": 75,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-HANA2026",
+      "name": "Hana",
+      "score": 60,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 3,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     },
+     {
+      "rank": 4,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": null
+   }
+  },
+  {
+   "label": "leaderboard global recent",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "period": "day",
+    "day": "2027-02-01",
+    "scope": "global",
+    "country": null,
+    "sort": "recent",
+    "resetsInMs": 74223000,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-IVAN2026",
+      "name": "Ivan",
+      "score": 75,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 2,
+      "callCode": "PTK-HANA2026",
+      "name": "Hana",
+      "score": 60,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     },
+     {
+      "rank": 3,
+      "callCode": "PTK-KINABALU",
+      "name": "Elder",
+      "score": 120,
+      "type": "organic",
+      "palette": "kenyalang",
+      "tier": 8,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 2180
+     },
+     {
+      "rank": 4,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 140,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": null
+   }
+  },
+  {
+   "label": "public B shows country",
+   "t": 1801423377000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "pet": {
+     "callCode": "PTK-RIMBA21",
+     "name": "Robo Two",
+     "nameHidden": false,
+     "title": null,
+     "titleHidden": false,
+     "canReport": {
+      "name": true,
+      "title": false
+     },
+     "country": "MY",
+     "type": "robot",
+     "palette": "laut",
+     "tier": 2,
+     "tierName": "Unit",
+     "backdrop": "Sago garden (Mukah)",
+     "status": "dead",
+     "ageHours": 49,
+     "careDays": 1,
+     "stats": {
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0
+     },
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "legacyScore": null
+    },
+    "best": 0,
+    "owns": []
+   }
+  },
+  {
    "label": "care E next day",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -23867,10 +25615,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 2205,
      "tier": 8,
      "tierName": "Ageless",
@@ -23936,7 +25685,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -23965,7 +25714,7 @@
   },
   {
    "label": "care F after a day (invite paid)",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -23983,10 +25732,11 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-FAFA2026",
+     "country": "ZZ",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Prototype",
@@ -24051,7 +25801,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [],
      "referral": "paid",
      "events": [
@@ -24078,7 +25828,7 @@
   },
   {
    "label": "care F again",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -24096,10 +25846,11 @@
      "type": "robot",
      "palette": "tokay",
      "callCode": "PTK-FAFA2026",
+     "country": "ZZ",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Prototype",
@@ -24164,7 +25915,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [],
      "referral": "paid",
      "events": [
@@ -24190,7 +25941,7 @@
   },
   {
    "label": "care G",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -24208,10 +25959,11 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-GIGIPTK",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Hatchling",
@@ -24276,7 +26028,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "payung",
       "rantai-manik",
@@ -24342,19 +26094,19 @@
   },
   {
    "label": "battle E vs G 0",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
     "won": true,
     "rounds": [
-     "d",
      "a",
-     "a"
+     "a",
+     "d"
     ],
     "power": {
-     "me": 60,
-     "them": 32
+     "me": 53,
+     "them": 29
     },
     "mine": {
      "callCode": "PTK-KINABALU",
@@ -24366,6 +26118,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -24400,6 +26153,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -24440,7 +26194,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -24450,7 +26204,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -24477,19 +26231,19 @@
   },
   {
    "label": "battle E vs G 1",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
     "won": true,
     "rounds": [
-     "d",
      "a",
-     "a"
+     "a",
+     "d"
     ],
     "power": {
-     "me": 62,
-     "them": 25
+     "me": 72,
+     "them": 34
     },
     "mine": {
      "callCode": "PTK-KINABALU",
@@ -24501,6 +26255,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -24535,6 +26290,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -24575,7 +26331,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -24585,7 +26341,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -24612,7 +26368,7 @@
   },
   {
    "label": "battle E vs G 2",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -24623,8 +26379,8 @@
      "a"
     ],
     "power": {
-     "me": 73,
-     "them": 28
+     "me": 66,
+     "them": 29
     },
     "mine": {
      "callCode": "PTK-KINABALU",
@@ -24636,6 +26392,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -24670,6 +26427,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -24710,7 +26468,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -24720,7 +26478,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -24747,19 +26505,19 @@
   },
   {
    "label": "battle E vs G 3",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
     "won": true,
     "rounds": [
-     "a",
      "d",
+     "a",
      "a"
     ],
     "power": {
-     "me": 53,
-     "them": 29
+     "me": 71,
+     "them": 23
     },
     "mine": {
      "callCode": "PTK-KINABALU",
@@ -24771,6 +26529,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -24805,6 +26564,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -24845,7 +26605,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -24855,7 +26615,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -24882,19 +26642,19 @@
   },
   {
    "label": "battle E vs G 4",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
     "won": true,
     "rounds": [
      "a",
-     "a",
-     "d"
+     "d",
+     "a"
     ],
     "power": {
-     "me": 57,
-     "them": 27
+     "me": 59,
+     "them": 29
     },
     "mine": {
      "callCode": "PTK-KINABALU",
@@ -24906,6 +26666,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -24940,6 +26701,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -24980,7 +26742,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -24990,7 +26752,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -25017,7 +26779,7 @@
   },
   {
    "label": "battle E vs G 5",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 429,
    "setCookie": null,
    "data": {
@@ -25027,7 +26789,7 @@
   },
   {
    "label": "battle G vs E",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25038,8 +26800,8 @@
      "d"
     ],
     "power": {
-     "me": 37,
-     "them": 65
+     "me": 28,
+     "them": 60
     },
     "mine": {
      "callCode": "PTK-GIGIPTK",
@@ -25051,6 +26813,7 @@
       "name": true,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "laut",
      "tier": 1,
@@ -25082,6 +26845,7 @@
       "name": false,
       "title": false
      },
+     "country": "MY",
      "type": "organic",
      "palette": "kenyalang",
      "tier": 8,
@@ -25125,7 +26889,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "payung",
       "rantai-manik",
@@ -25136,7 +26900,7 @@
       {
        "id": 12,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25148,7 +26912,7 @@
       {
        "id": 11,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25160,7 +26924,7 @@
       {
        "id": 10,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25172,7 +26936,7 @@
       {
        "id": 9,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25184,7 +26948,7 @@
       {
        "id": 8,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25247,7 +27011,7 @@
   },
   {
    "label": "pet G news",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25265,10 +27029,11 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-GIGIPTK",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Hatchling",
@@ -25333,7 +27098,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "payung",
       "rantai-manik",
@@ -25344,7 +27109,7 @@
       {
        "id": 12,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25356,7 +27121,7 @@
       {
        "id": 11,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25368,7 +27133,7 @@
       {
        "id": 10,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25380,7 +27145,7 @@
       {
        "id": 9,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25392,7 +27157,7 @@
       {
        "id": 8,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25456,7 +27221,7 @@
   },
   {
    "label": "pet G news again",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25474,10 +27239,11 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-GIGIPTK",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Hatchling",
@@ -25542,7 +27308,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "payung",
       "rantai-manik",
@@ -25553,7 +27319,7 @@
       {
        "id": 12,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25565,7 +27331,7 @@
       {
        "id": 11,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25577,7 +27343,7 @@
       {
        "id": 10,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25589,7 +27355,7 @@
       {
        "id": 9,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25601,7 +27367,7 @@
       {
        "id": 8,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": false
        },
@@ -25665,7 +27431,7 @@
   },
   {
    "label": "events seen G",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25674,7 +27440,7 @@
   },
   {
    "label": "pet G after seen",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25692,10 +27458,11 @@
      "type": "organic",
      "palette": "laut",
      "callCode": "PTK-GIGIPTK",
+     "country": "MY",
      "status": "active",
      "bornAt": 1801422966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 25,
      "tier": 1,
      "tierName": "Hatchling",
@@ -25760,7 +27527,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "payung",
       "rantai-manik",
@@ -25774,7 +27541,7 @@
   },
   {
    "label": "pet E news",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -25795,10 +27562,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801513242000,
+     "lastCaredAt": 1801513377000,
      "ageHours": 2205,
      "tier": 8,
      "tierName": "Ageless",
@@ -25864,7 +27632,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 70758000,
+     "resetsInMs": 70623000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -25874,7 +27642,7 @@
       {
        "id": 13,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": true
        },
@@ -25886,7 +27654,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -25914,7 +27682,7 @@
   },
   {
    "label": "SNAP after 2C social block",
-   "t": 1801513242000,
+   "t": 1801513377000,
    "snap": {
     "pet": [
      {
@@ -25957,7 +27725,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -25999,7 +27768,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -26041,7 +27811,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -26083,7 +27854,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -26125,7 +27897,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -26167,7 +27940,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -26209,7 +27983,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -26251,7 +28026,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -26293,7 +28069,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 10,
@@ -26312,8 +28089,8 @@
       "type": "organic",
       "palette": "kenyalang",
       "born_at": 1793574966000,
-      "last_cared_at": 1801513242000,
-      "stats_at": 1801513242000,
+      "last_cared_at": 1801513377000,
+      "stats_at": 1801513377000,
       "energy": 35,
       "health": 0,
       "temperature": 0,
@@ -26335,7 +28112,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 6,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 11,
@@ -26377,7 +28155,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 12,
@@ -26396,12 +28175,12 @@
       "type": "robot",
       "palette": "tokay",
       "born_at": 1801422966000,
-      "last_cared_at": 1801513242000,
-      "stats_at": 1801513242000,
-      "energy": 47.23166666666667,
-      "health": 59.846666666666664,
-      "temperature": 4.77,
-      "mood": 9.77,
+      "last_cared_at": 1801513377000,
+      "stats_at": 1801513377000,
+      "energy": 47.10041666666667,
+      "health": 59.77166666666667,
+      "temperature": 4.6575,
+      "mood": 9.657499999999999,
       "tier": 1,
       "tier_paid": 1,
       "care_days": 2,
@@ -26419,7 +28198,8 @@
       "referred_by": 10,
       "referral_state": 1,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ZZ"
      },
      {
       "id": 13,
@@ -26438,12 +28218,12 @@
       "type": "organic",
       "palette": "laut",
       "born_at": 1801422966000,
-      "last_cared_at": 1801513242000,
-      "stats_at": 1801513242000,
+      "last_cared_at": 1801513377000,
+      "stats_at": 1801513377000,
       "energy": 0,
-      "health": 29.846666666666668,
-      "temperature": 4.77,
-      "mood": 39.769999999999996,
+      "health": 29.77166666666667,
+      "temperature": 4.6575,
+      "mood": 39.6575,
       "tier": 1,
       "tier_paid": 1,
       "care_days": 1,
@@ -26461,7 +28241,137 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 6
+      "battle_losses": 6,
+      "country": "MY"
+     },
+     {
+      "id": 14,
+      "call_code": "PTK-HANA2026",
+      "code_key": "PTK-HANA2O26",
+      "pin_hash": "6a27d69d3de44360e914081ec8e067e8d278304020696d29b3b899c037d0e78a",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "278c6ec50331a9085ba9fb68",
+      "name": "Hana",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801423242000,
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80,
+      "tier": 0,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": null,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 12,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "MY"
+     },
+     {
+      "id": 15,
+      "call_code": "PTK-IVAN2026",
+      "code_key": "PTK-IVAN2O26",
+      "pin_hash": "c9e1b11a4fa0b24a4108aafbbab3a933980535d2a0aa46405370bb9f3edd9d2a",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "b7abd2eb3c1b67ecd35b5750",
+      "name": "Ivan",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801423242000,
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80,
+      "tier": 0,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": null,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 15,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "MY"
+     },
+     {
+      "id": 16,
+      "call_code": "PTK-JAYA2026",
+      "code_key": "PTK-JAYA2O26",
+      "pin_hash": "7914457260cd3e46017a9d4bff2f9f9628f8dd2c3baaadb0451d6ca7c2d3b651",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "be9df45974da664977b6163b",
+      "name": "Jaya",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801423242000,
+      "energy": 80,
+      "health": 80,
+      "temperature": 80,
+      "mood": 80,
+      "tier": 0,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": null,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 0,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "SG"
      }
     ],
     "sessions": [
@@ -26490,6 +28400,18 @@
       "expires_at": 1802502966000
      },
      {
+      "token_hash": "7f81356be05946d5e5ae0da8f2116f202daa8ffbd34c065de53d2421fad032b9",
+      "pet_id": 14,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
+      "token_hash": "80ca19e56e901dd8077b7e4d8c2391ffb9323b49a20563337c2801e8e30716fa",
+      "pet_id": 2,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
       "token_hash": "83e573900310f8092a00f376ca109a08ec2ca1c80e6eeadbb9949ff5c10c95c5",
       "pet_id": 10,
       "created_at": 1793574966000,
@@ -26500,6 +28422,18 @@
       "pet_id": 12,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
+     },
+     {
+      "token_hash": "90d2b839a5942afe2c789c4881cfe3deaf719dafe8b0251200540e0d2d8cf15e",
+      "pet_id": 15,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
+      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
+      "pet_id": 16,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
      },
      {
       "token_hash": "d48e776d8e7f87e0c64b1994bc7dea3657f55673cb7e3c2ddd0fb4b3f577dede",
@@ -27728,6 +29662,18 @@
       "day": "2027-02-02",
       "kind": "care_coins",
       "n": 10
+     },
+     {
+      "pet_id": 14,
+      "day": "2027-02-01",
+      "kind": "game_coins",
+      "n": 12
+     },
+     {
+      "pet_id": 15,
+      "day": "2027-02-01",
+      "kind": "game_coins",
+      "n": 15
      }
     ],
     "inventory": [
@@ -27823,7 +29769,7 @@
       "kind": "referral",
       "from_pet": 12,
       "data": "{\"coins\":100}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 0
      },
      {
@@ -27832,7 +29778,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -27841,7 +29787,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -27850,7 +29796,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -27859,7 +29805,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -27868,7 +29814,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -27877,7 +29823,7 @@
       "kind": "battle",
       "from_pet": 13,
       "data": "{\"won\":true}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 0
      }
     ],
@@ -27923,6 +29869,24 @@
       "pet_id": 10,
       "started_at": 1801423197000,
       "finished_at": 1801423242000
+     },
+     {
+      "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
+      "pet_id": 14,
+      "started_at": 1801423242000,
+      "finished_at": 1801423287000
+     },
+     {
+      "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
+      "pet_id": 15,
+      "started_at": 1801423287000,
+      "finished_at": 1801423332000
+     },
+     {
+      "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
+      "pet_id": 16,
+      "started_at": 1801423332000,
+      "finished_at": 1801423377000
      }
     ],
     "game_scores": [
@@ -27937,6 +29901,18 @@
       "day": "2027-02-01",
       "best": 140,
       "at": 1801423107000
+     },
+     {
+      "pet_id": 14,
+      "day": "2027-02-01",
+      "best": 60,
+      "at": 1801423287000
+     },
+     {
+      "pet_id": 15,
+      "day": "2027-02-01",
+      "best": 75,
+      "at": 1801423332000
      }
     ],
     "reports": [
@@ -27967,49 +29943,49 @@
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 2,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 3,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 4,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 5,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 6,
       "attacker": 13,
       "defender": 10,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      }
     ]
    }
   },
   {
    "label": "ascend E dormant",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 403,
    "setCookie": null,
    "data": {
@@ -28019,7 +29995,7 @@
   },
   {
    "label": "battle E dormant",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 409,
    "setCookie": null,
    "data": {
@@ -28029,7 +30005,7 @@
   },
   {
    "label": "care E wake",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -28050,10 +30026,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "active",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801603242000,
+     "lastCaredAt": 1801603377000,
      "ageHours": 2230,
      "tier": 8,
      "tierName": "Ageless",
@@ -28119,7 +30096,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 67158000,
+     "resetsInMs": 67023000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -28129,7 +30106,7 @@
       {
        "id": 13,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": true
        },
@@ -28141,7 +30118,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -28172,7 +30149,7 @@
   },
   {
    "label": "ascend E ok",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -28193,10 +30170,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "ascended",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801603242000,
+     "lastCaredAt": 1801603377000,
      "ageHours": 2230,
      "tier": 8,
      "tierName": "Ageless",
@@ -28206,7 +30184,7 @@
      "hoursLeftUnattended": 0,
      "rankAgeHours": 2160,
      "careDays": 93,
-     "ascendedAt": 1801603242000,
+     "ascendedAt": 1801603377000,
      "legacyScore": 278,
      "ascension": null,
      "stats": {
@@ -28236,7 +30214,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 67158000,
+     "resetsInMs": 67023000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -28246,7 +30224,7 @@
       {
        "id": 13,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": true
        },
@@ -28258,7 +30236,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -28285,7 +30263,7 @@
   },
   {
    "label": "ascend E again",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 409,
    "setCookie": null,
    "data": {
@@ -28295,7 +30273,7 @@
   },
   {
    "label": "care E after ascension",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 200,
    "setCookie": null,
    "data": {
@@ -28316,10 +30294,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "ascended",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801603242000,
+     "lastCaredAt": 1801603377000,
      "ageHours": 2230,
      "tier": 8,
      "tierName": "Ageless",
@@ -28329,7 +30308,7 @@
      "hoursLeftUnattended": 0,
      "rankAgeHours": 2160,
      "careDays": 93,
-     "ascendedAt": 1801603242000,
+     "ascendedAt": 1801603377000,
      "legacyScore": 278,
      "ascension": null,
      "stats": {
@@ -28359,7 +30338,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 67158000,
+     "resetsInMs": 67023000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -28369,7 +30348,7 @@
       {
        "id": 13,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": true
        },
@@ -28381,7 +30360,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -28408,7 +30387,7 @@
   },
   {
    "label": "palette E after ascension",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 403,
    "setCookie": null,
    "data": {
@@ -28418,7 +30397,7 @@
   },
   {
    "label": "gift to ascended E",
-   "t": 1801603242000,
+   "t": 1801603377000,
    "status": 409,
    "setCookie": null,
    "data": {
@@ -28428,12 +30407,12 @@
   },
   {
    "label": "daily after ascension",
-   "t": 1803043242000,
+   "t": 1803043377000,
    "cron": "0 18 * * *"
   },
   {
    "label": "SNAP daily after ascension",
-   "t": 1803043242000,
+   "t": 1803043377000,
    "snap": {
     "pet": [
      {
@@ -28476,7 +30455,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 2,
@@ -28518,7 +30498,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 3,
@@ -28560,7 +30541,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ID"
      },
      {
       "id": 4,
@@ -28602,7 +30584,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "SG"
      },
      {
       "id": 5,
@@ -28644,7 +30627,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 6,
@@ -28686,7 +30670,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 7,
@@ -28728,7 +30713,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 8,
@@ -28770,7 +30756,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 9,
@@ -28812,7 +30799,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 10,
@@ -28831,8 +30819,8 @@
       "type": "organic",
       "palette": "kenyalang",
       "born_at": 1793574966000,
-      "last_cared_at": 1801603242000,
-      "stats_at": 1801603242000,
+      "last_cared_at": 1801603377000,
+      "stats_at": 1801603377000,
       "energy": 0,
       "health": 0,
       "temperature": 0,
@@ -28844,7 +30832,7 @@
       "hibernation_days_used": 0,
       "open_to_challenge": 1,
       "died_at": null,
-      "ascended_at": 1801603242000,
+      "ascended_at": 1801603377000,
       "legacy_score": 278,
       "legacy_from": null,
       "coins": 1490,
@@ -28854,7 +30842,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 6,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 11,
@@ -28896,7 +30885,8 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "MY"
      },
      {
       "id": 12,
@@ -28915,8 +30905,8 @@
       "type": "robot",
       "palette": "tokay",
       "born_at": 1801422966000,
-      "last_cared_at": 1801513242000,
-      "stats_at": 1801686042000,
+      "last_cared_at": 1801513377000,
+      "stats_at": 1801686177000,
       "energy": 0,
       "health": 0,
       "temperature": 0,
@@ -28927,7 +30917,7 @@
       "last_care_day": "2027-02-01",
       "hibernation_days_used": 0,
       "open_to_challenge": 1,
-      "died_at": 1801686042000,
+      "died_at": 1801686177000,
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
@@ -28938,7 +30928,8 @@
       "referred_by": 10,
       "referral_state": 1,
       "battle_wins": 0,
-      "battle_losses": 0
+      "battle_losses": 0,
+      "country": "ZZ"
      },
      {
       "id": 13,
@@ -28957,8 +30948,8 @@
       "type": "organic",
       "palette": "laut",
       "born_at": 1801422966000,
-      "last_cared_at": 1801513242000,
-      "stats_at": 1801686042000,
+      "last_cared_at": 1801513377000,
+      "stats_at": 1801686177000,
       "energy": 0,
       "health": 0,
       "temperature": 0,
@@ -28969,7 +30960,7 @@
       "last_care_day": "2027-02-01",
       "hibernation_days_used": 0,
       "open_to_challenge": 1,
-      "died_at": 1801686042000,
+      "died_at": 1801686177000,
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
@@ -28980,7 +30971,137 @@
       "referred_by": null,
       "referral_state": 0,
       "battle_wins": 0,
-      "battle_losses": 6
+      "battle_losses": 6,
+      "country": "MY"
+     },
+     {
+      "id": 14,
+      "call_code": "PTK-HANA2026",
+      "code_key": "PTK-HANA2O26",
+      "pin_hash": "6a27d69d3de44360e914081ec8e067e8d278304020696d29b3b899c037d0e78a",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "278c6ec50331a9085ba9fb68",
+      "name": "Hana",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801596042000,
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0,
+      "tier": 2,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": 1801596042000,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 12,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "MY"
+     },
+     {
+      "id": 15,
+      "call_code": "PTK-IVAN2026",
+      "code_key": "PTK-IVAN2O26",
+      "pin_hash": "c9e1b11a4fa0b24a4108aafbbab3a933980535d2a0aa46405370bb9f3edd9d2a",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "b7abd2eb3c1b67ecd35b5750",
+      "name": "Ivan",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801596042000,
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0,
+      "tier": 2,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": 1801596042000,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 15,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "MY"
+     },
+     {
+      "id": 16,
+      "call_code": "PTK-JAYA2026",
+      "code_key": "PTK-JAYA2O26",
+      "pin_hash": "7914457260cd3e46017a9d4bff2f9f9628f8dd2c3baaadb0451d6ca7c2d3b651",
+      "pin_fail_streak": 0,
+      "pin_fail_day": null,
+      "pin_fail_count": 0,
+      "pin_locked_until": 0,
+      "reg_ip": "be9df45974da664977b6163b",
+      "name": "Jaya",
+      "name_status": "ok",
+      "title": null,
+      "title_status": "ok",
+      "type": "organic",
+      "palette": "laut",
+      "born_at": 1801423242000,
+      "last_cared_at": 1801423242000,
+      "stats_at": 1801596042000,
+      "energy": 0,
+      "health": 0,
+      "temperature": 0,
+      "mood": 0,
+      "tier": 2,
+      "tier_paid": 0,
+      "care_days": 0,
+      "last_care_day": null,
+      "hibernation_days_used": 0,
+      "open_to_challenge": 1,
+      "died_at": 1801596042000,
+      "ascended_at": null,
+      "legacy_score": null,
+      "legacy_from": null,
+      "coins": 0,
+      "equipped": "{}",
+      "checkin_day": null,
+      "streak": 0,
+      "referred_by": null,
+      "referral_state": 0,
+      "battle_wins": 0,
+      "battle_losses": 0,
+      "country": "SG"
      }
     ],
     "sessions": [
@@ -28997,10 +31118,34 @@
       "expires_at": 1804014966000
      },
      {
+      "token_hash": "7f81356be05946d5e5ae0da8f2116f202daa8ffbd34c065de53d2421fad032b9",
+      "pet_id": 14,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
+      "token_hash": "80ca19e56e901dd8077b7e4d8c2391ffb9323b49a20563337c2801e8e30716fa",
+      "pet_id": 2,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
       "token_hash": "8bcc9db11a41c94bb1f5de277f93b594c6c043faa2426f4f172adf7729521a65",
       "pet_id": 12,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
+     },
+     {
+      "token_hash": "90d2b839a5942afe2c789c4881cfe3deaf719dafe8b0251200540e0d2d8cf15e",
+      "pet_id": 15,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
+     },
+     {
+      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
+      "pet_id": 16,
+      "created_at": 1801423242000,
+      "expires_at": 1804015242000
      }
     ],
     "push_subscriptions": [],
@@ -29099,7 +31244,7 @@
       "kind": "referral",
       "from_pet": 12,
       "data": "{\"coins\":100}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 0
      },
      {
@@ -29108,7 +31253,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -29117,7 +31262,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -29126,7 +31271,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -29135,7 +31280,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -29144,7 +31289,7 @@
       "kind": "battle",
       "from_pet": 10,
       "data": "{\"won\":false}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 1
      },
      {
@@ -29153,7 +31298,7 @@
       "kind": "battle",
       "from_pet": 13,
       "data": "{\"won\":true}",
-      "at": 1801513242000,
+      "at": 1801513377000,
       "seen": 0
      }
     ],
@@ -29170,6 +31315,18 @@
       "day": "2027-02-01",
       "best": 140,
       "at": 1801423107000
+     },
+     {
+      "pet_id": 14,
+      "day": "2027-02-01",
+      "best": 60,
+      "at": 1801423287000
+     },
+     {
+      "pet_id": 15,
+      "day": "2027-02-01",
+      "best": 75,
+      "at": 1801423332000
      }
     ],
     "reports": [
@@ -29200,49 +31357,49 @@
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 2,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 3,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 4,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 5,
       "attacker": 10,
       "defender": 13,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      },
      {
       "id": 6,
       "attacker": 13,
       "defender": 10,
       "winner": 10,
-      "at": 1801513242000
+      "at": 1801513377000
      }
     ]
    }
   },
   {
    "label": "login E after ascension",
-   "t": 1803043242000,
+   "t": 1803043377000,
    "status": 200,
    "setCookie": "ptk_session=<tok>; Path=/; HttpOnly; Secure; SameSite=Lax",
    "data": {
@@ -29263,10 +31420,11 @@
      "type": "organic",
      "palette": "kenyalang",
      "callCode": "PTK-KINABALU",
+     "country": "MY",
      "status": "ascended",
      "bornAt": 1793574966000,
      "diedAt": null,
-     "lastCaredAt": 1801603242000,
+     "lastCaredAt": 1801603377000,
      "ageHours": 2230,
      "tier": 8,
      "tierName": "Ageless",
@@ -29276,7 +31434,7 @@
      "hoursLeftUnattended": 0,
      "rankAgeHours": 2160,
      "careDays": 93,
-     "ascendedAt": 1801603242000,
+     "ascendedAt": 1801603377000,
      "legacyScore": 278,
      "ascension": null,
      "stats": {
@@ -29306,7 +31464,7 @@
       "battles": 5,
       "pampers": 3
      },
-     "resetsInMs": 9558000,
+     "resetsInMs": 9423000,
      "owned": [
       "bg-rajang",
       "sayap-kelip"
@@ -29316,7 +31474,7 @@
       {
        "id": 13,
        "kind": "battle",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "won": true
        },
@@ -29328,7 +31486,7 @@
       {
        "id": 7,
        "kind": "referral",
-       "at": 1801513242000,
+       "at": 1801513377000,
        "data": {
         "coins": 100
        },
@@ -29542,7 +31700,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 2,
@@ -29584,7 +31743,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 3,
@@ -29626,7 +31786,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "ID"
    },
    {
     "id": 4,
@@ -29668,7 +31829,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "SG"
    },
    {
     "id": 5,
@@ -29710,7 +31872,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 6,
@@ -29752,7 +31915,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 7,
@@ -29794,7 +31958,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 8,
@@ -29836,7 +32001,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 9,
@@ -29878,7 +32044,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 10,
@@ -29897,8 +32064,8 @@
     "type": "organic",
     "palette": "kenyalang",
     "born_at": 1793574966000,
-    "last_cared_at": 1801603242000,
-    "stats_at": 1801603242000,
+    "last_cared_at": 1801603377000,
+    "stats_at": 1801603377000,
     "energy": 0,
     "health": 0,
     "temperature": 0,
@@ -29910,7 +32077,7 @@
     "hibernation_days_used": 0,
     "open_to_challenge": 1,
     "died_at": null,
-    "ascended_at": 1801603242000,
+    "ascended_at": 1801603377000,
     "legacy_score": 278,
     "legacy_from": null,
     "coins": 1490,
@@ -29920,7 +32087,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 6,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 11,
@@ -29962,7 +32130,8 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "MY"
    },
    {
     "id": 12,
@@ -29981,8 +32150,8 @@
     "type": "robot",
     "palette": "tokay",
     "born_at": 1801422966000,
-    "last_cared_at": 1801513242000,
-    "stats_at": 1801686042000,
+    "last_cared_at": 1801513377000,
+    "stats_at": 1801686177000,
     "energy": 0,
     "health": 0,
     "temperature": 0,
@@ -29993,7 +32162,7 @@
     "last_care_day": "2027-02-01",
     "hibernation_days_used": 0,
     "open_to_challenge": 1,
-    "died_at": 1801686042000,
+    "died_at": 1801686177000,
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
@@ -30004,7 +32173,8 @@
     "referred_by": 10,
     "referral_state": 1,
     "battle_wins": 0,
-    "battle_losses": 0
+    "battle_losses": 0,
+    "country": "ZZ"
    },
    {
     "id": 13,
@@ -30023,8 +32193,8 @@
     "type": "organic",
     "palette": "laut",
     "born_at": 1801422966000,
-    "last_cared_at": 1801513242000,
-    "stats_at": 1801686042000,
+    "last_cared_at": 1801513377000,
+    "stats_at": 1801686177000,
     "energy": 0,
     "health": 0,
     "temperature": 0,
@@ -30035,7 +32205,7 @@
     "last_care_day": "2027-02-01",
     "hibernation_days_used": 0,
     "open_to_challenge": 1,
-    "died_at": 1801686042000,
+    "died_at": 1801686177000,
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
@@ -30046,7 +32216,137 @@
     "referred_by": null,
     "referral_state": 0,
     "battle_wins": 0,
-    "battle_losses": 6
+    "battle_losses": 6,
+    "country": "MY"
+   },
+   {
+    "id": 14,
+    "call_code": "PTK-HANA2026",
+    "code_key": "PTK-HANA2O26",
+    "pin_hash": "6a27d69d3de44360e914081ec8e067e8d278304020696d29b3b899c037d0e78a",
+    "pin_fail_streak": 0,
+    "pin_fail_day": null,
+    "pin_fail_count": 0,
+    "pin_locked_until": 0,
+    "reg_ip": "278c6ec50331a9085ba9fb68",
+    "name": "Hana",
+    "name_status": "ok",
+    "title": null,
+    "title_status": "ok",
+    "type": "organic",
+    "palette": "laut",
+    "born_at": 1801423242000,
+    "last_cared_at": 1801423242000,
+    "stats_at": 1801596042000,
+    "energy": 0,
+    "health": 0,
+    "temperature": 0,
+    "mood": 0,
+    "tier": 2,
+    "tier_paid": 0,
+    "care_days": 0,
+    "last_care_day": null,
+    "hibernation_days_used": 0,
+    "open_to_challenge": 1,
+    "died_at": 1801596042000,
+    "ascended_at": null,
+    "legacy_score": null,
+    "legacy_from": null,
+    "coins": 12,
+    "equipped": "{}",
+    "checkin_day": null,
+    "streak": 0,
+    "referred_by": null,
+    "referral_state": 0,
+    "battle_wins": 0,
+    "battle_losses": 0,
+    "country": "MY"
+   },
+   {
+    "id": 15,
+    "call_code": "PTK-IVAN2026",
+    "code_key": "PTK-IVAN2O26",
+    "pin_hash": "c9e1b11a4fa0b24a4108aafbbab3a933980535d2a0aa46405370bb9f3edd9d2a",
+    "pin_fail_streak": 0,
+    "pin_fail_day": null,
+    "pin_fail_count": 0,
+    "pin_locked_until": 0,
+    "reg_ip": "b7abd2eb3c1b67ecd35b5750",
+    "name": "Ivan",
+    "name_status": "ok",
+    "title": null,
+    "title_status": "ok",
+    "type": "organic",
+    "palette": "laut",
+    "born_at": 1801423242000,
+    "last_cared_at": 1801423242000,
+    "stats_at": 1801596042000,
+    "energy": 0,
+    "health": 0,
+    "temperature": 0,
+    "mood": 0,
+    "tier": 2,
+    "tier_paid": 0,
+    "care_days": 0,
+    "last_care_day": null,
+    "hibernation_days_used": 0,
+    "open_to_challenge": 1,
+    "died_at": 1801596042000,
+    "ascended_at": null,
+    "legacy_score": null,
+    "legacy_from": null,
+    "coins": 15,
+    "equipped": "{}",
+    "checkin_day": null,
+    "streak": 0,
+    "referred_by": null,
+    "referral_state": 0,
+    "battle_wins": 0,
+    "battle_losses": 0,
+    "country": "MY"
+   },
+   {
+    "id": 16,
+    "call_code": "PTK-JAYA2026",
+    "code_key": "PTK-JAYA2O26",
+    "pin_hash": "7914457260cd3e46017a9d4bff2f9f9628f8dd2c3baaadb0451d6ca7c2d3b651",
+    "pin_fail_streak": 0,
+    "pin_fail_day": null,
+    "pin_fail_count": 0,
+    "pin_locked_until": 0,
+    "reg_ip": "be9df45974da664977b6163b",
+    "name": "Jaya",
+    "name_status": "ok",
+    "title": null,
+    "title_status": "ok",
+    "type": "organic",
+    "palette": "laut",
+    "born_at": 1801423242000,
+    "last_cared_at": 1801423242000,
+    "stats_at": 1801596042000,
+    "energy": 0,
+    "health": 0,
+    "temperature": 0,
+    "mood": 0,
+    "tier": 2,
+    "tier_paid": 0,
+    "care_days": 0,
+    "last_care_day": null,
+    "hibernation_days_used": 0,
+    "open_to_challenge": 1,
+    "died_at": 1801596042000,
+    "ascended_at": null,
+    "legacy_score": null,
+    "legacy_from": null,
+    "coins": 0,
+    "equipped": "{}",
+    "checkin_day": null,
+    "streak": 0,
+    "referred_by": null,
+    "referral_state": 0,
+    "battle_wins": 0,
+    "battle_losses": 0,
+    "country": "SG"
    }
   ],
   "sessions": [
@@ -30057,22 +32357,46 @@
     "expires_at": 1804014966000
    },
    {
-    "token_hash": "32c19cb957c85b5be5857bd135c3a4f7f4f9d56d7e51bdd9f4ab95f3c74718fa",
-    "pet_id": 10,
-    "created_at": 1803043242000,
-    "expires_at": 1803086442000
-   },
-   {
     "token_hash": "4621744eb357ea19aa031f6aed996bdbf479ba0b405e43520dc2d7d93b539016",
     "pet_id": 11,
     "created_at": 1801422966000,
     "expires_at": 1804014966000
    },
    {
+    "token_hash": "7f81356be05946d5e5ae0da8f2116f202daa8ffbd34c065de53d2421fad032b9",
+    "pet_id": 14,
+    "created_at": 1801423242000,
+    "expires_at": 1804015242000
+   },
+   {
+    "token_hash": "80ca19e56e901dd8077b7e4d8c2391ffb9323b49a20563337c2801e8e30716fa",
+    "pet_id": 2,
+    "created_at": 1801423242000,
+    "expires_at": 1804015242000
+   },
+   {
     "token_hash": "8bcc9db11a41c94bb1f5de277f93b594c6c043faa2426f4f172adf7729521a65",
     "pet_id": 12,
     "created_at": 1801422966000,
     "expires_at": 1804014966000
+   },
+   {
+    "token_hash": "90d2b839a5942afe2c789c4881cfe3deaf719dafe8b0251200540e0d2d8cf15e",
+    "pet_id": 15,
+    "created_at": 1801423242000,
+    "expires_at": 1804015242000
+   },
+   {
+    "token_hash": "aba47e4782d7fe3ff21ceefcfdddbbc2147703a863a4e0eea4aa2b0d64bbfb99",
+    "pet_id": 10,
+    "created_at": 1803043377000,
+    "expires_at": 1803086577000
+   },
+   {
+    "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
+    "pet_id": 16,
+    "created_at": 1801423242000,
+    "expires_at": 1804015242000
    }
   ],
   "push_subscriptions": [],
@@ -30171,7 +32495,7 @@
     "kind": "referral",
     "from_pet": 12,
     "data": "{\"coins\":100}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 0
    },
    {
@@ -30180,7 +32504,7 @@
     "kind": "battle",
     "from_pet": 10,
     "data": "{\"won\":false}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 1
    },
    {
@@ -30189,7 +32513,7 @@
     "kind": "battle",
     "from_pet": 10,
     "data": "{\"won\":false}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 1
    },
    {
@@ -30198,7 +32522,7 @@
     "kind": "battle",
     "from_pet": 10,
     "data": "{\"won\":false}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 1
    },
    {
@@ -30207,7 +32531,7 @@
     "kind": "battle",
     "from_pet": 10,
     "data": "{\"won\":false}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 1
    },
    {
@@ -30216,7 +32540,7 @@
     "kind": "battle",
     "from_pet": 10,
     "data": "{\"won\":false}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 1
    },
    {
@@ -30225,7 +32549,7 @@
     "kind": "battle",
     "from_pet": 13,
     "data": "{\"won\":true}",
-    "at": 1801513242000,
+    "at": 1801513377000,
     "seen": 0
    }
   ],
@@ -30242,6 +32566,18 @@
     "day": "2027-02-01",
     "best": 140,
     "at": 1801423107000
+   },
+   {
+    "pet_id": 14,
+    "day": "2027-02-01",
+    "best": 60,
+    "at": 1801423287000
+   },
+   {
+    "pet_id": 15,
+    "day": "2027-02-01",
+    "best": 75,
+    "at": 1801423332000
    }
   ],
   "reports": [
@@ -30272,42 +32608,42 @@
     "attacker": 10,
     "defender": 13,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    },
    {
     "id": 2,
     "attacker": 10,
     "defender": 13,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    },
    {
     "id": 3,
     "attacker": 10,
     "defender": 13,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    },
    {
     "id": 4,
     "attacker": 10,
     "defender": 13,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    },
    {
     "id": 5,
     "attacker": 10,
     "defender": 13,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    },
    {
     "id": 6,
     "attacker": 13,
     "defender": 10,
     "winner": 10,
-    "at": 1801513242000
+    "at": 1801513377000
    }
   ],
   "rate_limits": [

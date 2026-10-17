@@ -29,13 +29,20 @@ export async function rateLimitHit(env, bucket, expiresAt) {
 // ---------- pets ----------
 // Creates a pet and returns the full row. Throws a unique violation (see isUniqueViolation)
 // when the Call Code (or its look-alike form) is already taken.
-export async function createPet(env, { callCode, codeKey, pinHash, regIp, name, type, palette, now, stats, referredBy }) {
+export async function createPet(env, { callCode, codeKey, pinHash, regIp, name, type, palette, country, now, stats, referredBy }) {
   return env.DB.prepare(
     `INSERT INTO pet (call_code, code_key, pin_hash, reg_ip, name, type, born_at, last_cared_at, stats_at,
-       energy, health, temperature, mood, tier, palette, referred_by)
-     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7, ?7, ?8, ?9, ?10, ?11, 0, ?12, ?13) RETURNING *`
+       energy, health, temperature, mood, tier, palette, referred_by, country)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7, ?7, ?8, ?9, ?10, ?11, 0, ?12, ?13, ?14) RETURNING *`
   ).bind(callCode, codeKey, pinHash, regIp, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood,
-    palette, referredBy ?? null).first();
+    palette, referredBy ?? null, country).first();
+}
+
+// The one-time country choice for a pet that hatched before countries existed. Returns true when it was
+// set now, false when the pet already has a country (locked) or does not exist.
+export async function setCountryOnce(env, petId, country) {
+  const r = await env.DB.prepare('UPDATE pet SET country = ?1 WHERE id = ?2 AND country IS NULL').bind(country, petId).run();
+  return (r.meta?.changes ?? 0) > 0;
 }
 
 export async function petByCodeKey(env, codeKey) {
@@ -265,28 +272,79 @@ export async function saveScore(env, { petId, day, score, now }) {
   return { best: best.results[0]?.best ?? 0, allTime: all.results[0]?.best ?? 0 };
 }
 
-const BOARD_COLS = 'p.call_code, p.name, p.name_status, p.type, p.palette, p.tier, p.died_at, p.ascended_at';
+const BOARD_COLS = 'p.call_code, p.name, p.name_status, p.type, p.palette, p.tier, p.died_at, p.ascended_at, p.born_at, p.country';
+
+// How a board can be ordered. "age" lists the oldest Peetako first; "recent" the latest score first.
+const BOARD_SORTS = {
+  score: 'score DESC, at ASC',
+  age: 'born_at ASC, score DESC, at ASC',
+  recent: 'last_at DESC, score DESC',
+};
+export const BOARD_SORT_KEYS = Object.keys(BOARD_SORTS);
 
 // Top scores for one day (day set) or all time (day null), best per pet, ties to the earlier score.
-export async function leaderboard(env, { day, limit }) {
+// Optionally only pets of one country (an ISO code), in one of the BOARD_SORTS orders.
+export async function leaderboard(env, { day, country = null, sort = 'score', limit }) {
+  const args = [day ?? null, limit];
+  let cw = '';
+  if (country) { args.push(country); cw = 'AND p.country = ?3'; }
+  const order = BOARD_SORTS[sort] || BOARD_SORTS.score;
   const sql = day
-    ? `SELECT ${BOARD_COLS}, s.best AS score FROM game_scores s JOIN pet p ON p.id = s.pet_id
-        WHERE s.day = ?1 ORDER BY s.best DESC, s.at ASC LIMIT ?2`
-    : `SELECT ${BOARD_COLS}, b.score FROM (SELECT pet_id, MAX(best) AS score, MIN(at) AS at FROM game_scores GROUP BY pet_id) b
-         JOIN pet p ON p.id = b.pet_id ORDER BY b.score DESC, b.at ASC LIMIT ?2`;
-  const { results } = await env.DB.prepare(sql).bind(day ?? null, limit).all();
+    ? `SELECT ${BOARD_COLS}, s.best AS score, s.at AS at, s.at AS last_at FROM game_scores s JOIN pet p ON p.id = s.pet_id
+        WHERE s.day = ?1 ${cw} ORDER BY ${order} LIMIT ?2`
+    : `SELECT ${BOARD_COLS}, b.score, b.at, b.last_at
+         FROM (SELECT pet_id, MAX(best) AS score, MIN(at) AS at, MAX(at) AS last_at FROM game_scores GROUP BY pet_id) b
+         JOIN pet p ON p.id = b.pet_id WHERE 1 = 1 ${cw} ORDER BY ${order} LIMIT ?2`;
+  const { results } = await env.DB.prepare(sql).bind(...args).all();
   return results;
 }
 
-// A pet's best and rank (1 = top) for a day or all time; null when it has no score there.
-export async function rankOf(env, { petId, day }) {
-  const sql = day
-    ? `SELECT s.best AS score, (SELECT COUNT(*) FROM game_scores o WHERE o.day = ?2 AND (o.best > s.best OR (o.best = s.best AND o.at < s.at))) + 1 AS rank
-         FROM game_scores s WHERE s.pet_id = ?1 AND s.day = ?2`
-    : `WITH b AS (SELECT pet_id, MAX(best) AS score FROM game_scores GROUP BY pet_id)
-       SELECT score, (SELECT COUNT(*) FROM b o WHERE o.score > b.score) + 1 AS rank FROM b WHERE pet_id = ?1`;
-  const stmt = day ? env.DB.prepare(sql).bind(petId, day) : env.DB.prepare(sql).bind(petId);
-  return (await stmt.first()) || null;
+// A pet's best and rank (1 = top) for a day or all time, optionally among one country's pets only;
+// null when it has no score there.
+export async function rankOf(env, { petId, day, country = null }) {
+  if (day) {
+    const cw = country ? 'AND op.country = ?3' : '';
+    const stmt = env.DB.prepare(
+      `SELECT s.best AS score,
+         (SELECT COUNT(*) FROM game_scores o JOIN pet op ON op.id = o.pet_id
+            WHERE o.day = ?2 ${cw} AND (o.best > s.best OR (o.best = s.best AND o.at < s.at))) + 1 AS rank
+       FROM game_scores s WHERE s.pet_id = ?1 AND s.day = ?2`
+    );
+    return (await (country ? stmt.bind(petId, day, country) : stmt.bind(petId, day)).first()) || null;
+  }
+  const cw = country ? 'JOIN pet gp ON gp.id = g.pet_id WHERE gp.country = ?2' : '';
+  const stmt = env.DB.prepare(
+    `WITH b AS (SELECT g.pet_id, MAX(g.best) AS score FROM game_scores g ${cw} GROUP BY g.pet_id)
+     SELECT score, (SELECT COUNT(*) FROM b o WHERE o.score > b.score) + 1 AS rank FROM b WHERE pet_id = ?1`
+  );
+  return (await (country ? stmt.bind(petId, country) : stmt.bind(petId)).first()) || null;
+}
+
+// Country-to-country board: the MEDIAN of each player's best score (fair to small and large countries alike),
+// listing only countries with at least minPlayers players. Players who prefer not to say are left out.
+// Median = the middle score, or the average of the two middle scores when the count is even.
+export async function countryBoard(env, { day, minPlayers, limit }) {
+  const pool = day
+    ? `SELECT p.country AS c, s.best AS v FROM game_scores s JOIN pet p ON p.id = s.pet_id
+        WHERE s.day = ?1 AND p.country IS NOT NULL AND p.country <> 'ZZ'`
+    : `SELECT p.country AS c, MAX(g.best) AS v FROM game_scores g JOIN pet p ON p.id = g.pet_id
+        WHERE ?1 IS NULL AND p.country IS NOT NULL AND p.country <> 'ZZ' GROUP BY g.pet_id`;
+  const { results } = await env.DB.prepare(
+    `WITH pool AS (${pool}),
+     ranked AS (SELECT c, v, ROW_NUMBER() OVER (PARTITION BY c ORDER BY v) AS rn, COUNT(*) OVER (PARTITION BY c) AS n FROM pool)
+     SELECT c AS country, n AS players, AVG(v) AS median FROM ranked
+       WHERE rn IN ((n + 1) / 2, (n + 2) / 2) GROUP BY c, n HAVING n >= ?2
+       ORDER BY median DESC, players DESC, c ASC LIMIT ?3`
+  ).bind(day ?? null, minPlayers, limit).all();
+  return results;
+}
+
+// How many players of one country have a score in the period (explains why a country is not listed yet).
+export async function countryPlayerCount(env, { day, country }) {
+  const row = day
+    ? await env.DB.prepare('SELECT COUNT(*) AS n FROM game_scores s JOIN pet p ON p.id = s.pet_id WHERE s.day = ?1 AND p.country = ?2').bind(day, country).first()
+    : await env.DB.prepare('SELECT COUNT(DISTINCT g.pet_id) AS n FROM game_scores g JOIN pet p ON p.id = g.pet_id WHERE p.country = ?1').bind(country).first();
+  return row?.n ?? 0;
 }
 
 export async function bestScoreOf(env, petId) {

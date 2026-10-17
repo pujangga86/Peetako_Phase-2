@@ -6,6 +6,7 @@ import { skyAt, localMinute } from './sky.js';
 import { moodOf, MOOD_LABEL } from './mood.js';
 import { showArena } from './arena.js';
 import { itemName, PRICES, shownName, wearOf } from './social.js';
+import { countryHtml } from './flags.js';
 
 const $ = (s) => document.querySelector(s);
 const root = $('#public');
@@ -58,6 +59,7 @@ function render(p, best) {
         <h1 class="pub-name">${esc(shownName(p))}</h1>
         ${p.title ? `<p class="pub-title">“${esc(p.title)}”</p>` : ''}
         <p class="px" style="font-size:9px">${esc(p.callCode)} · T${p.tier} ${esc(p.tierName)}</p>
+        ${p.country ? `<p class="pub-country">${countryHtml(p.country)}</p>` : ''}
       </div>
       <div class="pub-facts">
         <div class="fact"><b>Age</b><span>${Math.floor(p.ageHours / 24)} days</span></div>

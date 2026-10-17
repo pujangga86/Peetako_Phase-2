@@ -5,6 +5,7 @@ import { drawPet, drawItem } from './art.js';
 import { moodOf } from './mood.js';
 import { playKelip } from './kelip.js';
 import { showArena } from './arena.js';
+import { countryHtml, countryName, mountCountryPicker, sortedCountries } from './flags.js';
 
 // Names for items in news and gift lists (the shop gets the full catalogue from the server).
 export const ITEM_NAMES = {
@@ -24,7 +25,7 @@ export const shownName = (p) => (p.name ? p.name : 'Name under review');
 export const wearOf = (p) => ({ head: p.equipped?.head, neck: p.equipped?.neck, back: p.equipped?.back });
 export const petSvg = (p, mood) => drawPet({ type: p.type, tier: p.tier, status: p.status, pal: p.palette, mood: mood || moodOf(p).face, wear: wearOf(p) });
 
-export function initSocial({ $, api, toast, Sound, getPet, getMe, onPet, onMe }) {
+export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, onPet, onMe }) {
   const dlg = (id) => $(id);
   const pet = () => getPet();
   const me = () => getMe() || { coins: 0, today: {}, caps: {}, owned: [] };
@@ -236,22 +237,118 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, onPet, onMe })
   }
 
   // ---------- leaderboards ----------
-  async function openBoard(period = 'day') {
+  // Four views: Global, My country, Other country (any ISO country, sortable) and Countries (country against
+  // country by the median of each player's best score). Every row shows the player's country and flag.
+  const boardUi = { countriesReady: false, seq: 0 };
+  const val = (name) => document.querySelector(`input[name="${name}"]:checked`)?.value;
+  const fmtAge = (h) => (h < 24 ? `${h}h old` : `${Math.floor(h / 24)}d old`);
+  const SORT_NOTE = { age: 'Oldest Peetako first', recent: 'Latest score first' };
+
+  async function fillBoardCountries() {
+    if (boardUi.countriesReady) return true;
+    const codes = await getCountries();
+    if (!codes) return false;
+    $('#board-country').innerHTML = '<option value="">Choose a country…</option>'
+      + sortedCountries(codes).map((c) => `<option value="${c}">${esc(countryName(c))}</option>`).join('');
+    boardUi.countriesReady = true;
+    return true;
+  }
+  async function openBoard(period = 'day', scope = 'global') {
     Sound.play('tap');
     const d = dlg('#board-dialog');
     for (const r of document.querySelectorAll('input[name="board"]')) r.checked = r.value === period;
-    $('#board-list').innerHTML = '<p>Loading…</p>';
+    for (const r of document.querySelectorAll('input[name="bscope"]')) r.checked = r.value === scope;
     if (!d.open) d.showModal();
+    renderBoard();
+  }
+  const periodNote = (period, resetsInMs) => (period === 'day' ? `Today (Malaysia time) · resets in ${fmtReset(resetsInMs)}` : 'Best score ever, one per Peetako');
+
+  async function renderBoard() {
+    const seq = ++boardUi.seq;
+    const period = val('board') || 'day';
+    const scope = val('bscope') || 'global';
+    const sort = $('#board-sort').value;
+    const list = $('#board-list');
+    const note = $('#board-note');
+    $('#board-country-row').hidden = scope !== 'country';
+    $('#board-sort-row').hidden = scope === 'countries';
+    list.innerHTML = '<p>Loading…</p>';
     try {
-      const b = await api(`/api/leaderboard?period=${period}`);
+      let url;
+      if (scope === 'countries') {
+        url = `/api/leaderboard/countries?period=${period}`;
+      } else {
+        const qs = new URLSearchParams({ period, scope, sort });
+        if (scope === 'country') {
+          if (!(await fillBoardCountries())) throw new Error('Could not load the country list. Check your connection.');
+          const cc = $('#board-country').value;
+          if (!cc) { note.textContent = ''; list.innerHTML = '<p>Choose a country above to see its leaderboard.</p>'; return; }
+          qs.set('country', cc);
+        }
+        url = `/api/leaderboard?${qs}`;
+      }
+      const b = await api(url);
+      if (seq !== boardUi.seq) return; // a newer choice replaced this one
+      if (scope === 'countries') { renderCountryBoard(b); return; }
       const mine = pet()?.callCode;
-      $('#board-note').textContent = period === 'day' ? `Today (Malaysia time) · resets in ${fmtReset(b.resetsInMs)}` : 'Best score ever, one per Peetako';
-      $('#board-list').innerHTML = b.rows.length ? `<ol class="board">${b.rows.map((r) => `
+      const where = b.country ? `${countryName(b.country)} · ` : '';
+      note.textContent = `${where}${periodNote(period, b.resetsInMs)}${SORT_NOTE[b.sort] ? ` · ${SORT_NOTE[b.sort]}` : ''}`;
+      list.innerHTML = b.rows.length ? `<ol class="board">${b.rows.map((r) => `
         <li class="${r.callCode === mine ? 'me' : ''}"><span class="px rank">${r.rank}</span>
-          <span class="who"><a href="/p/${encodeURIComponent(r.callCode)}">${esc(r.name || 'Name under review')}</a><small>${esc(r.callCode)} · T${r.tier}</small></span>
+          <span class="who"><a href="/p/${encodeURIComponent(r.callCode)}">${esc(r.name || 'Name under review')}</a><small>${countryHtml(r.country)} · ${esc(r.callCode)} · T${r.tier}${b.sort === 'age' ? ` · ${fmtAge(r.ageHours)}` : ''}</small></span>
           <span class="px score">${r.score}</span></li>`).join('')}</ol>${b.me && b.me.rank > b.rows.length ? `<p>You: #${b.me.rank} with ${b.me.score}</p>` : ''}`
-        : '<p>No scores yet. Be the first to catch some fireflies!</p>';
-    } catch (e) { $('#board-list').innerHTML = `<p class="error">${esc(e.message)}</p>`; }
+        : `<p>${b.country ? `No scores from ${esc(countryName(b.country))} yet.` : 'No scores yet.'} Be the first to catch some fireflies!</p>`;
+    } catch (e) {
+      if (seq !== boardUi.seq) return;
+      note.textContent = '';
+      const ask = e.code === 'no_country' && pet() && !pet().country ? '<p><button id="board-set-country" class="rbtn small" type="button">Choose my country</button></p>' : '';
+      list.innerHTML = `<p class="error">${esc(e.message)}</p>${ask}`;
+    }
+  }
+
+  function renderCountryBoard(b) {
+    const mineCountry = b.mine?.country;
+    $('#board-note').textContent = `${periodNote(b.period, b.resetsInMs)} · median of each player’s best score · ${b.minPlayers}+ players needed`;
+    const pending = b.mine && !b.mine.listed
+      ? `<p class="hint">${countryHtml(b.mine.country)} has ${b.mine.players} player${b.mine.players === 1 ? '' : 's'} with a score so far; it needs ${b.minPlayers} to be listed.</p>` : '';
+    $('#board-list').innerHTML = b.rows.length ? `<ol class="board">${b.rows.map((r) => `
+        <li class="${r.country === mineCountry ? 'me' : ''}"><span class="px rank">${r.rank}</span>
+          <span class="who"><span class="cn">${countryHtml(r.country)}</span><small>${r.players} players</small></span>
+          <span class="px score">${r.median}</span></li>`).join('')}</ol>${pending}`
+      : `<p>No country has ${b.minPlayers} players with a score yet. Invite friends to play!</p>${pending}`;
+  }
+
+  // ---------- country (one-time choice for a Peetako that hatched before countries existed) ----------
+  let countryPicker = null;
+  async function openCountry() {
+    const codes = await getCountries();
+    if (!codes) { toast('Could not load the country list. Check your connection.'); return; }
+    if (!countryPicker) countryPicker = mountCountryPicker($('#country-pick'), { codes, label: 'Your country' });
+    $('#country-error').textContent = '';
+    dlg('#country-dialog').showModal();
+  }
+  async function saveCountry() {
+    const c = countryPicker?.value();
+    if (!c) { $('#country-error').textContent = 'Choose your country, or “Prefer not to say”.'; return; }
+    const btn = $('#country-save');
+    btn.disabled = true;
+    try {
+      const d = await api('/api/country', { country: c });
+      onPet(d.pet); onMe(d.me);
+      dlg('#country-dialog').close();
+      Sound.play('coin');
+      toast(c === 'ZZ' ? 'Saved: your country stays private.' : `Saved: ${countryName(c)}.`);
+      if ($('#board-dialog').open) renderBoard();
+    } catch (e) { $('#country-error').textContent = e.message; Sound.play('error'); } finally { btn.disabled = false; }
+  }
+  // Asked once per visit, and only when the Peetako has no country yet. "Maybe later" just closes it.
+  function askCountry(p) {
+    if (!p || p.country) return;
+    try {
+      if (sessionStorage.getItem('peetako_country_asked')) return;
+      sessionStorage.setItem('peetako_country_asked', '1');
+    } catch { /* storage blocked: ask every time */ }
+    setTimeout(openCountry, 900);
   }
 
   // ---------- share and invite ----------
@@ -339,7 +436,11 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, onPet, onMe })
   $('#visit-form').addEventListener('submit', (e) => { e.preventDefault(); const c = $('#visit-code').value.trim(); if (c) visit(c); });
   $('#visit-recent').addEventListener('click', (e) => { const b = e.target.closest('[data-code]'); if (b) { $('#visit-code').value = b.dataset.code; visit(b.dataset.code); } });
   $('#visit-card').addEventListener('click', visitClick);
-  for (const r of document.querySelectorAll('input[name="board"]')) r.addEventListener('change', (e) => openBoard(e.target.value));
+  for (const r of document.querySelectorAll('input[name="board"], input[name="bscope"]')) r.addEventListener('change', () => { Sound.play('tap'); renderBoard(); });
+  $('#board-country').addEventListener('change', renderBoard);
+  $('#board-sort').addEventListener('change', renderBoard);
+  $('#board-list').addEventListener('click', (e) => { if (e.target.closest('#board-set-country')) openCountry(); });
+  $('#country-save').addEventListener('click', saveCountry);
   $('#share-body').addEventListener('click', shareClick);
   $('#result-again').addEventListener('click', () => { dlg('#result-dialog').close(); playGame(); });
   $('#result-board').addEventListener('click', () => { dlg('#result-dialog').close(); openBoard('day'); });
@@ -349,5 +450,5 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, onPet, onMe })
   $('#menu-set-title').addEventListener('click', () => { $('#menu').close(); openTitle(); });
   $('#menu-invite').addEventListener('click', () => { $('#menu').close(); openShare('invite'); });
 
-  return { showNews, openFriends, openShop };
+  return { showNews, openFriends, openShop, askCountry };
 }

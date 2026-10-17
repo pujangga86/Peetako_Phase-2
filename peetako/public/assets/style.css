@@ -619,3 +619,24 @@ body.kelip-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .soc.gold, .flicker { animation: none; }
 }
+
+/* =====================================================================================================
+   Countries (17 Oct 2026): flags, the country picker, leaderboard views
+   ===================================================================================================== */
+.flag { width: 24px; height: 18px; object-fit: cover; vertical-align: -3px; border: 1px solid rgba(0, 0, 0, .35); border-radius: 2px; background: #fff; }
+.flag.emoji, .flag.globe { width: auto; height: auto; border: 0; background: none; font-size: 18px; line-height: 1; vertical-align: -2px; }
+.cp { display: grid; gap: 0; }
+.cp-search, .cp-select, .sheet input.cp-search { width: 100%; min-height: 44px; box-sizing: border-box; font: 400 22px 'VT323', monospace; border: 3px solid var(--ink); border-radius: 0; background: #fff; color: var(--ink); padding: 4px 10px; }
+.cp-select { margin-top: 6px; }
+.cp-search:focus, .cp-select:focus { outline: 3px solid var(--gold); outline-offset: 2px; }
+.cp-suggest { margin-top: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cp-suggest:empty { display: none; }
+.cp-preview { margin: 6px 0 0; font: 400 22px/1.2 'VT323', monospace; min-height: 1.2em; }
+.seg.grid4 { grid-template-columns: 1fr 1fr; margin-bottom: 8px; }
+.seg.grid4 label:nth-child(3) span { border-left: 0; }
+.seg.grid4 label:nth-child(n + 3) span { border-top: 3px solid var(--ink); }
+.board-filters .field { margin: 8px 0 0; }
+.board .who .cn { font-size: 20px; }
+.board .who small .flag { vertical-align: -3px; }
+.pv-country { display: inline-flex; align-items: center; gap: 6px; font-size: 20px; color: var(--card); }
+.pub-country { margin: 4px 0 0; font-size: 20px; }

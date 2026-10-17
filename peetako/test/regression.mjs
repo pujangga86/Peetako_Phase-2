@@ -11,6 +11,8 @@
 // Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes; the palette is now chosen once at hatch and locked.
 // Phase 2C rewrote it again: chosen Call Codes and 6-digit PINs (no Secret Key), coins, shop, gifts, Pamper, battles,
 // Tangkap Kelip-kelip and leaderboards, Report and admin review, invites, the public pet page.
+// Country (17 Oct 2026): chosen once at hatch from the ISO 3166-1 list, locked, country filters and sorting on the
+// leaderboard, and a country-to-country board using the median (at least 3 players per country).
 // Nothing here touches the real database; it needs no secrets and no network.
 
 import { execFileSync } from 'node:child_process';
@@ -120,7 +122,10 @@ async function cron(label, expr) {
 const sub = (i, host = 'fcm.googleapis.com') => ({ endpoint: `https://${host}/send/device-${i}`, keys: { p256dh: devices[i].pub, auth: devices[i].auth } });
 
 // ---- scenario ----
-const reg = (name, type, palette, code, pin = '482916', extra = {}) => ({ name, type, palette, code, pin, ...extra });
+const reg = (name, type, palette, code, pin = '482916', extra = {}) => ({ name, type, palette, code, pin, country: 'MY', ...extra });
+const expect = (label, actual, expected) => {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`expectation failed: ${label}\n  expected ${JSON.stringify(expected)}\n  actual   ${JSON.stringify(actual)}`);
+};
 
 async function scenario() {
   await call('config', 'GET', '/api/config');
@@ -142,12 +147,16 @@ async function scenario() {
   await call('register blocked code', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'SEX123'), ip: '2.2.2.2' });
   await call('register weak pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '123456'), ip: '2.2.2.2' });
   await call('register short pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '4821'), ip: '2.2.2.2' });
+  await call('register no country', 'POST', '/api/register', { body: { ...reg('NoLand', 'organic', 'laut', 'NOLAND1'), country: undefined }, ip: '2.2.2.2' });
+  await call('register country XK not ISO', 'POST', '/api/register', { body: reg('NoLand', 'organic', 'laut', 'NOLAND1', '482916', { country: 'XK' }), ip: '2.2.2.2' });
+  await call('register country XX unknown', 'POST', '/api/register', { body: reg('NoLand', 'organic', 'laut', 'NOLAND1', '482916', { country: 'XX' }), ip: '2.2.2.2' });
+  await call('register country too long', 'POST', '/api/register', { body: reg('NoLand', 'organic', 'laut', 'NOLAND1', '482916', { country: 'MYS' }), ip: '2.2.2.2' });
   await call('register A', 'POST', '/api/register', { body: reg('Gecko One', 'organic', 'puakumbu', 'PTK-TOKAY88', '482916', { remember: true }), who: 'A', ip: '2.2.2.2' });
   await call('register look-alike taken', 'POST', '/api/register', { body: reg('Copycat', 'organic', 'hijau', 't0kay88'), ip: '2.2.2.2' });
   await call('code check taken', 'GET', '/api/code/check?code=PTK-TOKAY88', { ip: '2.2.2.2' });
   await call('register B', 'POST', '/api/register', { body: reg('Robo Two', 'robot', 'laut', 'rimba21', '730154', { remember: false }), who: 'B', ip: '3.3.3.3' });
-  await call('register C', 'POST', '/api/register', { body: reg('Cee', 'organic', 'hijau', 'ptk bukitku', '664201', { remember: true }), who: 'C', ip: '4.4.4.4' });
-  await call('register D', 'POST', '/api/register', { body: reg('Dee', 'robot', 'tokay', 'DEEROBOT', '901347', { remember: true }), who: 'D', ip: '5.5.5.5' });
+  await call('register C', 'POST', '/api/register', { body: reg('Cee', 'organic', 'hijau', 'ptk bukitku', '664201', { remember: true, country: 'id' }), who: 'C', ip: '4.4.4.4' });
+  await call('register D', 'POST', '/api/register', { body: reg('Dee', 'robot', 'tokay', 'DEEROBOT', '901347', { remember: true, country: 'SG' }), who: 'D', ip: '5.5.5.5' });
   for (let i = 0; i < 6; i++) await call('register burst ' + i, 'POST', '/api/register', { body: reg('Burst' + i, 'organic', 'laut', 'BURST00' + i), who: 'burst' + i, ip: '9.9.9.9' }); // 6th is rate limited
 
   T += 1 * H;
@@ -237,7 +246,7 @@ async function scenario() {
   await call('buy E backdrop', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'bg-rajang' }, ip: '8.8.8.8' });
   await call('buy E wings again', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'sayap-kelip' }, ip: '8.8.8.8' });
   await call('register F self-invite', 'POST', '/api/register', { body: reg('Fifi', 'robot', 'tokay', 'FIFI2026', '274615', { ref: 'PTK-KINABALU', remember: true }), who: 'F0', ip: '8.8.8.8' }); // same network: no invite
-  await call('register F invited', 'POST', '/api/register', { body: reg('Fafa', 'robot', 'tokay', 'FAFA2026', '274615', { ref: 'kinabalu', remember: true }), who: 'F', ip: '10.0.0.1' });
+  await call('register F invited', 'POST', '/api/register', { body: reg('Fafa', 'robot', 'tokay', 'FAFA2026', '274615', { ref: 'kinabalu', remember: true, country: 'ZZ' }), who: 'F', ip: '10.0.0.1' });
   await call('register G', 'POST', '/api/register', { body: reg('Gigi', 'organic', 'laut', 'GIGIPTK', '583920', { remember: true }), who: 'G', ip: '10.0.0.2' });
   await call('care F early', 'POST', '/api/care', { who: 'F', body: { action: 'charge' }, ip: '10.0.0.1' });
   await call('visit G from E', 'GET', '/api/visit?code=GIGIPTK', { who: 'E', ip: '8.8.8.8' });
@@ -291,6 +300,48 @@ async function scenario() {
   await call('leaderboard day', 'GET', '/api/leaderboard', { who: 'E', ip: '8.8.8.8' });
   await call('leaderboard all', 'GET', '/api/leaderboard?period=all', { ip: '11.0.0.1' });
 
+  // Country: one-time choice for a pet that hatched before countries (country not set), filters, sorting, median board
+  await call('login B for board', 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '730154', remember: true }, who: 'Bg', ip: '3.3.3.3' });
+  await env.DB.prepare("UPDATE pet SET country = NULL WHERE call_code = 'PTK-RIMBA21'").run();
+  await call('leaderboard mine without country', 'GET', '/api/leaderboard?scope=mine', { who: 'Bg', ip: '3.3.3.3' });
+  await call('country B bad', 'POST', '/api/country', { who: 'Bg', body: { country: 'XK' }, ip: '3.3.3.3' });
+  await call('country B no session', 'POST', '/api/country', { body: { country: 'MY' }, ip: '3.3.3.3' });
+  await call('country B set once', 'POST', '/api/country', { who: 'Bg', body: { country: 'my' }, ip: '3.3.3.3' });
+  await call('country B locked', 'POST', '/api/country', { who: 'Bg', body: { country: 'SG' }, ip: '3.3.3.3' });
+  await call('country E locked', 'POST', '/api/country', { who: 'E', body: { country: 'SG' }, ip: '8.8.8.8' });
+  await call('leaderboard mine undisclosed F', 'GET', '/api/leaderboard?scope=mine', { who: 'F', ip: '10.0.0.1' });
+  await call('leaderboard mine no session', 'GET', '/api/leaderboard?scope=mine', { ip: '11.0.0.1' });
+  await call('leaderboard bad scope', 'GET', '/api/leaderboard?scope=planet', { ip: '11.0.0.1' });
+  await call('leaderboard bad country', 'GET', '/api/leaderboard?scope=country&country=XK', { ip: '11.0.0.1' });
+  await call('leaderboard country missing', 'GET', '/api/leaderboard?scope=country', { ip: '11.0.0.1' });
+  await call('leaderboard bad sort', 'GET', '/api/leaderboard?sort=luck', { ip: '11.0.0.1' });
+  await call('leaderboard mine E', 'GET', '/api/leaderboard?scope=mine&period=all', { who: 'E', ip: '8.8.8.8' });
+  await call('leaderboard country SG empty', 'GET', '/api/leaderboard?scope=country&country=sg', { ip: '11.0.0.1' });
+  await call('countries board (E and G only)', 'GET', '/api/leaderboard/countries?period=all', { who: 'E', ip: '8.8.8.8' });
+  for (const [who, name, code, ip, country] of [['H', 'Hana', 'HANA2026', '13.0.0.1', 'MY'], ['I', 'Ivan', 'IVAN2026', '13.0.0.2', 'MY'], ['J', 'Jaya', 'JAYA2026', '13.0.0.3', 'SG']]) {
+    await call('register ' + who, 'POST', '/api/register', { body: reg(name, 'organic', 'laut', code, '604815', { remember: true, country }), who, ip });
+  }
+  const play = async (who, ip, score) => {
+    const r = await call('game start ' + who, 'POST', '/api/game/start', { who, ip });
+    T += 45_000;
+    await call('game finish ' + who, 'POST', '/api/game/finish', { who, body: { run: r.run, score }, ip });
+  };
+  await play('H', '13.0.0.1', 60);
+  const third = await call('countries board all, 3 players', 'GET', '/api/leaderboard/countries?period=all', { who: 'E', ip: '8.8.8.8' });
+  expect('median of an odd count', third.rows, [{ rank: 1, country: 'MY', players: 3, median: 120 }]);
+  await play('I', '13.0.0.2', 75);
+  await play('J', '13.0.0.3', 200);
+  const fourth = await call('countries board all, 4 players', 'GET', '/api/leaderboard/countries?period=all', { who: 'E', ip: '8.8.8.8' });
+  expect('median of an even count (SG has 1 player, not listed)', fourth.rows, [{ rank: 1, country: 'MY', players: 4, median: 97.5 }]);
+  await call('leaderboard mine H today', 'GET', '/api/leaderboard?scope=mine', { who: 'H', ip: '13.0.0.1' }); // rank among today's MY players
+  await call('leaderboard country SG today', 'GET', '/api/leaderboard?scope=country&country=SG', { who: 'J', ip: '13.0.0.3' });
+  await call('countries board day', 'GET', '/api/leaderboard/countries', { ip: '11.0.0.1' });
+  await call('leaderboard country MY by score', 'GET', '/api/leaderboard?scope=country&country=MY&period=all', { who: 'Bg', ip: '3.3.3.3' });
+  await call('leaderboard country MY by age', 'GET', '/api/leaderboard?scope=country&country=MY&period=all&sort=age', { ip: '11.0.0.1' });
+  await call('leaderboard country MY recent', 'GET', '/api/leaderboard?scope=country&country=MY&period=all&sort=recent', { ip: '11.0.0.1' });
+  await call('leaderboard global recent', 'GET', '/api/leaderboard?sort=recent', { ip: '11.0.0.1' });
+  await call('public B shows country', 'GET', '/api/public?code=RIMBA21', { ip: '11.0.0.1' });
+
   // Invite reward after F's first day; battles once everyone has hatched
   T += 25 * H;
   await call('care E next day', 'POST', '/api/care', { who: 'E', body: { action: 'feed' }, ip: '8.8.8.8' });
@@ -319,9 +370,25 @@ async function scenario() {
   await call('login E after ascension', 'POST', '/api/login', { body: { code: 'KINABALU', pin: '318275', remember: false }, who: 'E', ip: '8.8.8.8' });
 }
 
+// ---- the country list: ISO 3166-1 only, every entry has a name and a local flag ----
+async function checkCountries() {
+  const c = await import(pathToFileURL(path.join(SRC, 'countries.js')).href);
+  const names = new Intl.DisplayNames(['en'], { type: 'region' });
+  expect('249 ISO 3166-1 alpha-2 codes', c.COUNTRIES.length, 249);
+  expect('codes are unique capitals', new Set(c.COUNTRIES).size === 249 && c.COUNTRIES.every((x) => /^[A-Z]{2}$/.test(x)), true);
+  const noFlag = c.COUNTRIES.filter((x) => !existsSync(path.join(ROOT, 'public', 'assets', 'flags', x.toLowerCase() + '.svg')));
+  expect('every country has a local flag file', noFlag, []);
+  expect('every country has a display name', c.COUNTRIES.filter((x) => !names.of(x) || names.of(x) === x), []);
+  expect('XK, XX, T1 and ZZ are not countries', ['XK', 'XX', 'T1', 'ZZ'].filter((x) => c.COUNTRIES.includes(x)), []);
+  expect('choice accepts ISO, ZZ and lowercase', [c.countryChoice('my'), c.countryChoice(' ZZ '), c.countryChoice('XK'), c.countryChoice('MYS'), c.countryChoice(null)], ['MY', 'ZZ', null, null, null]);
+  expect('suggestion ignores non-countries', [c.suggestedCountry({ cf: { country: 'ID' } }), c.suggestedCountry({ cf: { country: 'T1' } }), c.suggestedCountry({ cf: { country: 'XX' } }), c.suggestedCountry({})], ['ID', null, null, null]);
+  expect('threshold is 3 players', c.MIN_COUNTRY_PLAYERS, 3);
+}
+
 // ---- run, mask throwaway keys, compare ----
 let failed = false;
 try {
+  await checkCountries();
   await scenario();
   const dump = {};
   for (const [t, order] of [...TABLES, ['rate_limits', 'bucket']]) {

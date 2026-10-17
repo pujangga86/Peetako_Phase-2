@@ -152,6 +152,7 @@ export function view(pet, now) {
     type: pet.type,
     palette: PALETTES.includes(pet.palette) ? pet.palette : DEFAULT_PALETTE,
     callCode: pet.call_code,
+    country: pet.country || null,                  // ISO code, 'ZZ' = prefers not to say, null = not chosen yet
     status,
     bornAt: pet.born_at,
     diedAt: pet.died_at || null,
