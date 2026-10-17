@@ -1,9 +1,12 @@
 // Peetako art (Phase 2B): the retro-frame gecko from the "Peetako Retro Frame" mockups, in five palettes,
 // with tier accessories, mood faces, the Robot line and the nine tier backdrops.
 //
-//   drawScene(tier, sky, pal)              → SVG string, viewBox 0 0 300 300 (backdrop only)
-//   drawPet({ type, tier, status, mood, pal }) → SVG string, viewBox 0 0 300 300 (pet only, same box)
-//   drawMoodSymbols(symbols, type, label)  → SVG string, same box, floating mood symbols
+//   drawScene(tier, sky, pal, { backdrop })      → SVG string, viewBox 0 0 300 300 (backdrop only; Phase 2C:
+//                                                   a bought backdrop replaces the tier scene)
+//   drawPet({ type, tier, status, mood, pal, wear }) → SVG string, same box (pet only; wear = equipped cosmetics)
+//   drawMoodSymbols(symbols, type, label)        → SVG string, same box, floating mood symbols
+//   drawItem(id, type, pal)                      → small SVG preview of one cosmetic (shop)
+//   drawArena(sky)                               → neutral battle arena (Phase 2C)
 //
 // The pet sits in the same 300×300 box as the scene, so in the framed view the two layers line up
 // exactly as in the mockup; in the full-screen view the scene is stretched to cover and the pet is
@@ -91,11 +94,61 @@ function sceneTier(t, s, p) {
   }
 }
 
+
+// ---------------------------------------------------------------------------------------------------
+// Bought backdrops (Phase 2C, 500 coins each). They follow the device clock like the tier scenes.
+// ---------------------------------------------------------------------------------------------------
+const BACKDROPS = {
+  // Kinabalu seen from Kundasang: the jagged granite summit far away, vegetable terraces in front.
+  'bg-kinabalu': (s, p) => `
+    <path d="M0 150 L36 128 L60 136 L84 96 L98 104 L112 70 L124 86 L136 58 L148 80 L160 62 L172 88 L186 74 L200 104 L222 98 L250 128 L300 120 V200 H0 Z" fill="${s.far}"/>
+    <path d="M112 70 L124 86 L136 58 L148 80 L160 62 L172 88 L160 84 L148 92 L136 76 L124 96 Z" fill="#FFFFFF" opacity="0.35"/>
+    <g fill="#FFFFFF" opacity="0.6"><ellipse cx="60" cy="150" rx="50" ry="8"/><ellipse cx="240" cy="146" rx="56" ry="8"/></g>
+    <path d="M0 196 Q80 170 160 186 Q230 170 300 182 V300 H0 Z" fill="${s.mid}"/>
+    <g fill="none" stroke="${s.near}" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round">
+      <path d="M8 206 Q80 184 152 198"/><path d="M12 220 Q84 198 156 212"/><path d="M168 196 Q236 182 296 192"/><path d="M172 210 Q238 196 296 206"/></g>
+    <g fill="${s.near}"><rect x="232" y="168" width="22" height="14"/><polygon points="228,170 243,158 258,170"/><rect x="262" y="172" width="16" height="11"/><polygon points="259,174 270,165 281,174"/></g>
+    <rect x="238" y="172" width="6" height="5" fill="${p.gold}" opacity="${s.glowOp}"/>
+    <path d="M0 236 Q150 222 300 236 V300 H0 Z" fill="${s.ground}"/>`,
+  // The Rajang River: a wide brown river, a longhouse on stilts and an express boat.
+  'bg-rajang': (s, p) => `
+    <path d="M0 160 Q50 138 100 156 Q160 130 220 152 Q260 140 300 150 V190 H0 Z" fill="${s.far}"/>
+    <rect x="0" y="182" width="300" height="118" fill="#8A6A45"/>
+    <rect x="0" y="182" width="300" height="118" fill="${s.water}" opacity="0.35"/>
+    <path d="M20 206 h40 M150 214 h50 M230 262 h40 M40 280 h30" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2" stroke-linecap="round"/>
+    <g fill="${s.near}"><rect x="18" y="150" width="4" height="36"/><rect x="44" y="150" width="4" height="36"/><rect x="70" y="150" width="4" height="36"/><rect x="96" y="150" width="4" height="36"/></g>
+    <rect x="12" y="132" width="96" height="20" fill="${s.mid}"/><polygon points="6,134 60,112 114,134" fill="${s.near}"/>
+    <g fill="${p.gold}" opacity="${s.glowOp}"><rect x="24" y="138" width="8" height="7"/><rect x="50" y="138" width="8" height="7"/><rect x="76" y="138" width="8" height="7"/></g>
+    <path d="M168 196 H262 Q272 196 276 204 L270 210 H174 Z" fill="#F1F5F9" stroke="${s.near}" stroke-width="2"/>
+    <rect x="184" y="188" width="64" height="9" rx="3" fill="${p.spot}" stroke="${s.near}" stroke-width="2"/>
+    <g fill="#1E293B"><rect x="190" y="190" width="7" height="4"/><rect x="202" y="190" width="7" height="4"/><rect x="214" y="190" width="7" height="4"/><rect x="226" y="190" width="7" height="4"/></g>
+    <path d="M160 206 q-10 2 -18 0" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M60 300 Q90 244 150 238 Q214 236 246 300 Z" fill="${s.ground}"/>`,
+};
+
+// Neutral battle arena (decided 14 Oct 2026): the same for everyone, not either pet's backdrop.
+export function drawArena(s) {
+  return `<svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Battle arena">
+  <defs><linearGradient id="arena-sky-${++gradSeq}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.sky1}"/><stop offset="1" stop-color="${s.sky2}"/></linearGradient></defs>
+  <rect x="-300" y="-300" width="1200" height="900" fill="url(#arena-sky-${gradSeq})"/>
+  <g opacity="${s.starOp.toFixed(2)}" fill="#FDE68A">${STARS}<g transform="translate(300 0)">${STARS}</g></g>
+  <path d="M0 170 Q150 130 300 160 Q450 130 600 166 V220 H0 Z" fill="${s.far}"/>
+  <ellipse cx="300" cy="250" rx="290" ry="56" fill="#C8A26B" stroke="#6B4229" stroke-width="5"/>
+  <ellipse cx="300" cy="250" rx="240" ry="40" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="10 10"/>
+  <g fill="#6B4229"><rect x="34" y="170" width="10" height="84"/><rect x="556" y="170" width="10" height="84"/></g>
+  <g fill="#F5B700" stroke="#1E1B4B" stroke-width="2"><path d="M44 172 h40 l-8 10 l8 10 h-40 Z"/><path d="M556 172 h-40 l8 10 l-8 10 h40 Z"/></g>
+  <path d="M44 214 Q300 196 556 214" fill="none" stroke="#E11D48" stroke-width="4"/>
+  <g fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"><path d="M110 206 l8 14 l8 -14 Z"/><path d="M190 202 l8 14 l8 -14 Z"/><path d="M270 200 l8 14 l8 -14 Z"/><path d="M350 200 l8 14 l8 -14 Z"/><path d="M430 202 l8 14 l8 -14 Z"/><path d="M490 206 l8 14 l8 -14 Z"/></g>
+  <rect x="-300" y="300" width="1200" height="300" fill="#C8A26B"/>
+</svg>`;
+}
+
 // fit: 'slice' fills the box and crops (square screens, wide windows); 'meet' shows the whole scene and
 // extends sky and ground beyond it (tall phone windows, so the scenery is not cropped at the sides).
-export function drawScene(tier, s, pal, { label = '', fit = 'slice' } = {}) {
+export function drawScene(tier, s, pal, { label = '', fit = 'slice', backdrop = null } = {}) {
   const p = typeof pal === 'string' ? palette(pal) : pal;
   const t = Math.max(0, Math.min(8, tier | 0));
+  const custom = backdrop && BACKDROPS[backdrop];
   return `<svg viewBox="0 0 300 300" preserveAspectRatio="${fit === 'meet' ? 'xMidYMid meet' : 'xMidYMax slice'}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(label)}">
   <defs><linearGradient id="sky-grad-${++gradSeq}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.sky1}"/><stop offset="1" stop-color="${s.sky2}"/></linearGradient></defs>
   <rect x="-300" y="-300" width="900" height="900" fill="url(#sky-grad-${gradSeq})"/>
@@ -103,7 +156,7 @@ export function drawScene(tier, s, pal, { label = '', fit = 'slice' } = {}) {
   <circle cx="238" cy="56" r="18" fill="#FDE68A" opacity="${s.moonOp.toFixed(2)}"/>
   <circle cx="${s.sunX.toFixed(1)}" cy="${s.sunY.toFixed(1)}" r="22" fill="${s.sunC}" opacity="${s.sunOp.toFixed(2)}"/>
   <g opacity="${s.cloudOp.toFixed(2)}" fill="#FFFFFF"><ellipse cx="70" cy="58" rx="30" ry="10"/><ellipse cx="88" cy="50" rx="18" ry="10"/><ellipse cx="190" cy="92" rx="26" ry="8"/></g>
-  ${sceneTier(t, s, p)}
+  ${custom ? custom(s, p) : sceneTier(t, s, p)}
   <rect x="-300" y="300" width="900" height="300" fill="${s.ground}"/>
 </svg>`;
 }
@@ -244,15 +297,119 @@ function robotAccessories(t, p) {
   return { back: back.join(''), front };
 }
 
+
+// ---------------------------------------------------------------------------------------------------
+// Cosmetics (Phase 2C). Each item has an Organic and a Robot look. Slots: head, neck (drawn on the body,
+// under the head), back (behind the body). Equipping a head or neck item hides the tier piece in that spot.
+// ---------------------------------------------------------------------------------------------------
+const BEADS = ['#F5B700', '#E11D48', '#FFFFFF', '#1E1B4B', '#2563EB']; // Orang Ulu bead colours
+
+function wearHead(id, type, p) {
+  const L = p.line;
+  const robot = type === 'robot';
+  if (id === 'ikat-manik') {
+    const band = `<rect x="84" y="76" width="132" height="15" rx="6" fill="${robot ? L : p.belly}" stroke="${L}" stroke-width="3"/>`;
+    const dots = Array.from({ length: 11 }, (_, i) => {
+      const x = 94 + i * 11.2;
+      return robot
+        ? `<circle cx="${x.toFixed(1)}" cy="83.5" r="3" fill="${i % 2 ? p.eye : p.gold}"/>`
+        : `<circle cx="${x.toFixed(1)}" cy="83.5" r="3.4" fill="${BEADS[i % BEADS.length]}" stroke="${L}" stroke-width="1"/>`;
+    }).join('');
+    return band + dots;
+  }
+  if (id === 'terendak') { // Melanau sun hat: wide flat cone
+    const fill = robot ? '#CBD5E1' : '#E7C27D';
+    const stripe = robot ? p.eye : '#B91C1C';
+    return `<path d="M58 84 Q150 106 242 84 Q150 66 58 84 Z" fill="${fill}" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M86 80 L150 30 L214 80 Q150 92 86 80 Z" fill="${fill}" stroke="${L}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M104 72 L124 58 L134 70 L150 54 L166 70 L176 58 L196 72" fill="none" stroke="${stripe}" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M116 62 L150 40 L184 62" fill="none" stroke="${robot ? p.gold : '#1E1B4B'}" stroke-width="2.5"/>
+      ${robot ? `<circle cx="150" cy="30" r="5" fill="${p.eye}" stroke="${L}" stroke-width="2"/>` : ''}`;
+  }
+  return '';
+}
+
+function wearNeck(id, type, p) {
+  const L = p.line;
+  const robot = type === 'robot';
+  if (id === 'rantai-manik') {
+    const pts = Array.from({ length: 13 }, (_, i) => {
+      const t = i / 12;
+      const x = 108 + 84 * t;
+      const y = 188 + 30 * 4 * t * (1 - t);
+      return robot
+        ? `<rect x="${(x - 3.5).toFixed(1)}" y="${(y - 3.5).toFixed(1)}" width="7" height="7" rx="1.5" fill="${i % 3 ? '#CBD5E1' : p.eye}" stroke="${L}" stroke-width="1.2"/>`
+        : `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.2" fill="${BEADS[i % BEADS.length]}" stroke="${L}" stroke-width="1.2"/>`;
+    }).join('');
+    return `<path d="M108 188 Q150 248 192 188" fill="none" stroke="${L}" stroke-width="2"/>${pts}`;
+  }
+  if (id === 'selempang-pua') { // sash with a pua kumbu-inspired diamond band (not a copy of a specific cloth)
+    const base = robot ? '#334155' : '#7F1D1D';
+    const motif = robot ? p.eye : '#F2DDB0';
+    const diamonds = [0.18, 0.38, 0.58, 0.78].map((t) => {
+      const x = 106 + 88 * t, y = 196 + 42 * t;
+      return `<path d="M${x} ${y - 6} l6 6 l-6 6 l-6 -6 Z" fill="none" stroke="${motif}" stroke-width="2.2"/>`;
+    }).join('');
+    return `<path d="M106 196 L194 238" stroke="${L}" stroke-width="20" stroke-linecap="round"/>
+      <path d="M106 196 L194 238" stroke="${base}" stroke-width="14" stroke-linecap="round"/>${diamonds}`;
+  }
+  return '';
+}
+
+function wearBack(id, type, p) {
+  const L = p.line;
+  const robot = type === 'robot';
+  if (id === 'sayap-kelip') {
+    if (robot) { // firefly thrusters
+      const pod = (x) => `<rect x="${x - 12}" y="150" width="24" height="56" rx="10" fill="#CBD5E1" stroke="${L}" stroke-width="3"/>
+        <path d="M${x - 9} 206 Q${x} 236 ${x + 9} 206 Z" fill="#FDE047" stroke="${L}" stroke-width="2" class="flicker"/>
+        <circle cx="${x}" cy="166" r="4" fill="${p.eye}"/>`;
+      return pod(86) + pod(214);
+    }
+    const wing = (flip) => `<g transform="${flip ? 'translate(300 0) scale(-1 1)' : ''}">
+      <ellipse cx="84" cy="146" rx="54" ry="30" transform="rotate(-28 84 146)" fill="#D9F99D" fill-opacity="0.92" stroke="${L}" stroke-width="3"/>
+      <ellipse cx="96" cy="190" rx="34" ry="18" transform="rotate(14 96 190)" fill="#D9F99D" fill-opacity="0.92" stroke="${L}" stroke-width="3"/>
+      <path d="M128 172 L72 136 M128 182 L76 192" stroke="${L}" stroke-width="1.5" opacity="0.6"/>
+      <g fill="#FDE047" class="twinkle"><circle cx="70" cy="140" r="3"/><circle cx="96" cy="128" r="2.5"/><circle cx="78" cy="196" r="2.5"/></g></g>`;
+    return wing(false) + wing(true);
+  }
+  if (id === 'payung') { // parasol behind the head
+    const canopy = robot ? '#1E3A8A' : p.spot;
+    const rim = robot ? p.eye : p.gold;
+    const ribs = [0, 1, 2, 3, 4, 5, 6].map((i) => {
+      const a = Math.PI + (i / 6) * Math.PI;
+      return `<path d="M222 70 L${(222 + Math.cos(a) * 74).toFixed(1)} ${(70 + Math.sin(a) * 50).toFixed(1)}" stroke="${robot ? p.eye : L}" stroke-width="${robot ? 1.5 : 2}" opacity="0.7"/>`;
+    }).join('');
+    return `<path d="M222 70 L232 250" stroke="#6B4229" stroke-width="5" stroke-linecap="round"/>
+      <path d="M148 70 A74 50 0 0 1 296 70 Q259 80 222 70 Q185 80 148 70 Z" fill="${canopy}" stroke="${L}" stroke-width="3" stroke-linejoin="round"/>
+      ${ribs}<path d="M148 70 Q185 80 222 70 Q259 80 296 70" fill="none" stroke="${rim}" stroke-width="4"/>
+      <circle cx="222" cy="20" r="5" fill="${rim}" stroke="${L}" stroke-width="2"/>`;
+  }
+  return '';
+}
+
+// Small shop preview for one item (the pet's own palette and line).
+export function drawItem(id, type = 'organic', pal = 'hijau') {
+  const p = typeof pal === 'string' ? palette(pal) : pal;
+  if (id.startsWith('bg-')) {
+    const sky = { sky1: '#7DD3FC', sky2: '#E0F2FE', far: '#64748B', mid: '#4D7C0F', near: '#365314', ground: '#65A30D', water: '#38BDF8', glowOp: 0.2, starOp: 0, moonOp: 0, sunOp: 1, sunX: 70, sunY: 50, sunC: '#FDE047', cloudOp: 0.8 };
+    return drawScene(0, sky, p, { backdrop: id, label: '' });
+  }
+  const slot = { 'ikat-manik': 'head', terendak: 'head', 'rantai-manik': 'neck', 'selempang-pua': 'neck', 'sayap-kelip': 'back', payung: 'back' }[id];
+  return drawPet({ type, tier: 1, mood: 'happy', pal: p, wear: { [slot]: id } });
+}
+
 // ---------------------------------------------------------------------------------------------------
 // Bodies
 // ---------------------------------------------------------------------------------------------------
 const pick = (front, layer) => front.filter((f) => f.layer === layer).map((f) => f.svg).join('');
 
-function organicBody(t, p, face, status) {
+function organicBody(t, p, face, status, wear = {}) {
   const L = p.line;
   const ol = `stroke="${L}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"`;
   const { back, front } = organicAccessories(t, p);
+  const head = wear.head ? wearHead(wear.head, 'organic', p) : pick(front, 'head');
+  const neck = wear.neck ? wearNeck(wear.neck, 'organic', p) : pick(front, 'body');
   const tail = `
     <path d="M186 220 C222 232 252 222 258 196" fill="none" stroke="${L}" stroke-width="28" stroke-linecap="round"/>
     <path d="M258 196 C264 172 246 158 232 166 C222 172 226 186 238 184" fill="none" stroke="${L}" stroke-width="20" stroke-linecap="round"/>
@@ -260,18 +417,18 @@ function organicBody(t, p, face, status) {
     <path d="M258 196 C264 172 246 158 232 166 C222 172 226 186 238 184" fill="none" stroke="${t >= 5 && status !== 'dead' ? '#FDE047' : p.body}" stroke-width="12" stroke-linecap="round"/>`;
   const foot = (cx, toes) => `<ellipse cx="${cx}" cy="246" rx="16" ry="10" fill="${p.body}" ${ol}/>` +
     toes.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="${p.toe}" stroke="${L}" stroke-width="3"/>`).join('');
-  return `${back}<g class="pk-tail">${tail}</g>
+  return `${back}${wear.back ? wearBack(wear.back, 'organic', p) : ''}<g class="pk-tail">${tail}</g>
     <ellipse cx="150" cy="210" rx="50" ry="38" fill="${p.shade}"/><ellipse cx="145" cy="205" rx="45" ry="33" fill="${p.body}"/>
     <ellipse cx="150" cy="222" rx="28" ry="20" fill="${p.belly}"/>
     <circle cx="116" cy="196" r="5" fill="${p.spot}"/><circle cx="184" cy="198" r="5" fill="${p.spot}"/>
     <ellipse cx="150" cy="210" rx="50" ry="38" fill="none" ${ol}/>
     <g class="pk-foot-l">${foot(110, [[97, 252], [108, 256], [120, 254]])}</g><g class="pk-foot-r">${foot(190, [[180, 254], [192, 256], [203, 252]])}</g>
-    ${pick(front, 'body')}
+    ${neck}
     <g class="pk-head"><rect x="82" y="70" width="136" height="118" rx="36" fill="${p.shade}"/><rect x="82" y="70" width="128" height="110" rx="34" fill="${p.body}"/>
     <circle cx="150" cy="84" r="6" fill="${p.spot}"/><circle cx="126" cy="90" r="4" fill="${p.spot}"/><circle cx="174" cy="90" r="4" fill="${p.spot}"/>
     <rect x="82" y="70" width="136" height="118" rx="36" fill="none" ${ol}/>
     ${organicFace(face, p, status)}${status === 'dead' ? '' : organicExtras(p)}
-    ${pick(front, 'head')}${pick(front, 'top')}</g>`;
+    ${head}${pick(front, 'top')}</g>`;
 }
 
 // Hidden overlays used only by the cute moves (antics.js). They stay invisible until a move plays.
@@ -288,10 +445,11 @@ function robotExtras(p) {
     <path class="pk-x pk-spark" d="M150 22 v10 M130 30 l6 6 M170 30 l-6 6 M124 48 h9 M176 48 h-9" stroke="${p.gold}" stroke-width="4" stroke-linecap="round"/>`;
 }
 
-function robotBody(t, p, face, status) {
+function robotBody(t, p, face, status, wear = {}) {
   const L = p.line;
   const ol = `stroke="${L}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"`;
   const { back, front } = robotAccessories(t, p);
+  const head = wear.head ? wearHead(wear.head, 'robot', p) : pick(front, 'head');
   const tail = (stroke) => `
     <path d="M186 220 C222 232 252 222 258 196" fill="none" stroke="${stroke.c}" stroke-width="${stroke.w1}" stroke-linecap="round" ${stroke.dash ? `stroke-dasharray="${stroke.dash[0]}"` : ''}/>
     <path d="M258 196 C264 172 246 158 232 166 C222 172 226 186 238 184" fill="none" stroke="${stroke.c}" stroke-width="${stroke.w2}" stroke-linecap="round" ${stroke.dash ? `stroke-dasharray="${stroke.dash[1]}"` : ''}/>`;
@@ -305,7 +463,7 @@ function robotBody(t, p, face, status) {
     : `<path d="M150 76 V54" fill="none" stroke="${L}" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="48" r="7" fill="${bulbFill}" stroke="${L}" stroke-width="3"/>` +
       (face === 'excited' && status === 'active' ? `<path d="M150 28 v8 M134 34 l5 5 M166 34 l-5 5 M130 48 h7 M170 48 h-7" stroke="${p.gold}" stroke-width="3" stroke-linecap="round"/>` : '');
   const core = t === 8 && status !== 'dead' ? `<circle cx="150" cy="210" r="16" fill="${p.gold}" opacity="0.35"/><circle cx="150" cy="210" r="9" fill="${p.gold}" stroke="${L}" stroke-width="2"/>` : '';
-  return `${back}
+  return `${back}${wear.back ? wearBack(wear.back, 'robot', p) : ''}
     <g class="pk-tail">${tail({ c: L, w1: 28, w2: 20 })}${tail({ c: p.belly, w1: 20, w2: 12 })}${tail({ c: L, w1: 20, w2: 12, dash: ['3 14', '3 10'] })}
     <circle cx="238" cy="184" r="5" fill="${p.eye}"/></g>
     <rect x="100" y="176" width="100" height="70" rx="30" fill="${p.shade}"/><rect x="100" y="176" width="92" height="62" rx="28" fill="${p.body}"/>
@@ -313,14 +471,14 @@ function robotBody(t, p, face, status) {
     <rect x="128" y="196" width="44" height="28" rx="8" fill="${L}"/>
     ${core || `<circle cx="139" cy="210" r="3.5" fill="${p.eye}"/><circle cx="150" cy="210" r="3.5" fill="${p.gold}"/><circle cx="161" cy="210" r="3.5" fill="${p.spot}"/>`}
     <circle cx="113" cy="216" r="3" fill="${L}"/><circle cx="187" cy="216" r="3" fill="${L}"/>
-    ${pick(front, 'body')}
+    ${pick(front, 'body')}${wear.neck ? wearNeck(wear.neck, 'robot', p) : ''}
     <g class="pk-foot-l">${foot(110, [[97, 254], [108, 258], [120, 256]])}</g><g class="pk-foot-r">${foot(190, [[180, 256], [192, 258], [203, 254]])}</g>
     <g class="pk-head">${antenna}
     <circle cx="78" cy="130" r="9" fill="${p.shade}" stroke="${L}" stroke-width="3"/><circle cx="222" cy="130" r="9" fill="${p.shade}" stroke="${L}" stroke-width="3"/>
     <rect x="80" y="70" width="140" height="116" rx="30" fill="${p.shade}"/><rect x="80" y="70" width="132" height="108" rx="28" fill="${p.body}"/>
     <rect x="80" y="70" width="140" height="116" rx="30" fill="none" ${ol}/>
     ${robotFace(face, p, status)}${status === 'dead' ? '' : robotExtras(p)}
-    ${pick(front, 'head')}${pick(front, 'top')}</g>`;
+    ${head}${pick(front, 'top')}</g>`;
 }
 
 function egg(type, p, status) {
@@ -347,13 +505,15 @@ function egg(type, p, status) {
 const QMARK = `<text class="pk-x pk-q" x="232" y="84" font-family="system-ui, sans-serif" font-size="44" font-weight="900" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="3" paint-order="stroke">?</text>`;
 
 // mood: happy | hungry | sleepy | sad | excited (mood.js); status: active | dormant | dead | ascended
-export function drawPet({ type = 'organic', tier = 1, status = 'active', mood = 'happy', pal = 'hijau' } = {}) {
+// wear: { head, neck, back } item ids (Phase 2C cosmetics); eggs and fallen pets wear nothing.
+export function drawPet({ type = 'organic', tier = 1, status = 'active', mood = 'happy', pal = 'hijau', wear = {} } = {}) {
   const dead = status === 'dead';
   const p = dead ? FALLEN : (typeof pal === 'string' ? palette(pal) : pal);
   const st = status === 'ascended' ? 'active' : status;
   const face = dead ? 'fallen' : st === 'dormant' ? 'sleepy' : mood;
   const label = `${type === 'robot' ? 'Robot' : 'Organic'} Peetako, ${p.name} palette, ${dead ? 'fallen' : tier === 0 ? 'egg' : `tier ${tier}, ${face}`}`;
-  const inner = tier === 0 ? egg(type, p, st) : (type === 'robot' ? robotBody(tier, p, face, st) : organicBody(tier, p, face, st));
+  const w = dead || !wear ? {} : wear;
+  const inner = tier === 0 ? egg(type, p, st) : (type === 'robot' ? robotBody(tier, p, face, st, w) : organicBody(tier, p, face, st, w));
   return `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(label)}">
     <g transform="translate(37.5 62) scale(0.75)"><ellipse cx="150" cy="262" rx="74" ry="9" fill="#000000" opacity="0.25"/><g class="bob"><g class="pk">${inner}</g>${tier === 0 || dead ? '' : QMARK}</g></g>
   </svg>`;

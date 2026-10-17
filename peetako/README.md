@@ -9,8 +9,19 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 | Slice | Contents | Status |
 |---|---|---|
 | 2A — foundation | 6-character Call Codes (`PTK-XXXXXX`), compressed tiers (Day 0/1/2/4/7/14/21/30/60), Ascension soft cap at Tier 8 (Day 90), "Immortal" renamed "Ageless", no halo on fallen pets, five mood faces with floating symbols, sky that follows the device clock | live since 14 Oct 2026 |
-| **2B — look** | Retro frame, five palettes (Hijau Rimba, Tokay, Kenyalang, Pua Kumbu, Laut Borneo), palette chosen once at hatch, Immersive / Classic views, Robot line art per tier and palette, nine tier backdrops, sound | **this release** |
-| 2C — social and economy | Coins (care +10 each, max 30/day; daily check-in +10; 7-day streak +30; mini-game 1 per 5 fireflies, max 50/day; tier-up +50 × tier; referral +100, max 3/day), cosmetics (100 / 300 / 800, backdrop 500), gifts (max 5/day), Tangkap Kelip-kelip and leaderboards, name filter and Report, share and invite buttons, Pamper and battle animations on a neutral arena | later |
+| 2B — look | Retro frame, five palettes (Hijau Rimba, Tokay, Kenyalang, Pua Kumbu, Laut Borneo), palette chosen once at hatch, Immersive / Classic views, Robot line art per tier and palette, nine tier backdrops, sound, cute moves | live since 14–17 Oct 2026 |
+| **2C — social and economy** | Coins (care +10 each, max 30/day; daily check-in +10; 7-day streak +30; mini-game 1 per 5 fireflies, max 50/day; tier-up +50 × tier; referral +100, max 3/day), cosmetics (100 / 300 / 800, backdrop 500), gifts (max 5/day), Tangkap Kelip-kelip and leaderboards, name filter and Report, share and invite buttons, Pamper and battle animations on a neutral arena; chosen Call Codes and a 6-digit PIN | **this release** |
+
+### What 2C changes (decided 14–17 Oct 2026)
+
+- **Call Code and PIN** (`src/codes.js`, `src/index.js`): the player chooses the Call Code at hatch — `PTK-` plus 6 to 8 letters and digits (O, I and L allowed). Uniqueness and login treat 0 as O and 1/L as I. *Ideas* suggests free, partly Borneo-themed codes (`GET /api/code/suggest`); the field checks availability as you type (`GET /api/code/check`). Locked after hatch. The four-word Secret Key is gone: a 6-digit PIN (very easy PINs refused) is stored as an HMAC with `KEY_PEPPER`. 5 wrong PINs lock the pet for 15 minutes, 20 in a MYT day lock it for 24 hours. No recovery; a signed-in device can change the PIN (`POST /api/pin`, other devices are signed out). Login: `POST /api/login { code, pin, remember }`.
+- **Coins** (`src/economy.js`): care +10 (max 30/day), daily check-in +10 and +30 on every 7th day in a row (`POST /api/checkin`), tier-up +50 × tier (paid once per tier, also for tiers reached while away), Tangkap Kelip-kelip 1 per 5 fireflies (max 50/day), invite +100 to the inviter (max 3/day) and +50 to the new player, settled at the new pet's first care action after its first day; self-invites from the same network are void. All daily limits reset at 00:00 Malaysia time.
+- **Cosmetics**: head (beaded headband 100, terendak hat 300), neck (bead necklace 100, pua sash 300), back (firefly wings 800, parasol 800), backdrops (Kinabalu from Kundasang, Rajang River — 500). Robot versions of each. `GET /api/shop`, `POST /api/shop/buy` (a bought item is worn straight away), `POST /api/equip { slot, item | null }`. Drawn in `art.js` (`wear` option of `drawPet`, `backdrop` option of `drawScene`).
+- **Friends**: `GET /api/visit?code=` (public view + what you can do), `POST /api/gift { to, item }` (you pay the price, max 5/day, no resale), `POST /api/pamper { to }` (+5 FUN, 3/day, once per pet per day, not counted as care), `POST /api/battle { to }` (stats × 0.6 + tier × 6 + luck 0–20; no penalty, no coins; 5/day; both pets hatched, yours active). Animations on a neutral arena (`public/assets/arena.js`). What happened while you were away (gifts, Pampers, battles, invites) shows as news (`me.events`, `POST /api/events/seen`).
+- **Tangkap Kelip-kelip** (`public/assets/kelip.js`): full-screen, 45-second runs. `POST /api/game/start` returns a one-time run token; `POST /api/game/finish { run, score }` rejects runs under 20 s, over 10 min, or scores above 4 per second. Leaderboards: `GET /api/leaderboard?period=day|all` (best per pet; daily resets at 00:00 MYT).
+- **Free text and Report** (`src/filter.js`): pet names, Tier 7 titles (`POST /api/title`, max 20 characters) and Call Codes pass a short English + Malay blocklist. `POST /api/report { target, field: name | title }` hides the text at the first report. Review at **`/admin`** with the `ADMIN_TOKEN` secret: *Keep* shows it again and stops further reports of it; *Remove* renames the pet "Peetako" or deletes the title.
+- **Share and invite**: public pet page **`/p/PTK-XXXXXX`** (rendered by the Worker with an Open Graph card, `public/icons/og-card.png`); share buttons for WhatsApp, Facebook, X, Telegram, Threads and native Web Share. Invite link `/?ref=PTK-XXXXXX`. Only the Call Code is ever shared.
+- **Migration `0003_social.sql`** rebuilds the pet table (all pets reset, decided 16 Oct 2026) and adds `daily`, `inventory`, `events`, `game_runs`, `game_scores`, `reports`, `battles`.
 
 ### What 2B changes
 
@@ -33,14 +44,18 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 ## Project layout
 
 ```
-src/index.js        Worker: API routes, sessions, rate limits, daily + hourly crons
+src/index.js        Worker: core API routes (hatch, Call Code, PIN login, care, Ascension), daily + hourly crons
+src/social.js       2C routes: check-in, shop, gifts, Pamper, battles, mini-game, leaderboards, Report, admin, /p/ pages
+src/economy.js      2C numbers: coins, catalogue, limits, battle and Pamper rules, Malaysia-time days
+src/codes.js        Call Code rules and suggestions
+src/filter.js       Blocklist for names, titles and Call Codes
+src/http.js         Shared request helpers (JSON, cookies, rate limits, hashing)
 src/store.js        Data layer: the only file that talks to D1 (all SQL lives here)
 src/push.js         Care alerts: Web Push encryption (RFC 8291), VAPID (RFC 8292), alert rules
 src/game.js         All game rules and tunable numbers (tiers, decay, actions, Ascension)
-src/wordlist.js     EFF Large Wordlist (7,776 words) for Secret Keys
 migrations/         D1 schema
-public/             Static site: game (index.html), FAQ, About, Privacy, Contact, 404, ads.txt
-public/assets/      app.js (client), art.js (gecko, Robot, accessories, backdrops, mood symbols), palettes.js, mood.js, sky.js, sound.js, style.css
+public/             Static site: game (index.html), FAQ, About, Privacy, Contact, 404, ads.txt, admin.html (report review)
+public/assets/      app.js (client), social.js (2C dialogs), kelip.js (mini-game), arena.js (Pamper/battle), public.js (/p/ page), art.js (gecko, Robot, accessories, backdrops, mood symbols), palettes.js, mood.js, sky.js, sound.js, style.css
 public/sw.js        Service worker: install/offline shell, shows care alerts
 public/icons/       App icons; public/splash/ iOS launch images
 wrangler.jsonc      Worker config (D1 binding, cron, vars)
@@ -60,11 +75,16 @@ The D1 database `peetako-p2` already exists in the **Peetako** Cloudflare accoun
    - Deploy command: `npx wrangler deploy`
 3. After the first deploy: Worker `phase-2` → **Settings → Variables and Secrets → Add** a **Secret** named
    `KEY_PEPPER` with a NEW long random value (64 random characters). Do not reuse Phase 1's value, keep a copy in your
-   password manager, and **never change it later** — every Secret Key would stop working.
+   password manager, and **never change it later** — every PIN would stop working.
 4. Turn on the `workers.dev` route (Production) and open `https://phase-2.<your-subdomain>.workers.dev`.
 
 Every `git push` to `main` redeploys automatically. The two cron triggers (daily cleanup at 02:00 Malaysia time and the
 hourly care-alert run) come from `wrangler.jsonc`.
+
+### Report review (Phase 2C)
+
+Add a Worker **Secret** named `ADMIN_TOKEN` (a long random string, kept in your password manager), then open `/admin`
+and paste it. Without it the review page answers "Set the ADMIN_TOKEN secret".
 
 ### Optional: Turnstile (human check on hatching)
 
@@ -109,17 +129,17 @@ npm test               # compare behaviour with test/golden.json (about 10 secon
 npm run test:update    # after an INTENDED behaviour change: rewrite the golden, then review its diff
 ```
 
-`test/regression.mjs` runs the real Worker against a throwaway local D1 built from `migrations/`, with a fixed clock, fixed randomness and a mocked push service. It registers pets, logs in, cares, trips the rate limits, subscribes and unsubscribes devices, runs the hourly alert cron (delivered, expired and failed pushes) and the daily cron (deaths, cleanup), then compares every API response, every outbound push request and a snapshot of every table with `test/golden.json`. It never touches the real database and needs no secrets (it generates throwaway keys on each run). The Phase 2A scenario also raises one pet for 93 days of daily care and checks every Ascension rule (not confirmed, too young, dormant, success, twice, and that an ascended pet never falls). Tested on Node 22.
+`test/regression.mjs` runs the real Worker against a throwaway local D1 built from `migrations/`, with a fixed clock, fixed randomness and a mocked push service. It registers pets, logs in, cares, trips the rate limits, subscribes and unsubscribes devices, runs the hourly alert cron (delivered, expired and failed pushes) and the daily cron (deaths, cleanup), then compares every API response, every outbound push request and a snapshot of every table with `test/golden.json`. It never touches the real database and needs no secrets (it generates throwaway keys on each run). The 2C scenario covers chosen Call Codes (look-alikes, blocklist), PIN locks and changes, coins and daily caps, check-in streaks, shop, gifts, Pamper, battles, Report and admin review, the mini-game's anti-cheat and leaderboards, invites and the public pet page. The Phase 2A scenario also raises one pet for 93 days of daily care and checks every Ascension rule (not confirmed, too young, dormant, success, twice, and that an ascended pet never falls). Tested on Node 22.
 
 ## Schema changes later
 
-Add a new file such as `migrations/0002_coins.sql` (2C), then run `npm run db:migrate:remote` (needs `npx wrangler login`), or paste
-its SQL into the D1 console. Migration `0001_init.sql` is already recorded as applied on `peetako-p2`.
+Add a new file such as `migrations/0004_something.sql`, then run `npm run db:migrate:remote` (needs `npx wrangler login`), or paste
+its SQL into the D1 console (and record it in `d1_migrations`). Migrations `0001`–`0003` are applied on `peetako-p2`.
 
 ## Tuning
 
-Every number from the GDD (tier days, survival windows, decay per hour, action gains) is in `src/game.js`. They are first proposals for playtesting.
+Every number from the GDD (tier days, survival windows, decay per hour, action gains) is in `src/game.js`; the 2C economy (coins, prices, daily limits, battle and Pamper rules) is in `src/economy.js`. They are first proposals for playtesting.
 
 ## Credits
 
-Secret Keys use the EFF Large Wordlist (Electronic Frontier Foundation, believed CC BY 3.0 US — confirm before launch).
+Fonts: Bangers, Nunito, Press Start 2P and VT323 (Google Fonts). Hosted on Cloudflare.

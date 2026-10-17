@@ -1,4 +1,5 @@
-// Peetako game client (Phase 2B). The colour palette is chosen once, at hatch.
+// Peetako game client (Phase 2C). The colour palette is chosen once, at hatch; the player picks a
+// Call Code and a 6-digit PIN (no Secret Key). Coins, shop, friends, the mini-game and sharing live in social.js.
 // Talks to the Worker API under /api/*.
 // One set of pet-screen parts, laid out as Classic (retro frame, default) or Immersive (full screen, CRT)
 // by CSS; the choice is saved on this device only (Peetako has no login).
@@ -7,6 +8,7 @@ import { PALETTES, PALETTE_IDS, palette } from './palettes.js';
 import { moodOf, MOOD_LABEL, EXCITED_AFTER_CARE_MS, NEED_BELOW } from './mood.js';
 import { skyAt, localMinute } from './sky.js';
 import { attachAntics } from './antics.js';
+import { initSocial } from './social.js';
 
 const $ = (sel) => document.querySelector(sel);
 const screens = ['welcome', 'hatch', 'reveal', 'login', 'pet'];
@@ -15,6 +17,8 @@ const NAMES = ['Pitak', 'Tako', 'Bujang', 'Dayang', 'Awang', 'Sago', 'Rajang', '
 // v2 key: Classic became the default, so devices that saved an earlier choice get the new default once.
 const VIEW_KEY = 'peetako_view_v2';
 const VIEW_DEFAULT = 'classic';
+const REF_KEY = 'peetako_ref'; // Call Code from an invite link, kept until this device hatches a pet
+const BACKDROP_NAMES = { 'bg-kinabalu': 'Kinabalu from Kundasang', 'bg-rajang': 'Rajang River' };
 const Sound = window.PeetakoSound || { play() {}, toggle() { return false; }, isEnabled() { return false; } };
 
 // Retro labels per stat (the four stats stay; only the names on screen are short).
@@ -45,7 +49,8 @@ const pixelIcon = (name, ink) => `<svg viewBox="0 0 8 8" width="22" height="22" 
 
 let state = {
   pet: null, turnstileSiteKey: null, turnstileId: null, pendingPet: null, poll: null, vapidKey: null, alertsOn: false,
-  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: VIEW_DEFAULT,
+  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: VIEW_DEFAULT, me: null, social: null,
+  codePrefix: 'PTK-',
 };
 
 // iPadOS Safari reports itself as a Mac, so also check for a touch screen.
@@ -56,6 +61,7 @@ function show(name) {
   for (const s of screens) $(`#screen-${s}`).hidden = s !== name;
   applyView();
   if (name === 'pet') renderScene(); // the scene's fit depends on the view, which applyView just set
+  if (name !== 'pet' && $('#game').getBoundingClientRect().top < 0) $('#game').scrollIntoView({ block: 'start' });
   const first = $(`#screen-${name}`).querySelector('h1, h2');
   if (first) { first.setAttribute('tabindex', '-1'); first.focus({ preventScroll: true }); }
 }
@@ -102,7 +108,7 @@ function applyTheme(id) {
   const p = palette(id);
   const vars = { '--pg': p.page, '--card': p.belly, '--ink': p.line, '--gold': p.gold, '--body': p.body, '--spot': p.spot,
     '--b1': p.btn[0], '--b2': p.btn[1], '--b3': p.btn[2], '--b4': p.btn[3] };
-  for (const el of [$('#game'), $('#menu'), $('#ascend-dialog')]) for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
+  for (const el of [$('#game'), ...document.querySelectorAll('dialog.sheet')]) for (const [k, v] of Object.entries(vars)) el.style.setProperty(k, v);
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', p.page);
 }
 
@@ -131,7 +137,8 @@ function renderScene() {
   const sky = skyAt(localMinute());
   // Full screen on a tall phone: show the whole scene (sky and ground extend beyond it) rather than crop its sides.
   const fit = document.body.classList.contains('immersive') && innerWidth < innerHeight ? 'meet' : 'slice';
-  $('#scene').innerHTML = drawScene(pet.tier, sky, pet.palette, { label: `${pet.backdrop}, ${sky.phase}`, fit });
+  const bought = pet.equipped?.backdrop;
+  $('#scene').innerHTML = drawScene(pet.tier, sky, pet.palette, { label: `${BACKDROP_NAMES[bought] || pet.backdrop}, ${sky.phase}`, fit, backdrop: bought });
   $('#stage').dataset.phase = sky.phase;
 }
 addEventListener('resize', () => { clearTimeout(renderScene.t); renderScene.t = setTimeout(renderScene, 150); });
@@ -146,7 +153,8 @@ const STATUS_LABEL = { active: 'Active', dormant: 'Dormant', dead: 'Fallen', asc
 function renderMood(pet) {
   const m = moodOf(pet, { caredAt: state.caredAt });
   state.face = m.face;
-  $('#pet-art').innerHTML = drawPet({ type: pet.type, tier: pet.tier, status: pet.status, mood: m.face, pal: pet.palette });
+  const e = pet.equipped || {};
+  $('#pet-art').innerHTML = drawPet({ type: pet.type, tier: pet.tier, status: pet.status, mood: m.face, pal: pet.palette, wear: { head: e.head, neck: e.neck, back: e.back } });
   $('#mood-fx').innerHTML = pet.status === 'dead' ? '' : drawMoodSymbols(m.symbols, pet.type, m.symbols.map((k) => MOOD_LABEL[k]).join(' and '));
   const chip = $('#pet-mood');
   chip.hidden = pet.status === 'dead' || pet.status === 'ascended';
@@ -168,8 +176,15 @@ function renderPet(pet) {
   renderMood(pet);
   $('#pet-name').textContent = pet.name;
   $('#pet-tier').textContent = `T${pet.tier} ${shortTier(pet.tierName).toUpperCase()}`;
-  $('#pet-backdrop').textContent = pet.backdrop;
+  $('#pet-backdrop').textContent = BACKDROP_NAMES[pet.equipped?.backdrop] || pet.backdrop;
   $('#call-code').textContent = pet.callCode;
+  const title = $('#pet-title');
+  title.hidden = !pet.title;
+  title.textContent = pet.title ? `“${pet.title}”${pet.titleStatus === 'hidden' ? ' (under review)' : ''}` : '';
+  $('#menu-set-title').hidden = !pet.canSetTitle;
+  const hiddenNote = $('#name-hidden-note');
+  hiddenNote.hidden = pet.nameStatus !== 'hidden';
+  hiddenNote.textContent = `Another player reported the name “${pet.name}”. Others see “Name under review” until it is checked.`;
   const badge = $('#pet-status');
   badge.className = `chip ${pet.status}`;
   badge.textContent = STATUS_LABEL[pet.status];
@@ -241,18 +256,38 @@ function renderPet(pet) {
   $('#dormant-note').hidden = pet.status !== 'dormant';
 }
 
+// ---------- coins and news (Phase 2C) ----------
+function renderMe(me) {
+  if (!me) return;
+  state.me = me;
+  $('#coin-count').textContent = String(me.coins);
+  $('#coins-btn').setAttribute('aria-label', `${me.coins} coins. Open the shop`);
+  $('#checkin-btn').hidden = !me.canCheckIn;
+  state.social?.showNews(me);
+}
+function earnedText(earned) {
+  if (!earned) return '';
+  const parts = [];
+  if (earned.care) parts.push(`+${earned.care} coins`);
+  if (earned.tier) parts.push(`+${earned.tier} tier coins`);
+  if (earned.referral) parts.push(`+${earned.referral} invite coins`);
+  return parts.join(', ');
+}
+
 function startPolling() {
   stopPolling();
   state.poll = setInterval(async () => {
     if (document.hidden) return;
-    try { renderPet((await api('/api/pet')).pet); } catch (e) { if (e.status === 401) { stopPolling(); show('welcome'); } }
+    try { const d = await api('/api/pet'); renderPet(d.pet); renderMe(d.me); } catch (e) { if (e.status === 401) { stopPolling(); show('welcome'); } }
   }, 60_000);
 }
 function stopPolling() { clearInterval(state.poll); state.poll = null; }
 
-function openPet(pet) {
+function openPet(pet, me, earned) {
   state.lastTier = null;
   renderPet(pet);
+  renderMe(me);
+  if (earned?.tier) setTimeout(() => toast(`New tier reward: +${earned.tier} coins!`, 4000), 400);
   show('pet');
   startSky();
   if (pet.status === 'active' || pet.status === 'dormant') startPolling();
@@ -399,6 +434,35 @@ function updateTypePreviews() {
   $('#preview-robot').innerHTML = drawPet({ type: 'robot', tier: 1, pal });
   for (const l of document.querySelectorAll('#hatch-palette label.pal')) l.classList.toggle('on', l.querySelector('input').checked);
 }
+// ---------- Call Code: chosen at hatch, checked as you type, locked afterwards ----------
+const cleanCode = (v) => v.toUpperCase().replace(/^PTK-?/, '').replace(/[^A-Z0-9]/g, '').slice(0, 8);
+let codeTimer = null;
+function checkCodeSoon() {
+  const input = $('#code-input');
+  const v = cleanCode(input.value);
+  if (input.value !== v) input.value = v;
+  clearTimeout(codeTimer);
+  const st = $('#code-status');
+  st.className = 'hint';
+  if (v.length < 6) { st.textContent = '6–8 letters or numbers. Friends find your Peetako with it. It cannot be changed.'; return; }
+  st.textContent = 'Checking…';
+  codeTimer = setTimeout(async () => {
+    try {
+      const r = await api(`/api/code/check?code=${encodeURIComponent(v)}`);
+      if (cleanCode(input.value) !== v) return;
+      st.textContent = r.available ? `${r.code} is available!` : r.message;
+      st.className = `hint ${r.available ? 'ok-hint' : 'warn-hint'}`;
+    } catch { st.textContent = ''; }
+  }, 350);
+}
+async function suggestCodes() {
+  Sound.play('tap');
+  try {
+    const r = await api('/api/code/suggest');
+    $('#code-ideas').innerHTML = r.codes.map((c) => `<button type="button" class="chip-btn" data-code="${c}">${r.prefix}${c}</button>`).join('');
+  } catch (e) { toast(e.message); }
+}
+
 function openHatch() {
   renderHatchPalettes();
   updateTypePreviews();
@@ -426,6 +490,13 @@ async function hatch(ev) {
   const name = $('#pet-name-input').value;
   const palette = chosenPalette();
   if (!palette) { err.textContent = 'Choose a colour for your Peetako. You can only choose it once.'; return; }
+  const code = cleanCode($('#code-input').value);
+  if (code.length < 6) { err.textContent = 'Choose a Call Code: 6 to 8 letters or numbers.'; return; }
+  const pin = $('#pin-input').value;
+  if (!/^\d{6}$/.test(pin)) { err.textContent = 'Your PIN is 6 digits.'; return; }
+  if (pin !== $('#pin-input2').value) { err.textContent = 'The two PINs do not match.'; return; }
+  let ref = null;
+  try { ref = localStorage.getItem(REF_KEY); } catch { /* storage blocked */ }
   let turnstileToken = null;
   if (state.turnstileSiteKey) {
     turnstileToken = window.turnstile?.getResponse(state.turnstileId);
@@ -434,9 +505,12 @@ async function hatch(ev) {
   const btn = $('#hatch-btn');
   btn.disabled = true;
   try {
-    const data = await api('/api/register', { name, type, palette, turnstileToken, remember: $('#hatch-remember').checked });
+    const data = await api('/api/register', { name, type, palette, code, pin, ref, turnstileToken, remember: $('#hatch-remember').checked });
+    try { localStorage.removeItem(REF_KEY); } catch { /* ignore */ }
+    $('#pin-input').value = ''; $('#pin-input2').value = '';
     state.pendingPet = data.pet;
-    $('#key-box').textContent = data.key;
+    state.pendingMe = data.me;
+    $('#key-box').textContent = data.pet.callCode;
     $('#saved-check').checked = false;
     $('#reveal-continue').disabled = true;
     Sound.play('levelUp');
@@ -457,9 +531,10 @@ async function login(ev) {
   const btn = $('#login-btn');
   btn.disabled = true;
   try {
-    const data = await api('/api/login', { key: $('#key-input').value, remember: $('#login-remember').checked });
+    const data = await api('/api/login', { code: $('#key-input').value, pin: $('#login-pin').value, remember: $('#login-remember').checked });
     $('#key-input').value = '';
-    openPet(data.pet);
+    $('#login-pin').value = '';
+    openPet(data.pet, data.me, data.earned);
   } catch (e) {
     Sound.play('error');
     err.textContent = e.message;
@@ -479,17 +554,24 @@ function wire() {
     $('#pet-name-input').value = NAMES[Math.floor(Math.random() * NAMES.length)];
   });
   $('#screen-hatch').addEventListener('submit', hatch);
+  $('#code-input').addEventListener('input', checkCodeSoon);
+  $('#suggest-code').addEventListener('click', suggestCodes);
+  $('#code-ideas').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-code]');
+    if (b) { $('#code-input').value = b.dataset.code; checkCodeSoon(); }
+  });
   $('#screen-login').addEventListener('submit', login);
 
   $('#copy-key').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText($('#key-box').textContent); toast('Key copied. Paste it somewhere safe.'); }
-    catch { toast('Copy failed — select the key and copy it by hand.'); }
+    try { await navigator.clipboard.writeText($('#key-box').textContent); toast('Call Code copied.'); }
+    catch { toast('Copy failed — select the Call Code and copy it by hand.'); }
   });
   $('#saved-check').addEventListener('change', (e) => { $('#reveal-continue').disabled = !e.target.checked; });
   $('#reveal-continue').addEventListener('click', () => {
     $('#key-box').textContent = '';
-    openPet(state.pendingPet);
+    openPet(state.pendingPet, state.pendingMe);
     state.pendingPet = null;
+    state.pendingMe = null;
   });
 
   $('#actions').addEventListener('click', async (e) => {
@@ -504,8 +586,11 @@ function wire() {
       clearTimeout(state.moodTimer);
       state.moodTimer = setTimeout(() => state.pet && renderMood(state.pet), EXCITED_AFTER_CARE_MS + 50);
       renderPet(data.pet);
+      renderMe(data.me);
       const act = data.pet.actions.find((a) => a.id === id);
-      toast(`${act ? act.label : 'Done'} — ${data.pet.name} feels better!`);
+      const coins = earnedText(data.earned);
+      if (coins) Sound.play('coin');
+      toast(`${act ? act.label : 'Done'} — ${data.pet.name} feels better!${coins ? ` ${coins}.` : ''}`);
     } catch (err) {
       Sound.play('error');
       toast(err.message);
@@ -522,6 +607,7 @@ function wire() {
     stopPolling();
     clearInterval(state.skyTimer);
     state.pet = null;
+    state.me = null;
     applyTheme('hijau');
     show('welcome');
   });
@@ -549,7 +635,7 @@ function wire() {
 
   document.addEventListener('visibilitychange', async () => {
     if (!document.hidden && state.pet && ['active', 'dormant'].includes(state.pet.status)) {
-      try { renderPet((await api('/api/pet')).pet); } catch { /* ignore */ }
+      try { const d = await api('/api/pet'); renderPet(d.pet); renderMe(d.me); } catch { /* ignore */ }
     }
   });
 }
@@ -582,12 +668,34 @@ function setupInstall() {
       deferred = null;
       btn.hidden = true;
     } else if (IS_IOS) {
-      toast('Tap Share, then "Add to Home Screen". Inside the app, enter your Secret Key once and tick "Remember this device".', 8000);
+      toast('Tap Share, then "Add to Home Screen". Inside the app, enter your Call Code and PIN once and tick "Remember this device".', 8000);
     }
   });
 }
 
+// Invite links (/?ref=PTK-XXXXXX): remember the inviter until this device hatches a pet.
+function readInvite() {
+  const ref = new URLSearchParams(location.search).get('ref');
+  if (ref && /^[A-Za-z0-9-]{6,12}$/.test(ref)) {
+    try { localStorage.setItem(REF_KEY, ref.toUpperCase()); } catch { /* storage blocked */ }
+    history.replaceState(null, '', location.pathname);
+  }
+  let saved = null;
+  try { saved = localStorage.getItem(REF_KEY); } catch { /* ignore */ }
+  if (saved) {
+    const note = $('#invite-note');
+    note.hidden = false;
+    note.textContent = `Invited by ${saved.startsWith('PTK-') ? saved : `PTK-${saved}`}! Hatch your Peetako and care for it after its first day: you get 50 bonus coins.`;
+  }
+}
+
 async function init() {
+  readInvite();
+  state.social = initSocial({
+    $, api, toast, Sound,
+    getPet: () => state.pet, getMe: () => state.me,
+    onPet: (p) => renderPet(p), onMe: (m) => renderMe(m),
+  });
   loadView();
   applyTheme('hijau');
   renderHero();
@@ -601,7 +709,7 @@ async function init() {
   } catch { /* ignore */ }
   try {
     const data = await api('/api/pet');
-    openPet(data.pet);
+    openPet(data.pet, data.me, data.earned);
   } catch (e) {
     show('welcome');
     // No HTTP status means the request never reached the server (offline or network down).

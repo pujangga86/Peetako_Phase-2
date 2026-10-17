@@ -1,4 +1,6 @@
-// Peetako game rules — every tunable number lives here.
+// Peetako game rules — every tunable number for care and tiers lives here (2C economy: economy.js).
+import { parseEquipped, TITLE } from './economy.js';
+
 // All values are first proposals from the GDD, to be tuned in playtesting.
 // Phase 2: compressed tier schedule (decided 10 Oct 2026; survival windows unchanged) and Ascension.
 
@@ -20,7 +22,7 @@ export const TIERS = [
 export const TOP_TIER = TIERS.length - 1;
 
 // Colour palettes (Phase 2B). Cosmetic only: never affects stats, survival or battles.
-// A new pet gets one at random; the owner can switch any time from the menu.
+// Chosen once by the owner at hatch, then locked.
 export const PALETTES = ['hijau', 'tokay', 'kenyalang', 'puakumbu', 'laut'];
 export const DEFAULT_PALETTE = 'hijau';
 
@@ -125,7 +127,7 @@ export function ascend(pet, now) {
   return { ...pet, ascended_at: now, legacy_score: legacyScore(pet, now), stats_at: now };
 }
 
-// Public shape sent to the browser. Never includes key_hash or id.
+// Owner's view of the pet. Never includes pin_hash, reg_ip or id.
 export function view(pet, now) {
   const tier = TIERS[pet.tier];
   const end = pet.died_at || pet.ascended_at || now;
@@ -141,6 +143,12 @@ export function view(pet, now) {
 
   return {
     name: pet.name,
+    nameStatus: pet.name_status || 'ok',           // 'hidden' while a report waits for review
+    title: pet.title || null,                      // Tier 7 custom title
+    titleStatus: pet.title_status || 'ok',
+    canSetTitle: pet.tier >= TITLE.fromTier && status !== 'dead' && status !== 'ascended',
+    equipped: parseEquipped(pet.equipped),
+    battles: { wins: pet.battle_wins || 0, losses: pet.battle_losses || 0 },
     type: pet.type,
     palette: PALETTES.includes(pet.palette) ? pet.palette : DEFAULT_PALETTE,
     callCode: pet.call_code,

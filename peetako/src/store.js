@@ -1,14 +1,15 @@
 // Peetako data layer — the ONLY file that talks to the database.
 //
-// index.js (routes, cron) and push.js (care alerts) call these functions and never write SQL.
-// To change where data lives (sharded D1, Durable Objects, Postgres via Hyperdrive, DynamoDB),
-// replace the bodies below and keep the signatures; game logic and routes stay untouched.
+// index.js (routes, cron), social.js (2C social and economy) and push.js (care alerts) call these
+// functions and never write SQL. To change where data lives, replace the bodies below and keep the
+// signatures; game logic and routes stay untouched.
 //
-// Everything is keyed by the pet: id, call_code, key_hash or session token hash. No function joins
-// one pet's data to another's, so a pet can later move to its own Durable Object or shard.
+// Phase 2C adds rows that link two pets (gifts, battles, Pamper, referrals, leaderboards). Those are
+// written as small, separate statements keyed by pet id, so they can later move behind an API
+// between shards.
 //
 // SQLite-specific syntax used here (translate if the engine changes): ON CONFLICT ... DO UPDATE,
-// RETURNING, INSERT OR IGNORE, json_each.
+// RETURNING, INSERT OR IGNORE, json_each, changes() inside a batch (a D1 batch runs as one transaction).
 
 // ---------- errors ----------
 export function isUniqueViolation(e) {
@@ -27,19 +28,33 @@ export async function rateLimitHit(env, bucket, expiresAt) {
 
 // ---------- pets ----------
 // Creates a pet and returns the full row. Throws a unique violation (see isUniqueViolation)
-// when the call code or key hash already exists.
-export async function createPet(env, { callCode, keyHash, name, type, palette, now, stats }) {
+// when the Call Code (or its look-alike form) is already taken.
+export async function createPet(env, { callCode, codeKey, pinHash, regIp, name, type, palette, now, stats, referredBy }) {
   return env.DB.prepare(
-    `INSERT INTO pet (call_code, key_hash, name, type, born_at, last_cared_at, stats_at, energy, health, temperature, mood, tier, palette)
-     VALUES (?1, ?2, ?3, ?4, ?5, ?5, ?5, ?6, ?7, ?8, ?9, 0, ?10) RETURNING *`
-  ).bind(callCode, keyHash, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood, palette).first();
+    `INSERT INTO pet (call_code, code_key, pin_hash, reg_ip, name, type, born_at, last_cared_at, stats_at,
+       energy, health, temperature, mood, tier, palette, referred_by)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7, ?7, ?8, ?9, ?10, ?11, 0, ?12, ?13) RETURNING *`
+  ).bind(callCode, codeKey, pinHash, regIp, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood,
+    palette, referredBy ?? null).first();
 }
 
-export async function petByKeyHash(env, keyHash) {
-  return env.DB.prepare('SELECT * FROM pet WHERE key_hash = ?1').bind(keyHash).first();
+export async function petByCodeKey(env, codeKey) {
+  return env.DB.prepare('SELECT * FROM pet WHERE code_key = ?1').bind(codeKey).first();
 }
 
-// Persists the fields that change while a pet is cared for.
+export async function petById(env, id) {
+  return env.DB.prepare('SELECT * FROM pet WHERE id = ?1').bind(id).first();
+}
+
+// Which of these look-alike keys are already taken.
+export async function codeKeysTaken(env, keys) {
+  const { results } = await env.DB.prepare(
+    'SELECT code_key FROM pet WHERE code_key IN (SELECT value FROM json_each(?1))'
+  ).bind(JSON.stringify(keys)).all();
+  return new Set(results.map((r) => r.code_key));
+}
+
+// Persists the fields that change while a pet is cared for (never coins: those change atomically below).
 export async function savePet(env, p) {
   await env.DB.prepare(
     `UPDATE pet SET last_cared_at=?1, stats_at=?2, energy=?3, health=?4, temperature=?5, mood=?6, tier=?7, died_at=?8,
@@ -55,6 +70,18 @@ export async function saveAscension(env, p) {
       WHERE id=?4 AND ascended_at IS NULL AND died_at IS NULL`
   ).bind(p.ascended_at, p.legacy_score, p.stats_at, p.id).run();
   return r.meta.changes === 1;
+}
+
+// ---------- PIN ----------
+export async function savePinFailure(env, id, { streak, day, count, lockedUntil }) {
+  await env.DB.prepare('UPDATE pet SET pin_fail_streak=?1, pin_fail_day=?2, pin_fail_count=?3, pin_locked_until=?4 WHERE id=?5')
+    .bind(streak, day, count, lockedUntil, id).run();
+}
+export async function savePinSuccess(env, id) {
+  await env.DB.prepare('UPDATE pet SET pin_fail_streak=0 WHERE id=?1').bind(id).run();
+}
+export async function savePinHash(env, id, pinHash) {
+  await env.DB.prepare('UPDATE pet SET pin_hash=?1, pin_fail_streak=0 WHERE id=?2').bind(pinHash, id).run();
 }
 
 // ---------- sessions ----------
@@ -74,6 +101,263 @@ export async function createSession(env, { tokenHash, petId, createdAt, expiresA
 
 export async function deleteSession(env, tokenHash) {
   await env.DB.prepare('DELETE FROM sessions WHERE token_hash = ?1').bind(tokenHash).run();
+}
+
+// Changing the PIN signs out every other device of that pet.
+export async function deleteOtherSessions(env, petId, keepTokenHash) {
+  await env.DB.prepare('DELETE FROM sessions WHERE pet_id = ?1 AND token_hash <> ?2').bind(petId, keepTokenHash).run();
+}
+
+// ---------- coins and daily counters ----------
+export async function dailyCounts(env, petId, day) {
+  const { results } = await env.DB.prepare('SELECT kind, n FROM daily WHERE pet_id = ?1 AND day = ?2').bind(petId, day).all();
+  return Object.fromEntries(results.map((r) => [r.kind, r.n]));
+}
+
+const dailyAdd = (env, petId, day, kind, n) => env.DB.prepare(
+  `INSERT INTO daily (pet_id, day, kind, n) VALUES (?1, ?2, ?3, ?4)
+   ON CONFLICT(pet_id, day, kind) DO UPDATE SET n = n + excluded.n`
+).bind(petId, day, kind, n);
+
+// Counts one event of `kind` for today (battles, Pampers, ...). Returns the new count.
+export async function countDaily(env, petId, day, kind, n = 1) {
+  const row = await env.DB.prepare(
+    `INSERT INTO daily (pet_id, day, kind, n) VALUES (?1, ?2, ?3, ?4)
+     ON CONFLICT(pet_id, day, kind) DO UPDATE SET n = n + excluded.n RETURNING n`
+  ).bind(petId, day, kind, n).first();
+  return row.n;
+}
+
+// Pays coins against a daily cap kept under `kind`. Returns the coins actually paid (0 at the cap).
+export async function earnCapped(env, petId, day, kind, amount, cap) {
+  const row = await env.DB.prepare('SELECT n FROM daily WHERE pet_id = ?1 AND day = ?2 AND kind = ?3').bind(petId, day, kind).first();
+  const grant = Math.max(0, Math.min(amount, cap - (row ? row.n : 0)));
+  if (grant > 0) {
+    await env.DB.batch([
+      dailyAdd(env, petId, day, kind, grant),
+      env.DB.prepare('UPDATE pet SET coins = coins + ?1 WHERE id = ?2').bind(grant, petId),
+    ]);
+  }
+  return grant;
+}
+
+export async function addCoins(env, petId, n) {
+  await env.DB.prepare('UPDATE pet SET coins = coins + ?1 WHERE id = ?2').bind(n, petId).run();
+}
+
+// Tier-up reward: pays once per tier. Returns true when this call paid.
+export async function payTierReward(env, petId, tier, coins) {
+  const r = await env.DB.prepare('UPDATE pet SET coins = coins + ?1, tier_paid = ?2 WHERE id = ?3 AND tier_paid < ?2')
+    .bind(coins, tier, petId).run();
+  return r.meta.changes === 1;
+}
+
+// Daily check-in: once per MYT day. Returns true when this call checked in.
+export async function checkIn(env, petId, { day, streak, coins }) {
+  const r = await env.DB.prepare(
+    `UPDATE pet SET checkin_day = ?1, streak = ?2, coins = coins + ?3
+      WHERE id = ?4 AND (checkin_day IS NULL OR checkin_day <> ?1)`
+  ).bind(day, streak, coins, petId).run();
+  return r.meta.changes === 1;
+}
+
+// ---------- referrals ----------
+// Settles one waiting referral. state: 1 paid, 2 void. Returns true when this call settled it.
+export async function settleReferral(env, { petId, state, newPlayerCoins }) {
+  const r = await env.DB.prepare(
+    'UPDATE pet SET referral_state = ?1, coins = coins + ?2 WHERE id = ?3 AND referral_state = 0'
+  ).bind(state, newPlayerCoins, petId).run();
+  return r.meta.changes === 1;
+}
+
+// ---------- cosmetics ----------
+export async function inventoryOf(env, petId) {
+  const { results } = await env.DB.prepare('SELECT item, acquired_at, from_pet FROM inventory WHERE pet_id = ?1 ORDER BY acquired_at')
+    .bind(petId).all();
+  return results;
+}
+
+// Buys an item: takes the coins and adds the item in one transaction, or does nothing when the pet
+// cannot afford it or already owns it. Returns true on success.
+export async function buyItem(env, { petId, item, price, now }) {
+  const [take] = await env.DB.batch([
+    env.DB.prepare(
+      `UPDATE pet SET coins = coins - ?2 WHERE id = ?1 AND coins >= ?2
+         AND NOT EXISTS (SELECT 1 FROM inventory WHERE pet_id = ?1 AND item = ?3)`
+    ).bind(petId, price, item),
+    env.DB.prepare('INSERT INTO inventory (pet_id, item, acquired_at) SELECT ?1, ?2, ?3 WHERE changes() = 1').bind(petId, item, now),
+  ]);
+  return take.meta.changes === 1;
+}
+
+// A gift: the giver pays the item's price; the item goes straight into the other pet's inventory,
+// with an event for its owner and one more on the giver's daily gift count. All or nothing.
+export async function giftItem(env, { fromId, toId, item, price, now, day }) {
+  const [take] = await env.DB.batch([
+    env.DB.prepare(
+      `UPDATE pet SET coins = coins - ?2 WHERE id = ?1 AND coins >= ?2
+         AND NOT EXISTS (SELECT 1 FROM inventory WHERE pet_id = ?3 AND item = ?4)`
+    ).bind(fromId, price, toId, item),
+    env.DB.prepare('INSERT INTO inventory (pet_id, item, acquired_at, from_pet) SELECT ?1, ?2, ?3, ?4 WHERE changes() = 1')
+      .bind(toId, item, now, fromId),
+    env.DB.prepare(`INSERT INTO events (pet_id, kind, from_pet, data, at) SELECT ?1, 'gift', ?2, ?3, ?4 WHERE changes() = 1`)
+      .bind(toId, fromId, JSON.stringify({ item }), now),
+    env.DB.prepare(
+      `INSERT INTO daily (pet_id, day, kind, n) SELECT ?1, ?2, 'gifts', 1 WHERE changes() = 1
+       ON CONFLICT(pet_id, day, kind) DO UPDATE SET n = n + 1`
+    ).bind(fromId, day),
+  ]);
+  return take.meta.changes === 1;
+}
+
+export async function saveEquipped(env, petId, equipped) {
+  await env.DB.prepare('UPDATE pet SET equipped = ?1 WHERE id = ?2').bind(JSON.stringify(equipped), petId).run();
+}
+
+// ---------- events (things that happened while the owner was away) ----------
+export async function addEvent(env, { petId, kind, fromPet, data, at }) {
+  await env.DB.prepare('INSERT INTO events (pet_id, kind, from_pet, data, at) VALUES (?1, ?2, ?3, ?4, ?5)')
+    .bind(petId, kind, fromPet ?? null, JSON.stringify(data || {}), at).run();
+}
+
+// Newest unseen events (at most 10), with the other pet's public name and code.
+export async function unseenEvents(env, petId) {
+  const { results } = await env.DB.prepare(
+    `SELECT e.id, e.kind, e.data, e.at, p.call_code AS from_code, p.name AS from_name, p.name_status AS from_name_status
+       FROM events e LEFT JOIN pet p ON p.id = e.from_pet
+      WHERE e.pet_id = ?1 AND e.seen = 0 ORDER BY e.id DESC LIMIT 10`
+  ).bind(petId).all();
+  return results;
+}
+
+export async function markEventsSeen(env, petId, upToId) {
+  await env.DB.prepare('UPDATE events SET seen = 1 WHERE pet_id = ?1 AND id <= ?2 AND seen = 0').bind(petId, upToId).run();
+}
+
+// ---------- Tangkap Kelip-kelip ----------
+export async function startRun(env, { tokenHash, petId, now }) {
+  await env.DB.prepare('INSERT INTO game_runs (token_hash, pet_id, started_at) VALUES (?1, ?2, ?3)').bind(tokenHash, petId, now).run();
+}
+
+export async function runsStartedSince(env, petId, since) {
+  const row = await env.DB.prepare('SELECT COUNT(*) AS n FROM game_runs WHERE pet_id = ?1 AND started_at >= ?2').bind(petId, since).first();
+  return row.n;
+}
+
+// Closes a run once. Returns its start time, or null when unknown, someone else's, or already finished.
+export async function finishRun(env, { tokenHash, petId, now }) {
+  const row = await env.DB.prepare(
+    'UPDATE game_runs SET finished_at = ?3 WHERE token_hash = ?1 AND pet_id = ?2 AND finished_at IS NULL RETURNING started_at'
+  ).bind(tokenHash, petId, now).first();
+  return row ? row.started_at : null;
+}
+
+// Keeps the best score per pet per day. Returns { best, allTime }.
+export async function saveScore(env, { petId, day, score, now }) {
+  const [, best, all] = await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO game_scores (pet_id, day, best, at) VALUES (?1, ?2, ?3, ?4)
+       ON CONFLICT(pet_id, day) DO UPDATE SET best = excluded.best, at = excluded.at WHERE excluded.best > game_scores.best`
+    ).bind(petId, day, score, now),
+    env.DB.prepare('SELECT best FROM game_scores WHERE pet_id = ?1 AND day = ?2').bind(petId, day),
+    env.DB.prepare('SELECT MAX(best) AS best FROM game_scores WHERE pet_id = ?1').bind(petId),
+  ]);
+  return { best: best.results[0]?.best ?? 0, allTime: all.results[0]?.best ?? 0 };
+}
+
+const BOARD_COLS = 'p.call_code, p.name, p.name_status, p.type, p.palette, p.tier, p.died_at, p.ascended_at';
+
+// Top scores for one day (day set) or all time (day null), best per pet, ties to the earlier score.
+export async function leaderboard(env, { day, limit }) {
+  const sql = day
+    ? `SELECT ${BOARD_COLS}, s.best AS score FROM game_scores s JOIN pet p ON p.id = s.pet_id
+        WHERE s.day = ?1 ORDER BY s.best DESC, s.at ASC LIMIT ?2`
+    : `SELECT ${BOARD_COLS}, b.score FROM (SELECT pet_id, MAX(best) AS score, MIN(at) AS at FROM game_scores GROUP BY pet_id) b
+         JOIN pet p ON p.id = b.pet_id ORDER BY b.score DESC, b.at ASC LIMIT ?2`;
+  const { results } = await env.DB.prepare(sql).bind(day ?? null, limit).all();
+  return results;
+}
+
+// A pet's best and rank (1 = top) for a day or all time; null when it has no score there.
+export async function rankOf(env, { petId, day }) {
+  const sql = day
+    ? `SELECT s.best AS score, (SELECT COUNT(*) FROM game_scores o WHERE o.day = ?2 AND (o.best > s.best OR (o.best = s.best AND o.at < s.at))) + 1 AS rank
+         FROM game_scores s WHERE s.pet_id = ?1 AND s.day = ?2`
+    : `WITH b AS (SELECT pet_id, MAX(best) AS score FROM game_scores GROUP BY pet_id)
+       SELECT score, (SELECT COUNT(*) FROM b o WHERE o.score > b.score) + 1 AS rank FROM b WHERE pet_id = ?1`;
+  const stmt = day ? env.DB.prepare(sql).bind(petId, day) : env.DB.prepare(sql).bind(petId);
+  return (await stmt.first()) || null;
+}
+
+export async function bestScoreOf(env, petId) {
+  const row = await env.DB.prepare('SELECT MAX(best) AS best FROM game_scores WHERE pet_id = ?1').bind(petId).first();
+  return row?.best ?? 0;
+}
+
+// ---------- names, titles and reports ----------
+export async function saveTitle(env, petId, title) {
+  await env.DB.prepare("UPDATE pet SET title = ?1, title_status = 'ok' WHERE id = ?2").bind(title, petId).run();
+}
+
+// First report hides the text at once. Returns 'hidden' (new report filed), 'pending' (already hidden),
+// 'approved' (an admin already kept this text) or 'none' (nothing to report).
+export async function reportField(env, { petId, field, text, reporterPet, now }) {
+  const col = field === 'title' ? 'title_status' : 'name_status';
+  const [hide] = await env.DB.batch([
+    env.DB.prepare(`UPDATE pet SET ${col} = 'hidden' WHERE id = ?1 AND ${col} = 'ok'`).bind(petId),
+    env.DB.prepare(
+      'INSERT INTO reports (pet_id, field, text, reporter_pet, created_at) SELECT ?1, ?2, ?3, ?4, ?5 WHERE changes() = 1'
+    ).bind(petId, field, text, reporterPet, now),
+  ]);
+  if (hide.meta.changes === 1) return 'hidden';
+  const row = await env.DB.prepare(`SELECT ${col} AS s FROM pet WHERE id = ?1`).bind(petId).first();
+  return row?.s === 'approved' ? 'approved' : 'pending';
+}
+
+export async function openReports(env, limit = 50) {
+  const { results } = await env.DB.prepare(
+    `SELECT r.id, r.field, r.text, r.created_at, p.call_code, p.type, p.tier,
+            rp.call_code AS reporter_code
+       FROM reports r JOIN pet p ON p.id = r.pet_id LEFT JOIN pet rp ON rp.id = r.reporter_pet
+      WHERE r.status = 'open' ORDER BY r.created_at ASC LIMIT ?1`
+  ).bind(limit).all();
+  return results;
+}
+
+// approve: the text stays and cannot be reported again. reject: a name becomes `fallbackName`,
+// a title is removed. Returns false when the report was already handled.
+export async function resolveReport(env, { id, decision, fallbackName, now }) {
+  const rep = await env.DB.prepare("SELECT * FROM reports WHERE id = ?1 AND status = 'open'").bind(id).first();
+  if (!rep) return false;
+  const writes = [env.DB.prepare('UPDATE reports SET status = ?1, resolved_at = ?2 WHERE id = ?3')
+    .bind(decision === 'approve' ? 'approved' : 'rejected', now, id)];
+  if (rep.field === 'name') {
+    writes.push(decision === 'approve'
+      ? env.DB.prepare("UPDATE pet SET name_status = 'approved' WHERE id = ?1").bind(rep.pet_id)
+      : env.DB.prepare("UPDATE pet SET name = ?1, name_status = 'approved' WHERE id = ?2").bind(fallbackName, rep.pet_id));
+  } else {
+    writes.push(decision === 'approve'
+      ? env.DB.prepare("UPDATE pet SET title_status = 'approved' WHERE id = ?1").bind(rep.pet_id)
+      : env.DB.prepare("UPDATE pet SET title = NULL, title_status = 'ok' WHERE id = ?1").bind(rep.pet_id));
+  }
+  await env.DB.batch(writes);
+  return true;
+}
+
+// ---------- battles ----------
+export async function recordBattle(env, { attacker, defender, winner, now }) {
+  const loser = winner === attacker ? defender : attacker;
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO battles (attacker, defender, winner, at) VALUES (?1, ?2, ?3, ?4)').bind(attacker, defender, winner, now),
+    env.DB.prepare('UPDATE pet SET battle_wins = battle_wins + 1 WHERE id = ?1').bind(winner),
+    env.DB.prepare('UPDATE pet SET battle_losses = battle_losses + 1 WHERE id = ?1').bind(loser),
+  ]);
+}
+
+// Pamper: only the FUN (mood) stat of the other pet changes; its care timer does not.
+export async function saveMood(env, p) {
+  await env.DB.prepare('UPDATE pet SET stats_at=?1, energy=?2, health=?3, temperature=?4, mood=?5, tier=?6, died_at=?7 WHERE id=?8')
+    .bind(p.stats_at, p.energy, p.health, p.temperature, p.mood, p.tier, p.died_at ?? null, p.id).run();
 }
 
 // ---------- care-alert subscriptions ----------
@@ -156,8 +440,18 @@ export async function recordDeathsAndPurge(env, { fallen, now }) {
   for (let i = 0; i < writes.length; i += 50) await env.DB.batch(writes.slice(i, i + 50));
 }
 
+// 2C housekeeping: old daily counters, finished or abandoned game runs, and events seen long ago.
+// Leaderboard scores, battles and reports are kept.
+export async function purgeSocial(env, { dayCutoff, runCutoff, eventCutoff }) {
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM daily WHERE day < ?1').bind(dayCutoff),
+    env.DB.prepare('DELETE FROM game_runs WHERE started_at < ?1').bind(runCutoff),
+    env.DB.prepare('DELETE FROM events WHERE at < ?1').bind(eventCutoff),
+  ]);
+}
+
 // Fallen pets get no more alerts. Kept separate from recordDeathsAndPurge so the core cleanup
-// still runs if migration 0002 (alert tables) has not been applied yet.
+// still runs if the alert tables are missing.
 export async function purgeFallenAlerts(env) {
   await env.DB.batch([
     env.DB.prepare('DELETE FROM push_subscriptions WHERE pet_id IN (SELECT id FROM pet WHERE died_at IS NOT NULL OR ascended_at IS NOT NULL)'),

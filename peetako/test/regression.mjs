@@ -9,6 +9,8 @@
 //   node test/regression.mjs --src <dir>   run the same scenario against another copy of src/
 //
 // Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes; the palette is now chosen once at hatch and locked.
+// Phase 2C rewrote it again: chosen Call Codes and 6-digit PINs (no Secret Key), coins, shop, gifts, Pamper, battles,
+// Tangkap Kelip-kelip and leaderboards, Report and admin review, invites, the public pet page.
 // Nothing here touches the real database; it needs no secrets and no network.
 
 import { execFileSync } from 'node:child_process';
@@ -50,6 +52,7 @@ const env = {
   VAPID_PRIVATE_KEY: vapid.d,
   VAPID_SUBJECT: 'mailto:test@example.com',
   PUSH_MAX_PER_RUN: '20',
+  ADMIN_TOKEN: 'regression-admin-token',
 };
 
 // ---- fixed clock, fixed randomness, mocked push service ----
@@ -57,7 +60,8 @@ let T = Date.UTC(2026, 9, 10, 0, 0, 0);
 Date.now = () => T;
 let seed = 12345;
 const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed; };
-crypto.getRandomValues = (a) => { for (let i = 0; i < a.length; i++) a[i] = rnd() & (a.BYTES_PER_ELEMENT === 4 ? 0xffffffff : 0xff); return a; };
+// Bytes come from the high bits: the low bits of this generator repeat every 256 steps, which made session tokens collide.
+crypto.getRandomValues = (a) => { for (let i = 0; i < a.length; i++) a[i] = a.BYTES_PER_ELEMENT === 4 ? rnd() : rnd() >>> 24; return a; };
 
 const pushLog = [];
 const PUSH_STATUS = new Map(); // endpoint -> HTTP status to answer with (default 201)
@@ -72,12 +76,16 @@ globalThis.fetch = async (url, init = {}) => {
 const worker = (await import(pathToFileURL(path.join(SRC, 'index.js')).href)).default;
 
 // ---- helpers ----
+const TABLES = [['pet', 'id'], ['sessions', 'token_hash'], ['push_subscriptions', 'endpoint'], ['notify_state', 'pet_id'],
+  ['daily', 'pet_id, day, kind'], ['inventory', 'pet_id, item'], ['events', 'id'], ['game_runs', 'started_at, token_hash'],
+  ['game_scores', 'pet_id, day'], ['reports', 'id'], ['battles', 'id']];
 const H = 3600 * 1000;
 const log = [];
 const jar = new Map(); // who -> session cookie
 
-async function call(label, method, p, { body, ip = '1.1.1.1', who, origin } = {}) {
+async function call(label, method, p, { body, ip = '1.1.1.1', who, origin, auth } = {}) {
   const headers = { 'cf-connecting-ip': ip };
+  if (auth) headers.authorization = auth;
   if (body !== undefined) headers['content-type'] = 'application/json';
   if (who && jar.get(who)) headers.cookie = jar.get(who);
   if (origin) headers.origin = origin;
@@ -88,14 +96,14 @@ async function call(label, method, p, { body, ip = '1.1.1.1', who, origin } = {}
     if (m && m[1]) jar.set(who || label, 'ptk_session=' + m[1]); else jar.delete(who || label);
   }
   const text = await res.text();
-  let data; try { data = JSON.parse(text); } catch { data = text; }
+  let data; try { data = JSON.parse(text); } catch { data = text.length > 600 ? text.slice(0, 600) + '…' : text; }
   log.push({ label, t: T, status: res.status, setCookie: sc ? sc.replace(/ptk_session=[a-f0-9]+/, 'ptk_session=<tok>') : null, data });
   return data;
 }
 
 async function snap(label) {
   const out = {};
-  for (const [t, order] of [['pet', 'id'], ['sessions', 'token_hash'], ['push_subscriptions', 'endpoint'], ['notify_state', 'pet_id']]) {
+  for (const [t, order] of TABLES) {
     out[t] = (await env.DB.prepare(`SELECT * FROM ${t} ORDER BY ${order}`).all()).results;
   }
   log.push({ label: 'SNAP ' + label, t: T, snap: out });
@@ -112,6 +120,8 @@ async function cron(label, expr) {
 const sub = (i, host = 'fcm.googleapis.com') => ({ endpoint: `https://${host}/send/device-${i}`, keys: { p256dh: devices[i].pub, auth: devices[i].auth } });
 
 // ---- scenario ----
+const reg = (name, type, palette, code, pin = '482916', extra = {}) => ({ name, type, palette, code, pin, ...extra });
+
 async function scenario() {
   await call('config', 'GET', '/api/config');
   await call('no-session pet', 'GET', '/api/pet');
@@ -119,30 +129,64 @@ async function scenario() {
   await call('bad type', 'POST', '/api/register', { body: { name: 'Valid', type: 'x' } });
   await call('bad origin', 'POST', '/api/register', { body: { name: 'Valid', type: 'robot' }, origin: 'https://evil.test' });
 
-  await call('register no palette', 'POST', '/api/register', { body: { name: 'NoColour', type: 'organic' }, ip: '2.2.2.2' });
-  await call('register bad palette', 'POST', '/api/register', { body: { name: 'BadColour', type: 'robot', palette: 'neon' }, ip: '2.2.2.2' });
-  const a = await call('register A', 'POST', '/api/register', { body: { name: 'Gecko One', type: 'organic', palette: 'puakumbu', remember: true }, who: 'A', ip: '2.2.2.2' });
-  await call('register B', 'POST', '/api/register', { body: { name: 'Robo Two', type: 'robot', palette: 'laut', remember: false }, who: 'B', ip: '3.3.3.3' });
-  await call('register C', 'POST', '/api/register', { body: { name: 'Cee', type: 'organic', palette: 'hijau', remember: true }, who: 'C', ip: '4.4.4.4' });
-  await call('register D', 'POST', '/api/register', { body: { name: 'Dee', type: 'robot', palette: 'tokay', remember: true }, who: 'D', ip: '5.5.5.5' });
-  for (let i = 0; i < 6; i++) await call('register burst ' + i, 'POST', '/api/register', { body: { name: 'Burst' + i, type: 'organic', palette: 'laut' }, who: 'burst' + i, ip: '9.9.9.9' }); // 6th is rate limited
+  // Phase 2C: chosen Call Code and PIN
+  await call('code check free', 'GET', '/api/code/check?code=tokay88', { ip: '2.2.2.2' });
+  await call('code check short', 'GET', '/api/code/check?code=TOK', { ip: '2.2.2.2' });
+  await call('code check blocked', 'GET', '/api/code/check?code=BODOH1', { ip: '2.2.2.2' });
+  await call('code suggest', 'GET', '/api/code/suggest', { ip: '2.2.2.2' });
+  await call('register no palette', 'POST', '/api/register', { body: reg('NoColour', 'organic', undefined, 'NOCOLOUR'), ip: '2.2.2.2' });
+  await call('register bad palette', 'POST', '/api/register', { body: reg('BadColour', 'robot', 'neon', 'BADCOLOR'), ip: '2.2.2.2' });
+  await call('register blocked name', 'POST', '/api/register', { body: reg('B0d0h', 'robot', 'laut', 'NICEONE'), ip: '2.2.2.2' });
+  await call('register no code', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', ''), ip: '2.2.2.2' });
+  await call('register code too long', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'ABCDEFGHI'), ip: '2.2.2.2' });
+  await call('register blocked code', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'SEX123'), ip: '2.2.2.2' });
+  await call('register weak pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '123456'), ip: '2.2.2.2' });
+  await call('register short pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '4821'), ip: '2.2.2.2' });
+  await call('register A', 'POST', '/api/register', { body: reg('Gecko One', 'organic', 'puakumbu', 'PTK-TOKAY88', '482916', { remember: true }), who: 'A', ip: '2.2.2.2' });
+  await call('register look-alike taken', 'POST', '/api/register', { body: reg('Copycat', 'organic', 'hijau', 't0kay88'), ip: '2.2.2.2' });
+  await call('code check taken', 'GET', '/api/code/check?code=PTK-TOKAY88', { ip: '2.2.2.2' });
+  await call('register B', 'POST', '/api/register', { body: reg('Robo Two', 'robot', 'laut', 'rimba21', '730154', { remember: false }), who: 'B', ip: '3.3.3.3' });
+  await call('register C', 'POST', '/api/register', { body: reg('Cee', 'organic', 'hijau', 'ptk bukitku', '664201', { remember: true }), who: 'C', ip: '4.4.4.4' });
+  await call('register D', 'POST', '/api/register', { body: reg('Dee', 'robot', 'tokay', 'DEEROBOT', '901347', { remember: true }), who: 'D', ip: '5.5.5.5' });
+  for (let i = 0; i < 6; i++) await call('register burst ' + i, 'POST', '/api/register', { body: reg('Burst' + i, 'organic', 'laut', 'BURST00' + i), who: 'burst' + i, ip: '9.9.9.9' }); // 6th is rate limited
 
   T += 1 * H;
   await call('get pet A', 'GET', '/api/pet', { who: 'A' });
-  await call('care A feed', 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' });
+  for (let i = 0; i < 4; i++) await call('care A feed ' + i, 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' }); // 3 pay 10 coins, the 4th pays 0 (30/day)
   await call('care A bad', 'POST', '/api/care', { who: 'A', body: { action: 'nope' }, ip: '2.2.2.2' });
-  // The palette is chosen once at hatch: every switch is refused and the pet keeps its colour.
   await call('palette A locked', 'POST', '/api/palette', { who: 'A', body: { palette: 'tokay' }, ip: '2.2.2.2' });
   await call('palette no session', 'POST', '/api/palette', { body: { palette: 'laut' }, ip: '2.2.2.2' });
-  await call('get pet A after locked', 'GET', '/api/pet', { who: 'A' });
+  await call('checkin A', 'POST', '/api/checkin', { who: 'A', ip: '2.2.2.2' });
+  await call('checkin A again', 'POST', '/api/checkin', { who: 'A', ip: '2.2.2.2' });
+  await call('shop A', 'GET', '/api/shop', { who: 'A', ip: '2.2.2.2' });
+  await call('buy A too dear', 'POST', '/api/shop/buy', { who: 'A', body: { item: 'terendak' }, ip: '2.2.2.2' });
+  await call('buy A headband', 'POST', '/api/shop/buy', { who: 'A', body: { item: 'ikat-manik' }, ip: '2.2.2.2' });
+  await call('buy A unknown', 'POST', '/api/shop/buy', { who: 'A', body: { item: 'crown' }, ip: '2.2.2.2' });
+  await call('equip A wrong slot', 'POST', '/api/equip', { who: 'A', body: { slot: 'neck', item: 'ikat-manik' }, ip: '2.2.2.2' });
+  await call('equip A not owned', 'POST', '/api/equip', { who: 'A', body: { slot: 'back', item: 'payung' }, ip: '2.2.2.2' });
+  await call('unequip A head', 'POST', '/api/equip', { who: 'A', body: { slot: 'head', item: null }, ip: '2.2.2.2' });
+  await call('equip A head', 'POST', '/api/equip', { who: 'A', body: { slot: 'head', item: 'ikat-manik' }, ip: '2.2.2.2' });
   await call('care B charge', 'POST', '/api/care', { who: 'B', body: { action: 'charge' }, ip: '3.3.3.3' });
 
+  // PIN login, lock after 5 wrong PINs, change PIN
   await call('logout A', 'POST', '/api/logout', { who: 'A' });
   await call('pet after logout', 'GET', '/api/pet', { who: 'A' });
-  await call('login A', 'POST', '/api/login', { body: { key: a.key.toUpperCase().replaceAll('-', ' '), remember: false }, who: 'A2', ip: '2.2.2.2' });
-  await call('login bad key words', 'POST', '/api/login', { body: { key: 'not four words' }, ip: '6.6.6.6' });
-  await call('login unknown key', 'POST', '/api/login', { body: { key: 'river-candle-tiger-mango' }, ip: '6.6.6.6' });
-  for (let i = 0; i < 11; i++) await call('login flood ' + i, 'POST', '/api/login', { body: { key: 'river-candle-tiger-mango' }, ip: '7.7.7.7' }); // 11th is rate limited
+  await call('login A', 'POST', '/api/login', { body: { code: 'ptk-tokay88', pin: '482916', remember: false }, who: 'A2', ip: '2.2.2.2' });
+  await call('login look-alike code', 'POST', '/api/login', { body: { code: 'T0KAY88', pin: '482916' }, who: 'A3', ip: '2.2.2.2' });
+  await call('login bad code', 'POST', '/api/login', { body: { code: 'not a code', pin: '482916' }, ip: '6.6.6.6' });
+  await call('login unknown code', 'POST', '/api/login', { body: { code: 'NOBODY99', pin: '482916' }, ip: '6.6.6.6' });
+  await call('login bad pin shape', 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '12' }, ip: '6.6.6.6' });
+  for (let i = 0; i < 6; i++) await call('login B wrong ' + i, 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '000001' }, ip: '6.6.6.6' }); // 5th locks, 6th is refused
+  await call('login B right while locked', 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '730154' }, ip: '6.6.6.6' });
+  T += 16 * 60 * 1000;
+  await call('login B after lock', 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '730154' }, who: 'B2', ip: '6.6.6.6' });
+  for (let i = 0; i < 21; i++) await call('login flood ' + i, 'POST', '/api/login', { body: { code: 'NOBODY99', pin: '111111' }, ip: '7.7.7.7' }); // 21st is rate limited
+  await call('pin change wrong old', 'POST', '/api/pin', { who: 'A2', body: { oldPin: '000000', newPin: '559203' }, ip: '2.2.2.2' });
+  await call('pin change weak new', 'POST', '/api/pin', { who: 'A2', body: { oldPin: '482916', newPin: '111111' }, ip: '2.2.2.2' });
+  await call('pin change ok', 'POST', '/api/pin', { who: 'A2', body: { oldPin: '482916', newPin: '559203' }, ip: '2.2.2.2' });
+  await call('A3 signed out by pin change', 'GET', '/api/pet', { who: 'A3' });
+  await call('login A old pin', 'POST', '/api/login', { body: { code: 'TOKAY88', pin: '482916' }, ip: '2.2.2.2' });
+  await call('login A new pin', 'POST', '/api/login', { body: { code: 'TOKAY88', pin: '559203' }, who: 'A3', ip: '2.2.2.2' });
 
   // care alerts: subscribe, replace, per-pet device cap, unsubscribe
   await call('push sub A d0', 'POST', '/api/push/subscribe', { who: 'A2', body: { subscription: sub(0), tz: 'Asia/Kuching' }, ip: '2.2.2.2' });
@@ -160,7 +204,7 @@ async function scenario() {
   PUSH_STATUS.set(sub(7).endpoint, 410);
   PUSH_STATUS.set(sub(0).endpoint, 500);
   for (const hrs of [20, 6, 12, 8, 2, 30]) { T += hrs * H; await cron('hourly +' + hrs + 'h', '5 * * * *'); }
-  await call('get pet B mid', 'GET', '/api/pet', { who: 'B' });
+  await call('get pet B mid', 'GET', '/api/pet', { who: 'B' }); // tier reward paid on view
   T += 12 * H; await cron('hourly again', '5 * * * *');
 
   // daily cron: deaths, session and rate-limit cleanup, alert cleanup
@@ -168,28 +212,111 @@ async function scenario() {
   await call('get pet after daily A', 'GET', '/api/pet', { who: 'A2' });
   await call('get pet after daily B', 'GET', '/api/pet', { who: 'B' });
   await call('care after death B', 'POST', '/api/care', { who: 'B', body: { action: 'charge' }, ip: '3.3.3.3' });
+  await call('checkin dead B', 'POST', '/api/checkin', { who: 'B2', ip: '3.3.3.3' });
   T += 400 * H; await cron('daily late', '0 18 * * *');
   await call('get pet C late', 'GET', '/api/pet', { who: 'C' });
 
-  // Phase 2A: compressed tiers, care days and Ascension (Tier 8, Day 90 soft cap)
-  const e = await call('register E', 'POST', '/api/register', { body: { name: 'Elder', type: 'organic', palette: 'kenyalang', remember: true }, who: 'E', ip: '8.8.8.8' });
+  // Phase 2A: compressed tiers, care days and Ascension (Tier 8, Day 90 soft cap); 2C: coins along the way
+  await call('register E', 'POST', '/api/register', { body: reg('Elder', 'organic', 'kenyalang', 'KINABALU', '318275', { remember: true }), who: 'E', ip: '8.8.8.8' });
   await call('ascend E unconfirmed', 'POST', '/api/ascend', { who: 'E', body: {}, ip: '8.8.8.8' });
   await call('ascend E too young', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
+  await call('title E too young', 'POST', '/api/title', { who: 'E', body: { title: 'Pendekar Rimba' }, ip: '8.8.8.8' });
   for (let d = 1; d <= 93; d++) {
     T += (d % 7 === 0 ? 20 : 24) * H; // daily care, with a few short gaps that land on the same UTC day
-    if (d % 25 === 0) await call('login E day ' + d, 'POST', '/api/login', { body: { key: e.key, remember: true }, who: 'E', ip: '8.8.8.8' }); // 30-day session
+    if (d % 25 === 0) await call('login E day ' + d, 'POST', '/api/login', { body: { code: 'KINABALU', pin: '318275', remember: true }, who: 'E', ip: '8.8.8.8' }); // 30-day session
     const r = await call('care E day ' + d, 'POST', '/api/care', { who: 'E', body: { action: ['feed', 'shed', 'bask', 'play'][d % 4] }, ip: '8.8.8.8' });
-    if (d % 15 === 0) log.push({ label: 'tier E day ' + d, t: T, tier: r.pet.tier, tierName: r.pet.tierName, careDays: r.pet.careDays });
+    if (d % 10 !== 3) await call('checkin E day ' + d, 'POST', '/api/checkin', { who: 'E', ip: '8.8.8.8' }); // streak breaks now and then
+    if (d % 15 === 0) log.push({ label: 'tier E day ' + d, t: T, tier: r.pet.tier, tierName: r.pet.tierName, careDays: r.pet.careDays, coins: r.me.coins });
   }
+
+  // 2C social block: E is Tier 8 and rich; F (invited by E) and G are new.
+  await call('title E bad', 'POST', '/api/title', { who: 'E', body: { title: '!!' }, ip: '8.8.8.8' });
+  await call('title E blocked', 'POST', '/api/title', { who: 'E', body: { title: 'Raja Babi' }, ip: '8.8.8.8' });
+  await call('title E ok', 'POST', '/api/title', { who: 'E', body: { title: 'Pendekar Rimba' }, ip: '8.8.8.8' });
+  await call('buy E wings', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'sayap-kelip' }, ip: '8.8.8.8' });
+  await call('buy E backdrop', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'bg-rajang' }, ip: '8.8.8.8' });
+  await call('buy E wings again', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'sayap-kelip' }, ip: '8.8.8.8' });
+  await call('register F self-invite', 'POST', '/api/register', { body: reg('Fifi', 'robot', 'tokay', 'FIFI2026', '274615', { ref: 'PTK-KINABALU', remember: true }), who: 'F0', ip: '8.8.8.8' }); // same network: no invite
+  await call('register F invited', 'POST', '/api/register', { body: reg('Fafa', 'robot', 'tokay', 'FAFA2026', '274615', { ref: 'kinabalu', remember: true }), who: 'F', ip: '10.0.0.1' });
+  await call('register G', 'POST', '/api/register', { body: reg('Gigi', 'organic', 'laut', 'GIGIPTK', '583920', { remember: true }), who: 'G', ip: '10.0.0.2' });
+  await call('care F early', 'POST', '/api/care', { who: 'F', body: { action: 'charge' }, ip: '10.0.0.1' });
+  await call('visit G from E', 'GET', '/api/visit?code=GIGIPTK', { who: 'E', ip: '8.8.8.8' });
+  await call('visit unknown', 'GET', '/api/visit?code=ZZZZZZ', { who: 'E', ip: '8.8.8.8' });
+  await call('battle E vs egg G', 'POST', '/api/battle', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('battle E self', 'POST', '/api/battle', { who: 'E', body: { to: 'KINABALU' }, ip: '8.8.8.8' });
+  for (let i = 0; i < 3; i++) await call('gift E to G ' + i, 'POST', '/api/gift', { who: 'E', body: { to: 'GIGIPTK', item: ['rantai-manik', 'terendak', 'payung'][i] }, ip: '8.8.8.8' });
+  await call('gift E to G owned', 'POST', '/api/gift', { who: 'E', body: { to: 'GIGIPTK', item: 'terendak' }, ip: '8.8.8.8' });
+  await call('gift E to self', 'POST', '/api/gift', { who: 'E', body: { to: 'KINABALU', item: 'ikat-manik' }, ip: '8.8.8.8' });
+  await call('gift G poor', 'POST', '/api/gift', { who: 'G', body: { to: 'KINABALU', item: 'payung' }, ip: '10.0.0.2' });
+  await call('pamper E to G', 'POST', '/api/pamper', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('pamper E to G again', 'POST', '/api/pamper', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('pamper E to F', 'POST', '/api/pamper', { who: 'E', body: { to: 'FAFA2026' }, ip: '8.8.8.8' });
+  await call('pamper G to E', 'POST', '/api/pamper', { who: 'G', body: { to: 'KINABALU' }, ip: '10.0.0.2' });
+  await call('report G name of E', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.2' });
+  await call('report F name of E', 'POST', '/api/report', { who: 'F', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.1' });
+  await call('report G title of E', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'title' }, ip: '10.0.0.2' });
+  await call('report self', 'POST', '/api/report', { who: 'E', body: { target: 'KINABALU', field: 'name' }, ip: '8.8.8.8' });
+  await call('public E hidden', 'GET', '/api/public?code=KINABALU', { ip: '11.0.0.1' });
+  await call('admin no token', 'GET', '/api/admin/reports', { ip: '12.0.0.1' });
+  await call('admin wrong token', 'GET', '/api/admin/reports', { ip: '12.0.0.1', auth: 'Bearer nope' });
+  const reps = await call('admin reports', 'GET', '/api/admin/reports', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token' });
+  await call('admin approve name', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[0].id, decision: 'approve' } });
+  await call('admin reject title', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[1].id, decision: 'reject' } });
+  await call('admin again', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[1].id, decision: 'approve' } });
+  await call('report approved name again', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.2' });
+  await call('public E after review', 'GET', '/api/public?code=PTK-KINABALU', { ip: '11.0.0.1' });
+  await call('public page E', 'GET', '/p/PTK-KINABALU', { ip: '11.0.0.1' });
+  await call('public page unknown', 'GET', '/p/PTK-NOBODY99', { ip: '11.0.0.1' });
+
+  // Tangkap Kelip-kelip
+  const run1 = await call('game start E', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 5000;
+  await call('game finish too fast', 'POST', '/api/game/finish', { who: 'E', body: { run: run1.run, score: 20 }, ip: '8.8.8.8' });
+  await call('game finish closed', 'POST', '/api/game/finish', { who: 'E', body: { run: run1.run, score: 20 }, ip: '8.8.8.8' });
+  const run2 = await call('game start E 2', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 45_000;
+  await call('game finish implausible', 'POST', '/api/game/finish', { who: 'E', body: { run: run2.run, score: 999 }, ip: '8.8.8.8' });
+  const run3 = await call('game start E 3', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 46_000;
+  await call('game finish E 3', 'POST', '/api/game/finish', { who: 'E', body: { run: run3.run, score: 87 }, ip: '8.8.8.8' });
+  const run4 = await call('game start G', 'POST', '/api/game/start', { who: 'G', ip: '10.0.0.2' });
+  T += 45_000;
+  await call('game finish G wrong owner', 'POST', '/api/game/finish', { who: 'E', body: { run: run4.run, score: 10 }, ip: '8.8.8.8' });
+  await call('game finish G', 'POST', '/api/game/finish', { who: 'G', body: { run: run4.run, score: 140 }, ip: '10.0.0.2' });
+  for (let i = 0; i < 3; i++) { // daily cap of 50 coins from the game
+    const r = await call('game start E more ' + i, 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+    T += 45_000;
+    await call('game finish E more ' + i, 'POST', '/api/game/finish', { who: 'E', body: { run: r.run, score: 120 }, ip: '8.8.8.8' });
+  }
+  await call('leaderboard day', 'GET', '/api/leaderboard', { who: 'E', ip: '8.8.8.8' });
+  await call('leaderboard all', 'GET', '/api/leaderboard?period=all', { ip: '11.0.0.1' });
+
+  // Invite reward after F's first day; battles once everyone has hatched
+  T += 25 * H;
+  await call('care E next day', 'POST', '/api/care', { who: 'E', body: { action: 'feed' }, ip: '8.8.8.8' });
+  await call('care F after a day (invite paid)', 'POST', '/api/care', { who: 'F', body: { action: 'charge' }, ip: '10.0.0.1' });
+  await call('care F again', 'POST', '/api/care', { who: 'F', body: { action: 'oil' }, ip: '10.0.0.1' });
+  await call('care G', 'POST', '/api/care', { who: 'G', body: { action: 'play' }, ip: '10.0.0.2' });
+  for (let i = 0; i < 6; i++) await call('battle E vs G ' + i, 'POST', '/api/battle', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' }); // 6th over the daily cap
+  await call('battle G vs E', 'POST', '/api/battle', { who: 'G', body: { to: 'KINABALU' }, ip: '10.0.0.2' });
+  await call('pet G news', 'GET', '/api/pet', { who: 'G' });
+  const gnews = await call('pet G news again', 'GET', '/api/pet', { who: 'G' });
+  await call('events seen G', 'POST', '/api/events/seen', { who: 'G', body: { upTo: gnews.me.events[0].id }, ip: '10.0.0.2' });
+  await call('pet G after seen', 'GET', '/api/pet', { who: 'G' });
+  await call('pet E news', 'GET', '/api/pet', { who: 'E' });
+  await snap('after 2C social block');
+
   T += 25 * H; // dormant again
   await call('ascend E dormant', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
+  await call('battle E dormant', 'POST', '/api/battle', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
   await call('care E wake', 'POST', '/api/care', { who: 'E', body: { action: 'play' }, ip: '8.8.8.8' });
   await call('ascend E ok', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
   await call('ascend E again', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
   await call('care E after ascension', 'POST', '/api/care', { who: 'E', body: { action: 'feed' }, ip: '8.8.8.8' });
   await call('palette E after ascension', 'POST', '/api/palette', { who: 'E', body: { palette: 'kenyalang' }, ip: '8.8.8.8' });
+  await call('gift to ascended E', 'POST', '/api/gift', { who: 'G', body: { to: 'KINABALU', item: 'ikat-manik' }, ip: '10.0.0.2' });
   T += 400 * H; await cron('daily after ascension', '0 18 * * *'); // 400 h > Tier 8 survival window: an ascended pet must not fall
-  await call('login E after ascension', 'POST', '/api/login', { body: { key: e.key, remember: false }, who: 'E', ip: '8.8.8.8' });
+  await call('login E after ascension', 'POST', '/api/login', { body: { code: 'KINABALU', pin: '318275', remember: false }, who: 'E', ip: '8.8.8.8' });
 }
 
 // ---- run, mask throwaway keys, compare ----
@@ -197,7 +324,7 @@ let failed = false;
 try {
   await scenario();
   const dump = {};
-  for (const [t, order] of [['pet', 'id'], ['sessions', 'token_hash'], ['rate_limits', 'bucket'], ['push_subscriptions', 'endpoint'], ['notify_state', 'pet_id']]) {
+  for (const [t, order] of [...TABLES, ['rate_limits', 'bucket']]) {
     dump[t] = (await env.DB.prepare(`SELECT * FROM ${t} ORDER BY ${order}`).all()).results;
   }
   let text = JSON.stringify({ log, pushLog, dump }, null, 1);

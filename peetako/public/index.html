@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Peetako — Raise a square-faced gecko from Malaysian Borneo</title>
-<meta name="description" content="Peetako is a free browser virtual pet: raise a square-faced gecko from Malaysian Borneo with just a four-word Secret Key. No account, no email.">
+<meta name="description" content="Peetako is a free browser virtual pet: raise a square-faced gecko from Malaysian Borneo with just a Call Code and a PIN. No account, no email.">
 <meta name="theme-color" content="#1A1840">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -76,10 +76,11 @@
   <div id="screen-welcome" class="screen welcome frame">
     <div class="screen-box hero"><div id="hero-scene" class="scene-layer" aria-hidden="true"></div><div id="hero-pet" class="pet-layer"></div><div class="scan" aria-hidden="true"></div></div>
     <h1 class="px">Raise a Peetako</h1>
-    <p class="lead">A square-faced gecko from Malaysian Borneo that lives as long as you care for it. No account, no email — just four secret words.</p>
+    <p class="lead">A square-faced gecko from Malaysian Borneo that lives as long as you care for it. No account, no email — just your own Call Code and a PIN.</p>
+    <p id="invite-note" class="invite-note" hidden></p>
     <div class="btn-row center">
       <button id="go-hatch" class="rbtn" style="--b: var(--b1)">Hatch a new Peetako</button>
-      <button id="go-login" class="rbtn light">I have a Secret Key</button>
+      <button id="go-login" class="rbtn light">I have a Peetako</button>
     </div>
   </div>
 
@@ -101,13 +102,28 @@
         <input id="pet-name-input" type="text" maxlength="16" autocomplete="off" required placeholder="e.g. Pitak">
         <button id="random-name" type="button" class="rbtn light small">Random</button>
       </div>
-      <p class="hint">2–16 letters or numbers. Other players will see this name later.</p>
+      <p class="hint">2–16 letters or numbers. Other players see this name.</p>
+    </div>
+    <div class="field">
+      <label for="code-input">Call Code</label>
+      <div class="input-row code-row">
+        <span class="code-prefix" aria-hidden="true">PTK-</span>
+        <input id="code-input" type="text" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" required placeholder="TOKAY88" aria-describedby="code-status">
+        <button id="suggest-code" type="button" class="rbtn light small">Ideas</button>
+      </div>
+      <p id="code-status" class="hint" aria-live="polite">6–8 letters or numbers. Friends find your Peetako with it. It cannot be changed.</p>
+      <div id="code-ideas" class="chips"></div>
     </div>
     <fieldset class="plain">
       <legend>Choose a colour</legend>
       <div id="hatch-palette" class="palette-pick"></div>
       <p class="hint warn-hint">You choose the colour once. It cannot be changed after your Peetako hatches.</p>
     </fieldset>
+    <div class="field pin-pair">
+      <div><label for="pin-input">PIN</label><input id="pin-input" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" required placeholder="6 digits"></div>
+      <div><label for="pin-input2">PIN again</label><input id="pin-input2" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="new-password" required placeholder="6 digits"></div>
+    </div>
+    <p class="hint">With your Call Code and PIN you can open your Peetako on any device. There is no recovery, so keep your PIN safe.</p>
     <div id="turnstile"></div>
     <label class="check"><input id="hatch-remember" type="checkbox" checked> Remember this device for 30 days</label>
     <div id="hatch-error" class="error" role="alert"></div>
@@ -117,14 +133,14 @@
     </div>
   </form>
 
-  <!-- Key reveal -->
+  <!-- Hatched: Call Code reminder -->
   <div id="screen-reveal" class="screen frame" hidden>
-    <h2 class="px">Your Secret Key</h2>
-    <p>This is the <strong>only</strong> way to care for your Peetako from another device or after you leave. It is shown once.</p>
+    <h2 class="px">It hatched!</h2>
+    <p>Your Call Code is how you and your friends find your Peetako:</p>
     <div id="key-box" class="key-box" aria-live="polite"></div>
-    <div class="btn-row"><button id="copy-key" class="rbtn light small" type="button">Copy key</button></div>
-    <p class="warn">There is no recovery. Save your key — write it down or keep it in a password manager.</p>
-    <label class="check"><input id="saved-check" type="checkbox"> I have saved my Secret Key somewhere safe.</label>
+    <div class="btn-row"><button id="copy-key" class="rbtn light small" type="button">Copy Call Code</button></div>
+    <p class="warn">To open your Peetako on another device you need this Call Code <strong>and your PIN</strong>. There is no recovery — write them down or keep them in a password manager.</p>
+    <label class="check"><input id="saved-check" type="checkbox"> I have saved my Call Code and PIN somewhere safe.</label>
     <button id="reveal-continue" class="rbtn" style="--b: var(--b1)" disabled>Meet my Peetako</button>
   </div>
 
@@ -132,9 +148,14 @@
   <form id="screen-login" class="screen frame" hidden>
     <h2 class="px">Welcome back</h2>
     <div class="field">
-      <label for="key-input">Secret Key</label>
-      <input id="key-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="river-candle-tiger-mango" required>
-      <p class="hint">Four words. Spaces or dashes both work.</p>
+      <label for="key-input">Call Code</label>
+      <div class="input-row code-row"><span class="code-prefix" aria-hidden="true">PTK-</span>
+        <input id="key-input" type="text" maxlength="12" autocomplete="username" autocapitalize="characters" spellcheck="false" placeholder="TOKAY88" required></div>
+    </div>
+    <div class="field">
+      <label for="login-pin">PIN</label>
+      <input id="login-pin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" placeholder="6 digits" required>
+      <p class="hint">Forgot your PIN? There is no recovery. A device that is still signed in can change it from the menu.</p>
     </div>
     <label class="check"><input id="login-remember" type="checkbox" checked> Remember this device for 30 days</label>
     <div id="login-error" class="error" role="alert"></div>
@@ -151,8 +172,10 @@
         <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
         <h2 id="pet-name" class="pv-name"></h2>
         <span id="pet-tier" class="pv-tier"></span>
+        <span id="pet-title" class="pv-title-text" hidden></span>
       </div>
       <div class="pv-tools">
+        <button id="coins-btn" class="coin-btn" type="button" aria-label="Coins. Open the shop" title="Coins — open the shop"><svg viewBox="0 0 8 8" width="18" height="18" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="4" height="1" fill="#1E1B4B"/><rect x="1" y="1" width="6" height="6" fill="#F5B700"/><rect x="0" y="2" width="1" height="4" fill="#1E1B4B"/><rect x="7" y="2" width="1" height="4" fill="#1E1B4B"/><rect x="2" y="7" width="4" height="1" fill="#1E1B4B"/><rect x="3" y="2" width="2" height="4" fill="#FDE68A"/></svg><span id="coin-count">0</span></button>
         <button id="alerts-btn" class="icon-btn bell" type="button" hidden aria-pressed="false" aria-label="Turn on care alerts" title="Turn on care alerts"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="bell-body" d="M12 3a6 6 0 0 0-6 6v3.6L4.3 16a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 12.6V9a6 6 0 0 0-6-6Z" fill="currentColor"/><path d="M9.5 19.5a2.5 2.5 0 0 0 5 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
         <button id="menu-btn" class="icon-btn" type="button" aria-haspopup="dialog" aria-label="Menu" title="Menu"><svg viewBox="0 0 8 8" width="20" height="20" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="1" width="8" height="1.4" fill="currentColor"/><rect x="0" y="3.3" width="8" height="1.4" fill="currentColor"/><rect x="0" y="5.6" width="8" height="1.4" fill="currentColor"/></svg></button>
       </div>
@@ -167,10 +190,19 @@
     </div>
 
     <div id="pet-alive" class="pv-alive">
+      <p id="name-hidden-note" class="warn" hidden></p>
       <p id="dormant-note" class="warn" hidden>Your Peetako has gone dormant after a day without care. Look after it to wake it up.</p>
       <div id="stats" class="pv-stats"></div>
       <div id="actions" class="pv-dock"></div>
       <div id="facts" class="pv-facts"></div>
+      <div id="social" class="pv-social" role="toolbar" aria-label="Coins, games and friends">
+        <button type="button" class="soc gold" data-open="checkin" id="checkin-btn" hidden><span class="px">CHECK-IN</span></button>
+        <button type="button" class="soc" data-open="game"><span aria-hidden="true">✨</span><span class="px">GAME</span></button>
+        <button type="button" class="soc" data-open="shop"><span aria-hidden="true">🛍</span><span class="px">SHOP</span></button>
+        <button type="button" class="soc" data-open="friends"><span aria-hidden="true">🤝</span><span class="px">FRIENDS</span></button>
+        <button type="button" class="soc" data-open="board"><span aria-hidden="true">🏆</span><span class="px">TOP</span></button>
+        <button type="button" class="soc" data-open="share"><span aria-hidden="true">📣</span><span class="px">SHARE</span></button>
+      </div>
       <div id="ascension" class="ascension" hidden>
         <p id="ascension-text"></p>
         <button id="ascend-open" class="rbtn small" style="--b: var(--gold)" type="button" hidden>Ascend…</button>
@@ -206,6 +238,11 @@
       <button id="fullscreen-btn" type="button" class="rbtn light small" hidden>Full screen</button>
     </div>
     <nav class="sheet-links" aria-label="Pages"><a href="/faq">FAQ</a><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></nav>
+    <div class="sheet-row">
+      <button id="menu-set-title" type="button" class="rbtn light small" hidden>Tier 7 title</button>
+      <button id="menu-invite" type="button" class="rbtn light small">Invite a friend</button>
+      <button id="menu-pin" type="button" class="rbtn light small">Change PIN</button>
+    </div>
     <button type="button" class="rbtn light small wide" data-logout>Leave this device</button>
   </form>
 </dialog>
@@ -217,7 +254,7 @@
     <p><span data-pet-name></span> retires to the Hall of Legends with a Legacy Score of <strong id="ascend-score"></strong> (days lived plus days of care).</p>
     <ul>
       <li>Care stops for good: no more feeding, decay or survival timer.</li>
-      <li>Your Secret Key still opens it, so you can visit its record.</li>
+      <li>Your Call Code and PIN still open it, so you can visit its record.</li>
       <li>A stronger Legacy Egg comes in a later update.</li>
     </ul>
     <p class="warn">This cannot be undone. If you would rather keep playing, simply close this — <span data-pet-name></span> lives on as before.</p>
@@ -230,22 +267,94 @@
   </form>
 </dialog>
 
+
+<!-- Phase 2C dialogs: shop, friends, game result, leaderboards, share, PIN, title -->
+<dialog id="shop-dialog" class="sheet retro wide-sheet" aria-labelledby="shop-title">
+  <div class="sheet-head"><h2 id="shop-title" class="px">Shop · <span id="shop-coins">0</span> coins</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close shop">✕</button></div>
+  <p class="hint">Earn coins by caring (+10, up to 30 a day), checking in every day, Tangkap Kelip-kelip and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
+  <div id="shop-list"></div>
+</dialog>
+
+<dialog id="friends-dialog" class="sheet retro" aria-labelledby="friends-title">
+  <div class="sheet-head"><h2 id="friends-title" class="px">Friends</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <form id="visit-form" class="input-row code-row">
+    <span class="code-prefix" aria-hidden="true">PTK-</span>
+    <input id="visit-code" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Call Code" aria-label="Call Code of the Peetako to visit">
+    <button class="rbtn small" type="submit">Visit</button>
+  </form>
+  <div id="visit-recent" class="chips"></div>
+  <div id="visit-error" class="error" role="alert"></div>
+  <div id="visit-card"></div>
+  <p class="hint">Pamper gives another Peetako +5 FUN (3 a day). Battles are friendly: nobody loses anything (5 a day).</p>
+</dialog>
+
+<dialog id="result-dialog" class="sheet retro" aria-labelledby="result-title">
+  <h2 id="result-title" class="px">Tangkap Kelip-kelip</h2>
+  <div id="result-body"></div>
+  <div class="btn-row">
+    <button id="result-again" class="rbtn" type="button" style="--b: var(--b2)">Play again</button>
+    <button id="result-board" class="rbtn light" type="button">Leaderboard</button>
+    <button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Close</button>
+  </div>
+</dialog>
+
+<dialog id="board-dialog" class="sheet retro" aria-labelledby="board-title">
+  <div class="sheet-head"><h2 id="board-title" class="px">Top catchers</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <div class="seg">
+    <label><input type="radio" name="board" value="day" checked><span>Today</span></label>
+    <label><input type="radio" name="board" value="all"><span>All time</span></label>
+  </div>
+  <p id="board-note" class="hint"></p>
+  <div id="board-list"></div>
+</dialog>
+
+<dialog id="share-dialog" class="sheet retro" aria-labelledby="share-title">
+  <div class="sheet-head"><h2 id="share-title" class="px">Share</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <div id="share-body"></div>
+</dialog>
+
+<dialog id="pin-dialog" class="sheet retro" aria-labelledby="pin-title">
+  <form id="pin-form">
+    <h2 id="pin-title" class="px">Change PIN</h2>
+    <div class="field"><label for="pin-old">Current PIN</label><input id="pin-old" type="password" inputmode="numeric" maxlength="6" autocomplete="current-password" required></div>
+    <div class="field pin-pair">
+      <div><label for="pin-new">New PIN</label><input id="pin-new" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" required></div>
+      <div><label for="pin-new2">New PIN again</label><input id="pin-new2" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password" required></div>
+    </div>
+    <p class="hint">Other devices are signed out after the change.</p>
+    <div id="pin-error" class="error" role="alert"></div>
+    <div class="btn-row"><button class="rbtn" type="submit" style="--b: var(--b2)">Save PIN</button><button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Cancel</button></div>
+  </form>
+</dialog>
+
+<dialog id="title-dialog" class="sheet retro" aria-labelledby="title-title">
+  <form id="title-form">
+    <h2 id="title-title" class="px">Tier 7 title</h2>
+    <p>A legend earns a title, shown under its name to every visitor. Leave it empty to remove it.</p>
+    <div class="field"><label for="title-input">Title</label><input id="title-input" type="text" maxlength="20" autocomplete="off" placeholder="e.g. Pendekar Rimba"></div>
+    <p id="title-note" class="warn-hint"></p>
+    <div id="title-error" class="error" role="alert"></div>
+    <div class="btn-row"><button class="rbtn" type="submit" style="--b: var(--gold)">Save title</button><button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Cancel</button></div>
+  </form>
+</dialog>
+
 <!-- Ad slot reserved: add AdSense here only after approval, below the game and never over the pet. -->
 
 
 <section class="content">
   <h2>What is Peetako?</h2>
   <p>Peetako is a free virtual pet you raise in your browser. Your pet is a cute gecko with a rounded-square face, and it comes in two kinds: an <strong>Organic</strong> rainforest gecko, or a <strong>Robot</strong> gecko built in a riverside workshop. Its story, places and food all come from Malaysian Borneo — Sabah and Sarawak.</p>
-  <p>There is no account and no email. When your Peetako hatches you get a <strong>Secret Key</strong> of four random words. That key is the only thing you need to remember. Lose it, and nobody can care for your pet again.</p>
+  <p>There is no account and no email. When your Peetako hatches you choose its <strong>Call Code</strong> (like PTK-TOKAY88) and a 6-digit <strong>PIN</strong>. Those two are all you need to remember. Lose the PIN on every device, and nobody can care for your pet again.</p>
 
   <div class="two-col">
     <div>
       <h3>How to play</h3>
       <ol>
         <li>Hatch an egg and pick Organic or Robot.</li>
-        <li>Save your four-word Secret Key.</li>
+        <li>Choose your Call Code and a PIN, and keep the PIN safe.</li>
         <li>Come back regularly to feed, clean, warm (or cool) and play with your gecko.</li>
         <li>Watch it climb tiers as it ages — from Hatchling to Ageless in about two months.</li>
+        <li>Earn coins, dress it up with Borneo cosmetics, catch fireflies and visit friends.</li>
       </ol>
     </div>
     <div>
@@ -257,6 +366,8 @@
   <h2>Born in Malaysian Borneo</h2>
   <p>Organic Peetako eat <em>kelkatu</em> (termite alates) and bask under a lamp because geckos are cold-blooded. Robot Peetako charge on Hydro Cells powered by the Rajang River and need coolant to stop overheating. As your pet grows, its backdrop travels across Malaysian Borneo: a longhouse, a kampung garden, the sago gardens of Mukah, the rainforest of Danum and Bako, the fireflies of the Kinabatangan, the bat exodus at Mulu, the sea at Semporna, the Bario highlands and finally the summit of Kinabalu.</p>
   <p>Your Peetako shows how it feels: a smile and floating hearts when it is happy, a thought bubble when it is hungry, Z letters when it is sleepy and a little rain cloud when it is sad. Its sky follows your own clock, from dawn to night.</p>
+  <h2>Friends, coins and fireflies</h2>
+  <p>Every care action, daily check-in and new tier earns coins. Spend them on a beaded headband, a terendak hat, a pua sash, firefly wings or a new backdrop — no real money, no lucky draws. Play <em>Tangkap Kelip-kelip</em> to catch fireflies for coins and a spot on the daily leaderboard. Share your Call Code so friends can Pamper your Peetako, send it a gift or challenge it to a friendly battle where nobody loses anything.</p>
   <p>Fun fact: the English word "gecko" comes from Malay — it imitates the lizard's own call, <em>chik-chak</em>.</p>
 </section>
 
