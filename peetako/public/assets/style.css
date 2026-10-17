@@ -618,5 +618,4 @@ body.kelip-open { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .soc.gold, .flicker { animation: none; }
-  .arena-pet, .arena-pet.lunge, .arena-pet.hit, .arena-pet.happy-hop { animation: none !important; transition: none; }
 }

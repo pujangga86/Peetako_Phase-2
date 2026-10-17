@@ -7,7 +7,6 @@ import { drawPet, drawArena } from './art.js';
 import { skyAt, localMinute } from './sky.js';
 import { moodOf } from './mood.js';
 
-const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const nameOf = (p) => p.name || 'This Peetako';
 const wearOf = (p) => ({ head: p.equipped?.head, neck: p.equipped?.neck, back: p.equipped?.back });
@@ -41,14 +40,13 @@ export function showArena({ mode, mine, them, result, sound = { play() {} } }) {
     root.tabIndex = -1;
     root.focus();
 
-    const fast = reduceMotion();
-    const step = (el, cls, ms) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); return wait(fast ? 0 : ms); };
+    const step = (el, cls, ms) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); return wait(ms); };
     const fx = (el, html) => { el.querySelector('.arena-fx').innerHTML = html; };
     const spark = '<svg viewBox="0 0 100 100"><path d="M50 8 L60 40 L92 50 L60 60 L50 92 L40 60 L8 50 L40 40 Z" fill="#FDE047" stroke="#1E1B4B" stroke-width="4"/></svg>';
     const hearts = '<svg viewBox="0 0 100 100"><g class="fx fx-rise"><path transform="translate(40 60) scale(1.6)" d="M0 6 C -10 -2 -8 -12 0 -7 C 8 -12 10 -2 0 6 Z" fill="#FB7185" stroke="#1E1B4B" stroke-width="2"/></g><g class="fx fx-rise d2"><path transform="translate(62 46) scale(1.2)" d="M0 6 C -10 -2 -8 -12 0 -7 C 8 -12 10 -2 0 6 Z" fill="#FB7185" stroke="#1E1B4B" stroke-width="2"/></g><g class="fx fx-rise d3"><path transform="translate(50 30)" d="M0 6 C -10 -2 -8 -12 0 -7 C 8 -12 10 -2 0 6 Z" fill="#FB7185" stroke="#1E1B4B" stroke-width="2"/></g></svg>';
 
     (async () => {
-      await wait(fast ? 0 : 500);
+      await wait(500);
       if (mode === 'pamper') {
         await step(L, 'approach', 900);
         sound.play('play');

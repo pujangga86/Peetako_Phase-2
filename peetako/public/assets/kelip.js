@@ -5,7 +5,6 @@
 //   playKelip({ durationMs, petSvg, onEnd(score) }) → shows the game; calls onEnd once with the score,
 //   or with null when the player quits early.
 
-const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function playKelip({ durationMs = 45_000, petSvg = '', sound = { play() {} }, onEnd }) {
   const root = document.createElement('div');
@@ -39,7 +38,6 @@ export function playKelip({ durationMs = 45_000, petSvg = '', sound = { play() {
   const live = root.querySelector('.kelip-live');
   let W = 0, H = 0, dpr = 1;
   let flies = [], pops = [], score = 0, start = 0, last = 0, spawnAt = 0, raf = 0, done = false, running = false;
-  const still = reduceMotion();
 
   function size() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -91,7 +89,7 @@ export function playKelip({ durationMs = 45_000, petSvg = '', sound = { play() {
     }
     flies = flies.filter((f) => now - f.born < f.life);
     for (const f of flies) {
-      if (!still) { f.x += f.vx * dt + Math.sin((now + f.phase * 300) / 400) * 0.25; f.y += f.vy * dt + Math.cos((now + f.phase * 300) / 500) * 0.2; }
+      { f.x += f.vx * dt + Math.sin((now + f.phase * 300) / 400) * 0.25; f.y += f.vy * dt + Math.cos((now + f.phase * 300) / 500) * 0.2; }
       const age = (now - f.born) / f.life;
       const blink = 0.55 + 0.45 * Math.sin(now / 160 + f.phase);
       const fade = age > 0.75 ? (1 - age) / 0.25 : Math.min(1, age * 6);

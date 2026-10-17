@@ -7,7 +7,7 @@
  *   PeetakoSound.play('eat');       // does nothing while sound is off
  *
  * Sounds: tap, eat, bathe, play, levelUp, coin, gift, error
- * Default: OFF. Setting is remembered in localStorage ("peetako_sound").
+ * Default: ON (from 17 Oct 2026). Browsers stay silent until the first tap. Setting is remembered in localStorage ("peetako_sound").
  */
 (function (global) {
   'use strict';
@@ -16,9 +16,9 @@
   var MASTER_VOLUME = 0.22; // keep low; players on phones in public places
   var ctx = null;
   var master = null;
-  var enabled = false;
+  var enabled = true;
 
-  try { enabled = localStorage.getItem(STORE_KEY) === 'on'; } catch (e) {}
+  try { enabled = localStorage.getItem(STORE_KEY) !== 'off'; } catch (e) {}
 
   function ensureContext() {
     if (!ctx) {
