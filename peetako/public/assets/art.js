@@ -260,18 +260,32 @@ function organicBody(t, p, face, status) {
     <path d="M258 196 C264 172 246 158 232 166 C222 172 226 186 238 184" fill="none" stroke="${t >= 5 && status !== 'dead' ? '#FDE047' : p.body}" stroke-width="12" stroke-linecap="round"/>`;
   const foot = (cx, toes) => `<ellipse cx="${cx}" cy="246" rx="16" ry="10" fill="${p.body}" ${ol}/>` +
     toes.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="${p.toe}" stroke="${L}" stroke-width="3"/>`).join('');
-  return `${back}${tail}
+  return `${back}<g class="pk-tail">${tail}</g>
     <ellipse cx="150" cy="210" rx="50" ry="38" fill="${p.shade}"/><ellipse cx="145" cy="205" rx="45" ry="33" fill="${p.body}"/>
     <ellipse cx="150" cy="222" rx="28" ry="20" fill="${p.belly}"/>
     <circle cx="116" cy="196" r="5" fill="${p.spot}"/><circle cx="184" cy="198" r="5" fill="${p.spot}"/>
     <ellipse cx="150" cy="210" rx="50" ry="38" fill="none" ${ol}/>
-    ${foot(110, [[97, 252], [108, 256], [120, 254]])}${foot(190, [[180, 254], [192, 256], [203, 252]])}
+    <g class="pk-foot-l">${foot(110, [[97, 252], [108, 256], [120, 254]])}</g><g class="pk-foot-r">${foot(190, [[180, 254], [192, 256], [203, 252]])}</g>
     ${pick(front, 'body')}
-    <rect x="82" y="70" width="136" height="118" rx="36" fill="${p.shade}"/><rect x="82" y="70" width="128" height="110" rx="34" fill="${p.body}"/>
+    <g class="pk-head"><rect x="82" y="70" width="136" height="118" rx="36" fill="${p.shade}"/><rect x="82" y="70" width="128" height="110" rx="34" fill="${p.body}"/>
     <circle cx="150" cy="84" r="6" fill="${p.spot}"/><circle cx="126" cy="90" r="4" fill="${p.spot}"/><circle cx="174" cy="90" r="4" fill="${p.spot}"/>
     <rect x="82" y="70" width="136" height="118" rx="36" fill="none" ${ol}/>
-    ${organicFace(face, p, status)}
-    ${pick(front, 'head')}${pick(front, 'top')}`;
+    ${organicFace(face, p, status)}${status === 'dead' ? '' : organicExtras(p)}
+    ${pick(front, 'head')}${pick(front, 'top')}</g>`;
+}
+
+// Hidden overlays used only by the cute moves (antics.js). They stay invisible until a move plays.
+function organicExtras(p) {
+  const L = p.line;
+  return `<g class="pk-x pk-lid"><rect x="157" y="103" width="46" height="45" rx="20" fill="${p.body}"/>
+      <path d="M164 128 Q180 140 196 128" fill="none" stroke="${L}" stroke-width="6" stroke-linecap="round"/></g>
+    <path class="pk-x pk-tongue" d="M141 166 Q150 196 159 166 Z" fill="#FB7185" stroke="${L}" stroke-width="3" stroke-linejoin="round"/>`;
+}
+function robotExtras(p) {
+  const L = p.line;
+  return `<g class="pk-x pk-lid"><rect x="96" y="100" width="108" height="50" rx="25" fill="${L}"/>
+      <path d="M134 125 H166" stroke="${p.eye}" stroke-width="7" stroke-linecap="round"/></g>
+    <path class="pk-x pk-spark" d="M150 22 v10 M130 30 l6 6 M170 30 l-6 6 M124 48 h9 M176 48 h-9" stroke="${p.gold}" stroke-width="4" stroke-linecap="round"/>`;
 }
 
 function robotBody(t, p, face, status) {
@@ -292,21 +306,21 @@ function robotBody(t, p, face, status) {
       (face === 'excited' && status === 'active' ? `<path d="M150 28 v8 M134 34 l5 5 M166 34 l-5 5 M130 48 h7 M170 48 h-7" stroke="${p.gold}" stroke-width="3" stroke-linecap="round"/>` : '');
   const core = t === 8 && status !== 'dead' ? `<circle cx="150" cy="210" r="16" fill="${p.gold}" opacity="0.35"/><circle cx="150" cy="210" r="9" fill="${p.gold}" stroke="${L}" stroke-width="2"/>` : '';
   return `${back}
-    ${tail({ c: L, w1: 28, w2: 20 })}${tail({ c: p.belly, w1: 20, w2: 12 })}${tail({ c: L, w1: 20, w2: 12, dash: ['3 14', '3 10'] })}
-    <circle cx="238" cy="184" r="5" fill="${p.eye}"/>
+    <g class="pk-tail">${tail({ c: L, w1: 28, w2: 20 })}${tail({ c: p.belly, w1: 20, w2: 12 })}${tail({ c: L, w1: 20, w2: 12, dash: ['3 14', '3 10'] })}
+    <circle cx="238" cy="184" r="5" fill="${p.eye}"/></g>
     <rect x="100" y="176" width="100" height="70" rx="30" fill="${p.shade}"/><rect x="100" y="176" width="92" height="62" rx="28" fill="${p.body}"/>
     <rect x="100" y="176" width="100" height="70" rx="30" fill="none" ${ol}/>
     <rect x="128" y="196" width="44" height="28" rx="8" fill="${L}"/>
     ${core || `<circle cx="139" cy="210" r="3.5" fill="${p.eye}"/><circle cx="150" cy="210" r="3.5" fill="${p.gold}"/><circle cx="161" cy="210" r="3.5" fill="${p.spot}"/>`}
     <circle cx="113" cy="216" r="3" fill="${L}"/><circle cx="187" cy="216" r="3" fill="${L}"/>
     ${pick(front, 'body')}
-    ${foot(110, [[97, 254], [108, 258], [120, 256]])}${foot(190, [[180, 256], [192, 258], [203, 254]])}
-    ${antenna}
+    <g class="pk-foot-l">${foot(110, [[97, 254], [108, 258], [120, 256]])}</g><g class="pk-foot-r">${foot(190, [[180, 256], [192, 258], [203, 254]])}</g>
+    <g class="pk-head">${antenna}
     <circle cx="78" cy="130" r="9" fill="${p.shade}" stroke="${L}" stroke-width="3"/><circle cx="222" cy="130" r="9" fill="${p.shade}" stroke="${L}" stroke-width="3"/>
     <rect x="80" y="70" width="140" height="116" rx="30" fill="${p.shade}"/><rect x="80" y="70" width="132" height="108" rx="28" fill="${p.body}"/>
     <rect x="80" y="70" width="140" height="116" rx="30" fill="none" ${ol}/>
-    ${robotFace(face, p, status)}
-    ${pick(front, 'head')}${pick(front, 'top')}`;
+    ${robotFace(face, p, status)}${status === 'dead' ? '' : robotExtras(p)}
+    ${pick(front, 'head')}${pick(front, 'top')}</g>`;
 }
 
 function egg(type, p, status) {
@@ -329,6 +343,9 @@ function egg(type, p, status) {
     <path d="M112 140 L128 152 L138 138 L152 150 L164 136" fill="none" stroke="${L}" stroke-width="3" stroke-linejoin="round"/>`;
 }
 
+// "?" beside the head, shown only by the head-tilt move.
+const QMARK = `<text class="pk-x pk-q" x="232" y="84" font-family="system-ui, sans-serif" font-size="44" font-weight="900" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="3" paint-order="stroke">?</text>`;
+
 // mood: happy | hungry | sleepy | sad | excited (mood.js); status: active | dormant | dead | ascended
 export function drawPet({ type = 'organic', tier = 1, status = 'active', mood = 'happy', pal = 'hijau' } = {}) {
   const dead = status === 'dead';
@@ -338,7 +355,7 @@ export function drawPet({ type = 'organic', tier = 1, status = 'active', mood = 
   const label = `${type === 'robot' ? 'Robot' : 'Organic'} Peetako, ${p.name} palette, ${dead ? 'fallen' : tier === 0 ? 'egg' : `tier ${tier}, ${face}`}`;
   const inner = tier === 0 ? egg(type, p, st) : (type === 'robot' ? robotBody(tier, p, face, st) : organicBody(tier, p, face, st));
   return `<svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(label)}">
-    <g transform="translate(37.5 62) scale(0.75)"><ellipse cx="150" cy="262" rx="74" ry="9" fill="#000000" opacity="0.25"/><g class="bob">${inner}</g></g>
+    <g transform="translate(37.5 62) scale(0.75)"><ellipse cx="150" cy="262" rx="74" ry="9" fill="#000000" opacity="0.25"/><g class="bob"><g class="pk">${inner}</g>${tier === 0 || dead ? '' : QMARK}</g></g>
   </svg>`;
 }
 

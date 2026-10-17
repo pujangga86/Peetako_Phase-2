@@ -6,6 +6,7 @@ import { drawPet, drawMoodSymbols, drawScene } from './art.js';
 import { PALETTES, PALETTE_IDS, palette } from './palettes.js';
 import { moodOf, MOOD_LABEL, EXCITED_AFTER_CARE_MS, NEED_BELOW } from './mood.js';
 import { skyAt, localMinute } from './sky.js';
+import { attachAntics } from './antics.js';
 
 const $ = (sel) => document.querySelector(sel);
 const screens = ['welcome', 'hatch', 'reveal', 'login', 'pet'];
@@ -144,6 +145,7 @@ const STATUS_LABEL = { active: 'Active', dormant: 'Dormant', dead: 'Fallen', asc
 
 function renderMood(pet) {
   const m = moodOf(pet, { caredAt: state.caredAt });
+  state.face = m.face;
   $('#pet-art').innerHTML = drawPet({ type: pet.type, tier: pet.tier, status: pet.status, mood: m.face, pal: pet.palette });
   $('#mood-fx').innerHTML = pet.status === 'dead' ? '' : drawMoodSymbols(m.symbols, pet.type, m.symbols.map((k) => MOOD_LABEL[k]).join(' and '));
   const chip = $('#pet-mood');
@@ -552,6 +554,13 @@ function wire() {
   });
 }
 
+// ---------- cute moves on tap / mouse-over (antics.js) ----------
+function setupAntics() {
+  attachAntics($('#pet-art'), () => (state.pet ? { tier: state.pet.tier, status: state.pet.status, face: state.face } : null),
+    { onTap: () => Sound.play('tap') });
+  attachAntics($('#hero-pet'), () => ({ tier: 3, status: 'active', face: 'happy' }), { idle: false });
+}
+
 // ---------- install as an app (PWA) ----------
 function setupInstall() {
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => { /* site still works without it */ });
@@ -583,6 +592,7 @@ async function init() {
   applyTheme('hijau');
   renderHero();
   wire();
+  setupAntics();
   setupInstall();
   try {
     const cfg = await api('/api/config');
