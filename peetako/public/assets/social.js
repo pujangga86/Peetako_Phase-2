@@ -1,5 +1,5 @@
 // Peetako Phase 2C client: coins and check-in, shop and wardrobe, friends (visit, Pamper, battle, gift,
-// Report), Tangkap Kelip-kelip and leaderboards, share and invite, PIN change and the Tier 7 title.
+// Report), Tangkap Kelip-kelip and leaderboards, share and invite, and PIN change.
 // app.js owns the pet screen; this module owns the dialogs opened from the social bar and the menu.
 import { drawPet, drawItem } from './art.js';
 import { moodOf } from './mood.js';
@@ -154,7 +154,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
       <div class="visit">
         <div class="visit-pic">${petSvg(p)}</div>
         <div class="visit-info">
-          <p class="visit-name">${esc(shownName(p))}${p.title ? `<small>“${esc(p.title)}”</small>` : ''}</p>
+          <p class="visit-name">${esc(shownName(p))}</p>
           <p class="px visit-meta">${esc(p.callCode)}</p>
           <p>T${p.tier} ${esc(p.tierName)} · ${Math.floor(p.ageHours / 24)} days · ${p.type === 'robot' ? 'Robot' : 'Organic'}</p>
           <p>Battles: ${p.battles.wins} won, ${p.battles.losses} lost</p>
@@ -171,8 +171,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
           <span class="shop-pic" aria-hidden="true">${drawItem(id, p.type, p.palette)}</span><span>${esc(itemName(id, p.type))}</span><b>${PRICES[id]}</b></button>`).join('')}</div>` : '<p>They already have every item!</p>'}
       </div>
       <p class="visit-links"><a href="/p/${encodeURIComponent(p.callCode)}" target="_blank" rel="noopener">Open their page</a>
-        ${p.canReport.name ? '<button type="button" class="linkbtn dark" data-report="name">Report name</button>' : ''}
-        ${p.canReport.title ? '<button type="button" class="linkbtn dark" data-report="title">Report title</button>' : ''}</p>`}`;
+        ${p.canReport.name ? '<button type="button" class="linkbtn dark" data-report="name">Report name</button>' : ''}</p>`}`;
   }
   async function visitClick(e) {
     const b = e.target.closest('button');
@@ -392,7 +391,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     }
   }
 
-  // ---------- PIN and title ----------
+  // ---------- PIN ----------
   function openPin() {
     $('#pin-old').value = ''; $('#pin-new').value = ''; $('#pin-new2').value = ''; $('#pin-error').textContent = '';
     dlg('#pin-dialog').showModal();
@@ -407,22 +406,6 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
       dlg('#pin-dialog').close();
       toast('PIN changed. Other devices were signed out.', 4000);
     } catch (e) { err.textContent = e.message; Sound.play('error'); }
-  }
-  function openTitle() {
-    const p = pet();
-    $('#title-input').value = p?.title || '';
-    $('#title-error').textContent = '';
-    $('#title-note').textContent = p?.titleStatus === 'hidden' ? 'Your title was reported and is hidden until it is reviewed.' : '';
-    dlg('#title-dialog').showModal();
-  }
-  async function saveTitle(ev) {
-    ev.preventDefault();
-    try {
-      const d = await api('/api/title', { title: $('#title-input').value });
-      onPet(d.pet);
-      dlg('#title-dialog').close();
-      toast(d.pet.title ? `Title set: “${d.pet.title}”` : 'Title removed.');
-    } catch (e) { $('#title-error').textContent = e.message; Sound.play('error'); }
   }
 
   // ---------- wiring ----------
@@ -445,9 +428,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
   $('#result-again').addEventListener('click', () => { dlg('#result-dialog').close(); playGame(); });
   $('#result-board').addEventListener('click', () => { dlg('#result-dialog').close(); openBoard('day'); });
   $('#pin-form').addEventListener('submit', savePin);
-  $('#title-form').addEventListener('submit', saveTitle);
   $('#menu-pin').addEventListener('click', () => { $('#menu').close(); openPin(); });
-  $('#menu-set-title').addEventListener('click', () => { $('#menu').close(); openTitle(); });
   $('#menu-invite').addEventListener('click', () => { $('#menu').close(); openShare('invite'); });
 
   return { showNews, openFriends, openShop, askCountry };

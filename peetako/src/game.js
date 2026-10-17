@@ -1,5 +1,5 @@
 // Peetako game rules — every tunable number for care and tiers lives here (2C economy: economy.js).
-import { parseEquipped, TITLE } from './economy.js';
+import { parseEquipped } from './economy.js';
 
 // All values are first proposals from the GDD, to be tuned in playtesting.
 // Phase 2: compressed tier schedule (decided 10 Oct 2026; survival windows unchanged) and Ascension.
@@ -144,9 +144,6 @@ export function view(pet, now) {
   return {
     name: pet.name,
     nameStatus: pet.name_status || 'ok',           // 'hidden' while a report waits for review
-    title: pet.title || null,                      // Tier 7 custom title
-    titleStatus: pet.title_status || 'ok',
-    canSetTitle: pet.tier >= TITLE.fromTier && status !== 'dead' && status !== 'ascended',
     equipped: parseEquipped(pet.equipped),
     battles: { wins: pet.battle_wins || 0, losses: pet.battle_losses || 0 },
     type: pet.type,

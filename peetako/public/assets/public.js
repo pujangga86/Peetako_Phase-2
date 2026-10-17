@@ -57,7 +57,6 @@ function render(p, best) {
       </div>
       <div>
         <h1 class="pub-name">${esc(shownName(p))}</h1>
-        ${p.title ? `<p class="pub-title">“${esc(p.title)}”</p>` : ''}
         <p class="px" style="font-size:9px">${esc(p.callCode)} · T${p.tier} ${esc(p.tierName)}</p>
         ${p.country ? `<p class="pub-country">${countryHtml(p.country)}</p>` : ''}
       </div>
@@ -75,7 +74,6 @@ function render(p, best) {
         <div id="gift-pick" class="gift-pick" hidden>${giftable.length ? `<div class="gift-grid">${giftable.map((id) => `<button type="button" class="gift-opt" data-gift="${id}"><span>${esc(itemName(id, p.type))}</span><b>${PRICES[id]}</b></button>`).join('')}</div>` : '<p>They already have every item!</p>'}</div>
         <p class="visit-links">
           ${p.canReport.name ? '<button type="button" class="linkbtn dark" data-report="name">Report name</button>' : ''}
-          ${p.canReport.title ? '<button type="button" class="linkbtn dark" data-report="title">Report title</button>' : ''}
           <a href="/">Open my Peetako</a></p>`
       : self ? '<p>This is your Peetako. Share this page so friends can visit!</p><a class="rbtn" href="/">Open my Peetako</a>'
       : `<p>Want to Pamper ${esc(shownName(p))}, send a gift or battle? Hatch your own Peetako — free, no account.</p>

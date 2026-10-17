@@ -229,7 +229,6 @@ async function scenario() {
   await call('register E', 'POST', '/api/register', { body: reg('Elder', 'organic', 'kenyalang', 'KINABALU', '318275', { remember: true }), who: 'E', ip: '8.8.8.8' });
   await call('ascend E unconfirmed', 'POST', '/api/ascend', { who: 'E', body: {}, ip: '8.8.8.8' });
   await call('ascend E too young', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
-  await call('title E too young', 'POST', '/api/title', { who: 'E', body: { title: 'Pendekar Rimba' }, ip: '8.8.8.8' });
   for (let d = 1; d <= 93; d++) {
     T += (d % 7 === 0 ? 20 : 24) * H; // daily care, with a few short gaps that land on the same UTC day
     if (d % 25 === 0) await call('login E day ' + d, 'POST', '/api/login', { body: { code: 'KINABALU', pin: '318275', remember: true }, who: 'E', ip: '8.8.8.8' }); // 30-day session
@@ -239,9 +238,7 @@ async function scenario() {
   }
 
   // 2C social block: E is Tier 8 and rich; F (invited by E) and G are new.
-  await call('title E bad', 'POST', '/api/title', { who: 'E', body: { title: '!!' }, ip: '8.8.8.8' });
-  await call('title E blocked', 'POST', '/api/title', { who: 'E', body: { title: 'Raja Babi' }, ip: '8.8.8.8' });
-  await call('title E ok', 'POST', '/api/title', { who: 'E', body: { title: 'Pendekar Rimba' }, ip: '8.8.8.8' });
+  await call('title route removed', 'POST', '/api/title', { who: 'E', body: { title: 'Pendekar Rimba' }, ip: '8.8.8.8' });
   await call('buy E wings', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'sayap-kelip' }, ip: '8.8.8.8' });
   await call('buy E backdrop', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'bg-rajang' }, ip: '8.8.8.8' });
   await call('buy E wings again', 'POST', '/api/shop/buy', { who: 'E', body: { item: 'sayap-kelip' }, ip: '8.8.8.8' });
@@ -263,15 +260,14 @@ async function scenario() {
   await call('pamper G to E', 'POST', '/api/pamper', { who: 'G', body: { to: 'KINABALU' }, ip: '10.0.0.2' });
   await call('report G name of E', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.2' });
   await call('report F name of E', 'POST', '/api/report', { who: 'F', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.1' });
-  await call('report G title of E', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'title' }, ip: '10.0.0.2' });
+  await call('report title field refused', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'title' }, ip: '10.0.0.2' });
   await call('report self', 'POST', '/api/report', { who: 'E', body: { target: 'KINABALU', field: 'name' }, ip: '8.8.8.8' });
   await call('public E hidden', 'GET', '/api/public?code=KINABALU', { ip: '11.0.0.1' });
   await call('admin no token', 'GET', '/api/admin/reports', { ip: '12.0.0.1' });
   await call('admin wrong token', 'GET', '/api/admin/reports', { ip: '12.0.0.1', auth: 'Bearer nope' });
   const reps = await call('admin reports', 'GET', '/api/admin/reports', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token' });
   await call('admin approve name', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[0].id, decision: 'approve' } });
-  await call('admin reject title', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[1].id, decision: 'reject' } });
-  await call('admin again', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[1].id, decision: 'approve' } });
+  await call('admin again', 'POST', '/api/admin/resolve', { ip: '12.0.0.1', auth: 'Bearer regression-admin-token', body: { id: reps.reports[0].id, decision: 'approve' } });
   await call('report approved name again', 'POST', '/api/report', { who: 'G', body: { target: 'KINABALU', field: 'name' }, ip: '10.0.0.2' });
   await call('public E after review', 'GET', '/api/public?code=PTK-KINABALU', { ip: '11.0.0.1' });
   await call('public page E', 'GET', '/p/PTK-KINABALU', { ip: '11.0.0.1' });

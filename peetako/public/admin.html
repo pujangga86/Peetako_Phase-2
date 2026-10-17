@@ -23,7 +23,7 @@
 <body>
 <main>
   <h1>Report review</h1>
-  <p>Reported names and Tier 7 titles are hidden from other players until you decide. <b>Keep</b> shows the text again and stops further reports of it. <b>Remove</b> replaces a name with “Peetako” or deletes a title.</p>
+  <p>Reported pet names are hidden from other players until you decide. <b>Keep</b> shows the name again and stops further reports of it. <b>Remove</b> replaces the name with “Peetako”.</p>
   <form id="login" class="row">
     <input id="token" type="password" autocomplete="current-password" placeholder="Admin token (ADMIN_TOKEN secret)" aria-label="Admin token" required>
     <button type="submit">Open</button>
@@ -51,7 +51,7 @@ async function load() {
     $('#msg').textContent = reports.length ? `${reports.length} open report${reports.length === 1 ? '' : 's'}` : 'No open reports. 🎉';
     $('#list').innerHTML = reports.map((r) => `
       <div class="card">
-        <div class="meta">${r.field === 'name' ? 'Pet name' : 'Tier 7 title'} · <a href="/p/${encodeURIComponent(r.callCode)}" target="_blank" rel="noopener">${esc(r.callCode)}</a> · T${r.tier} ${esc(r.type)} · reported by ${esc(r.reporter || '?')} · ${new Date(r.at).toLocaleString()}</div>
+        <div class="meta">${r.field === 'name' ? 'Pet name' : 'Removed title feature'} · <a href="/p/${encodeURIComponent(r.callCode)}" target="_blank" rel="noopener">${esc(r.callCode)}</a> · T${r.tier} ${esc(r.type)} · reported by ${esc(r.reporter || '?')} · ${new Date(r.at).toLocaleString()}</div>
         <p class="text">${esc(r.text)}</p>
         <div class="row"><button class="keep" data-id="${r.id}" data-d="approve">Keep</button><button class="remove" data-id="${r.id}" data-d="reject">Remove</button></div>
       </div>`).join('');

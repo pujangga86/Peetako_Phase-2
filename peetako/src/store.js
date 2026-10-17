@@ -352,15 +352,11 @@ export async function bestScoreOf(env, petId) {
   return row?.best ?? 0;
 }
 
-// ---------- names, titles and reports ----------
-export async function saveTitle(env, petId, title) {
-  await env.DB.prepare("UPDATE pet SET title = ?1, title_status = 'ok' WHERE id = ?2").bind(title, petId).run();
-}
-
+// ---------- names and reports ----------
 // First report hides the text at once. Returns 'hidden' (new report filed), 'pending' (already hidden),
 // 'approved' (an admin already kept this text) or 'none' (nothing to report).
 export async function reportField(env, { petId, field, text, reporterPet, now }) {
-  const col = field === 'title' ? 'title_status' : 'name_status';
+  const col = 'name_status'; // only pet names can be reported (the Tier 7 title feature was removed)
   const [hide] = await env.DB.batch([
     env.DB.prepare(`UPDATE pet SET ${col} = 'hidden' WHERE id = ?1 AND ${col} = 'ok'`).bind(petId),
     env.DB.prepare(
@@ -382,8 +378,9 @@ export async function openReports(env, limit = 50) {
   return results;
 }
 
-// approve: the text stays and cannot be reported again. reject: a name becomes `fallbackName`,
-// a title is removed. Returns false when the report was already handled.
+// approve: the text stays and cannot be reported again. reject: a name becomes `fallbackName`.
+// A leftover report on the removed Tier 7 title is just closed and the title cleared.
+// Returns false when the report was already handled.
 export async function resolveReport(env, { id, decision, fallbackName, now }) {
   const rep = await env.DB.prepare("SELECT * FROM reports WHERE id = ?1 AND status = 'open'").bind(id).first();
   if (!rep) return false;
@@ -394,9 +391,7 @@ export async function resolveReport(env, { id, decision, fallbackName, now }) {
       ? env.DB.prepare("UPDATE pet SET name_status = 'approved' WHERE id = ?1").bind(rep.pet_id)
       : env.DB.prepare("UPDATE pet SET name = ?1, name_status = 'approved' WHERE id = ?2").bind(fallbackName, rep.pet_id));
   } else {
-    writes.push(decision === 'approve'
-      ? env.DB.prepare("UPDATE pet SET title_status = 'approved' WHERE id = ?1").bind(rep.pet_id)
-      : env.DB.prepare("UPDATE pet SET title = NULL, title_status = 'ok' WHERE id = ?1").bind(rep.pet_id));
+    writes.push(env.DB.prepare("UPDATE pet SET title = NULL, title_status = 'ok' WHERE id = ?1").bind(rep.pet_id));
   }
   await env.DB.batch(writes);
   return true;

@@ -177,7 +177,6 @@
         <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
         <h2 id="pet-name" class="pv-name"></h2>
         <span id="pet-tier" class="pv-tier"></span>
-        <span id="pet-title" class="pv-title-text" hidden></span>
       </div>
       <div class="pv-tools">
         <button id="coins-btn" class="coin-btn" type="button" aria-label="Coins. Open the shop" title="Coins — open the shop"><svg viewBox="0 0 8 8" width="18" height="18" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="4" height="1" fill="#1E1B4B"/><rect x="1" y="1" width="6" height="6" fill="#F5B700"/><rect x="0" y="2" width="1" height="4" fill="#1E1B4B"/><rect x="7" y="2" width="1" height="4" fill="#1E1B4B"/><rect x="2" y="7" width="4" height="1" fill="#1E1B4B"/><rect x="3" y="2" width="2" height="4" fill="#FDE68A"/></svg><span id="coin-count">0</span></button>
@@ -244,7 +243,6 @@
     </div>
     <nav class="sheet-links" aria-label="Pages"><a href="/faq">FAQ</a><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></nav>
     <div class="sheet-row">
-      <button id="menu-set-title" type="button" class="rbtn light small" hidden>Tier 7 title</button>
       <button id="menu-invite" type="button" class="rbtn light small">Invite a friend</button>
       <button id="menu-pin" type="button" class="rbtn light small">Change PIN</button>
     </div>
@@ -273,7 +271,7 @@
 </dialog>
 
 
-<!-- Phase 2C dialogs: shop, friends, game result, leaderboards, share, PIN, title -->
+<!-- Phase 2C dialogs: shop, friends, game result, leaderboards, share, PIN -->
 <dialog id="shop-dialog" class="sheet retro wide-sheet" aria-labelledby="shop-title">
   <div class="sheet-head"><h2 id="shop-title" class="px">Shop · <span id="shop-coins">0</span> coins</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close shop">✕</button></div>
   <p class="hint">Earn coins by caring (+10, up to 30 a day), checking in every day, Tangkap Kelip-kelip and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
@@ -355,17 +353,6 @@
     <p class="hint">Other devices are signed out after the change.</p>
     <div id="pin-error" class="error" role="alert"></div>
     <div class="btn-row"><button class="rbtn" type="submit" style="--b: var(--b2)">Save PIN</button><button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Cancel</button></div>
-  </form>
-</dialog>
-
-<dialog id="title-dialog" class="sheet retro" aria-labelledby="title-title">
-  <form id="title-form">
-    <h2 id="title-title" class="px">Tier 7 title</h2>
-    <p>A legend earns a title, shown under its name to every visitor. Leave it empty to remove it.</p>
-    <div class="field"><label for="title-input">Title</label><input id="title-input" type="text" maxlength="20" autocomplete="off" placeholder="e.g. Pendekar Rimba"></div>
-    <p id="title-note" class="warn-hint"></p>
-    <div id="title-error" class="error" role="alert"></div>
-    <div class="btn-row"><button class="rbtn" type="submit" style="--b: var(--gold)">Save title</button><button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Cancel</button></div>
   </form>
 </dialog>
 

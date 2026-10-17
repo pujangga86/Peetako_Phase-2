@@ -1,5 +1,6 @@
 // Short server-side blocklist (English and Malay) for the only free text in Peetako: pet names,
-// Tier 7 titles and chosen Call Codes. Decided 11 Oct 2026: blocklist + Report button, no chat.
+// and chosen Call Codes. Decided 11 Oct 2026: blocklist + Report button, no chat.
+// (The Tier 7 custom title was removed on 17 Oct 2026, so pet names are now the only free text.)
 //
 // The list is deliberately short. It catches the common slurs and swear words, including simple
 // disguises (spaces, dots, l33t digits, stretched letters). Anything it misses is handled by Report:

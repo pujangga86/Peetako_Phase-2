@@ -182,10 +182,6 @@ function renderPet(pet) {
   const cEl = $('#pet-country');
   cEl.hidden = !pet.country;
   cEl.innerHTML = pet.country ? countryHtml(pet.country) : '';
-  const title = $('#pet-title');
-  title.hidden = !pet.title;
-  title.textContent = pet.title ? `“${pet.title}”${pet.titleStatus === 'hidden' ? ' (under review)' : ''}` : '';
-  $('#menu-set-title').hidden = !pet.canSetTitle;
   const hiddenNote = $('#name-hidden-note');
   hiddenNote.hidden = pet.nameStatus !== 'hidden';
   hiddenNote.textContent = `Another player reported the name “${pet.name}”. Others see “Name under review” until it is checked.`;

@@ -85,6 +85,3 @@ export function battlePower(p) {
 // Raises the other pet's FUN (mood). Gives no coins and does not count as care, so nobody else
 // can keep a pet alive on its owner's behalf.
 export const PAMPER = { gain: 5, maxPerDay: 3 };
-
-// ---------- free text ----------
-export const TITLE = { fromTier: 7, maxLen: 20 };

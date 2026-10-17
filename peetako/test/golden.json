@@ -484,9 +484,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -603,9 +600,6 @@
     "pet": {
      "name": "Robo Two",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -700,9 +694,6 @@
     "pet": {
      "name": "Cee",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -797,9 +788,6 @@
     "pet": {
      "name": "Dee",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -894,9 +882,6 @@
     "pet": {
      "name": "Burst0",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -991,9 +976,6 @@
     "pet": {
      "name": "Burst1",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1088,9 +1070,6 @@
     "pet": {
      "name": "Burst2",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1185,9 +1164,6 @@
     "pet": {
      "name": "Burst3",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1282,9 +1258,6 @@
     "pet": {
      "name": "Burst4",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1389,9 +1362,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1486,9 +1456,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1586,9 +1553,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1686,9 +1650,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -1786,9 +1747,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2098,9 +2056,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2180,9 +2135,6 @@
     "pet": {
      "name": "Robo Two",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2299,9 +2251,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2396,9 +2345,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2595,9 +2541,6 @@
     "pet": {
      "name": "Robo Two",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -2951,9 +2894,6 @@
     "pet": {
      "name": "Gecko One",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9343,9 +9283,6 @@
     "pet": {
      "name": "Cee",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9419,9 +9356,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9528,16 +9462,6 @@
    }
   },
   {
-   "label": "title E too young",
-   "t": 1793574966000,
-   "status": 403,
-   "setCookie": null,
-   "data": {
-    "error": "too_young",
-    "message": "A custom title opens at Tier 7."
-   }
-  },
-  {
    "label": "care E day 1",
    "t": 1793661366000,
    "status": 200,
@@ -9546,9 +9470,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9683,9 +9604,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9820,9 +9738,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -9920,9 +9835,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10057,9 +9969,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10194,9 +10103,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10331,9 +10237,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10468,9 +10371,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10605,9 +10505,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10742,9 +10639,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -10879,9 +10773,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11016,9 +10907,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11153,9 +11041,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11253,9 +11138,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11390,9 +11272,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11535,9 +11414,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11672,9 +11548,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11809,9 +11682,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -11946,9 +11816,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12083,9 +11950,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12220,9 +12084,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12357,9 +12218,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12494,9 +12352,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12594,9 +12449,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12731,9 +12583,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12828,9 +12677,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -12965,9 +12811,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13102,9 +12945,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13239,9 +13079,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13376,9 +13213,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13513,9 +13347,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13658,9 +13489,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13795,9 +13623,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -13932,9 +13757,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14032,9 +13854,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14169,9 +13988,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14306,9 +14122,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14443,9 +14256,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14580,9 +14390,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14717,9 +14524,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14854,9 +14658,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -14991,9 +14792,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15128,9 +14926,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15265,9 +15060,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15365,9 +15157,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15502,9 +15291,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15647,9 +15433,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15784,9 +15567,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -15921,9 +15701,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16058,9 +15835,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16195,9 +15969,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16292,9 +16063,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16429,9 +16197,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16566,9 +16331,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16703,9 +16465,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16803,9 +16562,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -16940,9 +16696,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17077,9 +16830,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17187,9 +16937,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17324,9 +17071,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17461,9 +17205,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17598,9 +17339,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17743,9 +17481,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -17880,9 +17615,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18018,9 +17750,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18119,9 +17848,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18257,9 +17983,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18395,9 +18118,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18533,9 +18253,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18671,9 +18388,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18809,9 +18523,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -18947,9 +18658,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19085,9 +18793,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19223,9 +18928,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19361,9 +19063,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19462,9 +19161,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19600,9 +19296,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19698,9 +19391,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19844,9 +19534,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -19982,9 +19669,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20120,9 +19804,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20258,9 +19939,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20396,9 +20074,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20534,9 +20209,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20672,9 +20344,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20810,9 +20479,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -20911,9 +20577,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21049,9 +20712,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21187,9 +20847,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21325,9 +20982,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21463,9 +21117,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21601,9 +21252,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21739,9 +21387,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -21885,9 +21530,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22023,9 +21665,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22161,9 +21800,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22254,97 +21890,13 @@
    }
   },
   {
-   "label": "title E bad",
+   "label": "title route removed",
    "t": 1801422966000,
-   "status": 400,
+   "status": 404,
    "setCookie": null,
    "data": {
-    "error": "bad_title",
-    "message": "A title is 2–20 letters, numbers, spaces, hyphens or apostrophes."
-   }
-  },
-  {
-   "label": "title E blocked",
-   "t": 1801422966000,
-   "status": 400,
-   "setCookie": null,
-   "data": {
-    "error": "title_blocked",
-    "message": "Please choose a kinder title."
-   }
-  },
-  {
-   "label": "title E ok",
-   "t": 1801422966000,
-   "status": 200,
-   "setCookie": null,
-   "data": {
-    "ok": true,
-    "pet": {
-     "name": "Elder",
-     "nameStatus": "ok",
-     "title": "Pendekar Rimba",
-     "titleStatus": "ok",
-     "canSetTitle": true,
-     "equipped": {},
-     "battles": {
-      "wins": 0,
-      "losses": 0
-     },
-     "type": "organic",
-     "palette": "kenyalang",
-     "callCode": "PTK-KINABALU",
-     "country": "MY",
-     "status": "active",
-     "bornAt": 1793574966000,
-     "diedAt": null,
-     "lastCaredAt": 1801422966000,
-     "ageHours": 2180,
-     "tier": 8,
-     "tierName": "Ageless",
-     "backdrop": "Kinabalu summit",
-     "nextTier": null,
-     "survivesUnattendedHours": 336,
-     "hoursLeftUnattended": 336,
-     "rankAgeHours": 2160,
-     "careDays": 91,
-     "ascendedAt": null,
-     "legacyScore": null,
-     "ascension": {
-      "available": true,
-      "reason": null,
-      "atHours": 2160,
-      "projectedScore": 272
-     },
-     "stats": {
-      "energy": 0,
-      "health": 30,
-      "temperature": 0,
-      "mood": 0
-     },
-     "actions": [
-      {
-       "id": "feed",
-       "label": "Feed kelkatu",
-       "stat": "energy"
-      },
-      {
-       "id": "shed",
-       "label": "Help shed skin",
-       "stat": "health"
-      },
-      {
-       "id": "bask",
-       "label": "Bask under lamp",
-       "stat": "temperature"
-      },
-      {
-       "id": "play",
-       "label": "Play",
-       "stat": "mood"
-      }
-     ]
-    }
+    "error": "not_found",
+    "message": "Unknown endpoint."
    }
   },
   {
@@ -22358,9 +21910,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": "Pendekar Rimba",
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {
       "back": "sayap-kelip"
      },
@@ -22461,9 +22010,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "ok",
-     "title": "Pendekar Rimba",
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -22574,9 +22120,6 @@
     "pet": {
      "name": "Fifi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22671,9 +22214,6 @@
     "pet": {
      "name": "Fafa",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22768,9 +22308,6 @@
     "pet": {
      "name": "Gigi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22865,9 +22402,6 @@
     "pet": {
      "name": "Fafa",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -22966,11 +22500,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23045,11 +22576,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23114,11 +22642,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23183,11 +22708,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23282,11 +22804,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": "Pendekar Rimba",
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": true
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23317,11 +22836,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23396,11 +22912,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": "Pendekar Rimba",
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": true
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23431,11 +22944,8 @@
      "callCode": "PTK-FAFA2026",
      "name": "Fafa",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": null,
      "type": "robot",
@@ -23500,11 +23010,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23532,11 +23039,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": "Pendekar Rimba",
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": true
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -23665,14 +23169,13 @@
    }
   },
   {
-   "label": "report G title of E",
+   "label": "report title field refused",
    "t": 1801422966000,
-   "status": 200,
+   "status": 400,
    "setCookie": null,
    "data": {
-    "ok": true,
-    "result": "hidden",
-    "message": "Thank you. It is hidden until we review it."
+    "error": "bad_field",
+    "message": "Only a pet name can be reported."
    }
   },
   {
@@ -23695,11 +23198,8 @@
      "callCode": "PTK-KINABALU",
      "name": null,
      "nameHidden": true,
-     "title": null,
-     "titleHidden": true,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -23769,31 +23269,12 @@
       "tier": 8,
       "type": "organic",
       "reporter": "PTK-GIGIPTK"
-     },
-     {
-      "id": 2,
-      "field": "title",
-      "text": "Pendekar Rimba",
-      "at": 1801422966000,
-      "callCode": "PTK-KINABALU",
-      "tier": 8,
-      "type": "organic",
-      "reporter": "PTK-GIGIPTK"
      }
     ]
    }
   },
   {
    "label": "admin approve name",
-   "t": 1801422966000,
-   "status": 200,
-   "setCookie": null,
-   "data": {
-    "ok": true
-   }
-  },
-  {
-   "label": "admin reject title",
    "t": 1801422966000,
    "status": 200,
    "setCookie": null,
@@ -23832,11 +23313,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -24396,9 +23874,6 @@
     "pet": {
      "name": "Robo Two",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -24502,9 +23977,6 @@
     "pet": {
      "name": "Robo Two",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -24736,9 +24208,6 @@
     "pet": {
      "name": "Hana",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -24833,9 +24302,6 @@
     "pet": {
      "name": "Ivan",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -24930,9 +24396,6 @@
     "pet": {
      "name": "Jaya",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -25560,11 +25023,8 @@
      "callCode": "PTK-RIMBA21",
      "name": "Robo Two",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "robot",
@@ -25601,9 +25061,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -25721,9 +25178,6 @@
     "pet": {
      "name": "Fafa",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -25835,9 +25289,6 @@
     "pet": {
      "name": "Fafa",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -25948,9 +25399,6 @@
     "pet": {
      "name": "Gigi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -26112,11 +25560,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -26147,11 +25592,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26249,11 +25691,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -26284,11 +25723,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26386,11 +25822,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -26421,11 +25854,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26523,11 +25953,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -26558,11 +25985,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26660,11 +26084,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -26695,11 +26116,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26807,11 +26225,8 @@
      "callCode": "PTK-GIGIPTK",
      "name": "Gigi",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": true,
-      "title": false
+      "name": true
      },
      "country": "MY",
      "type": "organic",
@@ -26839,11 +26254,8 @@
      "callCode": "PTK-KINABALU",
      "name": "Elder",
      "nameHidden": false,
-     "title": null,
-     "titleHidden": false,
      "canReport": {
-      "name": false,
-      "title": false
+      "name": false
      },
      "country": "MY",
      "type": "organic",
@@ -27018,9 +26430,6 @@
     "pet": {
      "name": "Gigi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -27228,9 +26637,6 @@
     "pet": {
      "name": "Gigi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -27447,9 +26853,6 @@
     "pet": {
      "name": "Gigi",
      "nameStatus": "ok",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {},
      "battles": {
       "wins": 0,
@@ -27548,9 +26951,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -29925,16 +29325,6 @@
       "created_at": 1801422966000,
       "status": "approved",
       "resolved_at": 1801422966000
-     },
-     {
-      "id": 2,
-      "pet_id": 10,
-      "field": "title",
-      "text": "Pendekar Rimba",
-      "reporter_pet": 13,
-      "created_at": 1801422966000,
-      "status": "rejected",
-      "resolved_at": 1801422966000
      }
     ],
     "battles": [
@@ -30012,9 +29402,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": true,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -30156,9 +29543,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -30280,9 +29664,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -31339,16 +30720,6 @@
       "created_at": 1801422966000,
       "status": "approved",
       "resolved_at": 1801422966000
-     },
-     {
-      "id": 2,
-      "pet_id": 10,
-      "field": "title",
-      "text": "Pendekar Rimba",
-      "reporter_pet": 13,
-      "created_at": 1801422966000,
-      "status": "rejected",
-      "resolved_at": 1801422966000
      }
     ],
     "battles": [
@@ -31406,9 +30777,6 @@
     "pet": {
      "name": "Elder",
      "nameStatus": "approved",
-     "title": null,
-     "titleStatus": "ok",
-     "canSetTitle": false,
      "equipped": {
       "back": "sayap-kelip",
       "backdrop": "bg-rajang"
@@ -32589,16 +31957,6 @@
     "reporter_pet": 13,
     "created_at": 1801422966000,
     "status": "approved",
-    "resolved_at": 1801422966000
-   },
-   {
-    "id": 2,
-    "pet_id": 10,
-    "field": "title",
-    "text": "Pendekar Rimba",
-    "reporter_pet": 13,
-    "created_at": 1801422966000,
-    "status": "rejected",
     "resolved_at": 1801422966000
    }
   ],

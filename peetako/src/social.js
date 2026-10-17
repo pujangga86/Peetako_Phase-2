@@ -1,18 +1,17 @@
 // Peetako Phase 2C — social and economy routes: coins (check-in), cosmetics shop, gifts, Pamper,
-// friendly battles, Tangkap Kelip-kelip and its leaderboards, Tier 7 titles, Report and its admin
+// friendly battles, Tangkap Kelip-kelip and its leaderboards, Report and its admin
 // review, and the public pet page /p/PTK-XXXXXX that share links point to.
 import { advance, view as ownerView, TIERS } from './game.js';
 import {
-  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, coinsForScore, BATTLE, battlePower, PAMPER, TITLE,
+  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, coinsForScore, BATTLE, battlePower, PAMPER,
   mytDay, prevDay, msToReset,
 } from './economy.js';
-import { isBlocked } from './filter.js';
 import { codeSuffix, codeKeyOf } from './codes.js';
 import { isCountry, normCountry, UNDISCLOSED, MIN_COUNTRY_PLAYERS } from './countries.js';
 import {
   petByCodeKey, petById, dailyCounts, countDaily, earnCapped, checkIn, inventoryOf, buyItem, giftItem, saveEquipped,
   unseenEvents, markEventsSeen, addEvent, startRun, runsStartedSince, finishRun, saveScore, leaderboard, rankOf, countryBoard, countryPlayerCount, BOARD_SORT_KEYS,
-  bestScoreOf, saveTitle, reportField, openReports, resolveReport, recordBattle, saveMood,
+  bestScoreOf, reportField, openReports, resolveReport, recordBattle, saveMood,
 } from './store.js';
 import {
   json, fail, readBody, rateLimit, petFromSession, sha256, newToken, randInt, sameSecret, NO_SESSION, SLOW_DOWN,
@@ -60,9 +59,7 @@ export function publicView(row, now) {
     callCode: v.callCode,
     name: v.nameStatus === 'hidden' ? null : v.name,
     nameHidden: v.nameStatus === 'hidden',
-    title: v.title && v.titleStatus !== 'hidden' ? v.title : null,
-    titleHidden: !!v.title && v.titleStatus === 'hidden',
-    canReport: { name: v.nameStatus === 'ok', title: !!v.title && v.titleStatus === 'ok' },
+    canReport: { name: v.nameStatus === 'ok' },
     country: v.country && v.country !== UNDISCLOSED ? v.country : null, // null: prefers not to say (or not chosen yet)
     type: v.type, palette: v.palette, tier: v.tier, tierName: v.tierName, backdrop: v.backdrop, status: v.status,
     ageHours: v.ageHours, careDays: v.careDays, stats: v.stats, equipped: v.equipped, battles: v.battles,
@@ -143,27 +140,6 @@ async function equip(env, req) {
     equipped[b.slot] = item.id;
   }
   await saveEquipped(env, row.id, equipped);
-  const fresh = await petById(env, row.id);
-  return json({ ok: true, pet: ownerView(advance(fresh, now), now) });
-}
-
-// ---------- Tier 7 title ----------
-function cleanTitle(raw) {
-  const t = String(raw ?? '').replace(/\s+/g, ' ').trim();
-  if (t === '') return '';
-  const re = new RegExp(`^[A-Za-z0-9][A-Za-z0-9 '\\-]{0,${TITLE.maxLen - 2}}[A-Za-z0-9]$`);
-  return re.test(t) ? t : null;
-}
-async function setTitle(env, req) {
-  const { row, now, error } = await me(env, req);
-  if (error) return error;
-  const p = advance(row, now);
-  if (!alive(p) || p.tier < TITLE.fromTier) return fail(403, 'too_young', `A custom title opens at Tier ${TITLE.fromTier}.`);
-  const b = await readBody(req);
-  const title = cleanTitle(b.title);
-  if (title === null) return fail(400, 'bad_title', `A title is 2–${TITLE.maxLen} letters, numbers, spaces, hyphens or apostrophes.`);
-  if (title && isBlocked(title)) return fail(400, 'title_blocked', 'Please choose a kinder title.');
-  await saveTitle(env, row.id, title || null);
   const fresh = await petById(env, row.id);
   return json({ ok: true, pet: ownerView(advance(fresh, now), now) });
 }
@@ -267,18 +243,18 @@ async function battle(env, req) {
   });
 }
 
-// ---------- Report (name or Tier 7 title) ----------
+// ---------- Report (pet name) ----------
 async function report(env, req) {
   const { row, now, error } = await me(env, req, 'report');
   if (error) return error;
   const b = await readBody(req);
-  if (!['name', 'title'].includes(b.field)) return fail(400, 'bad_field', 'Report a name or a title.');
+  if (b.field !== 'name') return fail(400, 'bad_field', 'Only a pet name can be reported.');
   const t = await targetFrom(env, b.target);
   if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
   if (t.id === row.id) return fail(400, 'self', 'You cannot report your own Peetako.');
-  const text = b.field === 'title' ? t.title : t.name;
+  const text = t.name;
   if (!text) return fail(400, 'nothing', 'There is nothing to report.');
-  const r = await reportField(env, { petId: t.id, field: b.field, text, reporterPet: row.id, now });
+  const r = await reportField(env, { petId: t.id, field: 'name', text, reporterPet: row.id, now });
   const msg = {
     hidden: 'Thank you. It is hidden until we review it.',
     pending: 'Thank you. It is already hidden and waiting for review.',
@@ -510,7 +486,6 @@ export async function socialRoute(env, req, url) {
     if (p === '/api/checkin') return checkin(env, req);
     if (p === '/api/shop/buy') return buy(env, req);
     if (p === '/api/equip') return equip(env, req);
-    if (p === '/api/title') return setTitle(env, req);
     if (p === '/api/gift') return gift(env, req);
     if (p === '/api/pamper') return pamper(env, req);
     if (p === '/api/battle') return battle(env, req);
