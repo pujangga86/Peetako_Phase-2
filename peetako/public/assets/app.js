@@ -52,7 +52,7 @@ const pixelIcon = (name, ink) => `<svg viewBox="0 0 8 8" width="22" height="22" 
 
 let state = {
   pet: null, turnstileSiteKey: null, turnstileId: null, pendingPet: null, poll: null, vapidKey: null, alertsOn: false,
-  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: VIEW_DEFAULT, me: null, social: null,
+  caredAt: 0, moodTimer: null, skyTimer: null, lastTier: null, view: isDesktop() ? 'classic' : 'immersive', viewChosen: false, me: null, social: null,
   codePrefix: 'PTK-', countries: null, suggestedCountry: null, hatchPicker: null,
 };
 

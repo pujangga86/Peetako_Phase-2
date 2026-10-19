@@ -281,7 +281,8 @@ fieldset.plain legend { font: 400 10px/1.6 'Press Start 2P', monospace; margin-b
 .fact.urgent { background: #FFE4E6; border-color: #E11D48; }
 .pv-code { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 10px; border: 3px solid var(--gold); background: var(--ink); color: var(--card); }
 .pv-code .px { font-size: 8px; color: var(--gold); }
-.pv-code #call-code { font-size: 22px; letter-spacing: 3px; }
+.pv-code #call-code { font-size: 20px; letter-spacing: 2px; white-space: nowrap; }
+.pv-code .pv-country { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pv-end { padding: 4px 0; }
 .ascension { padding: 6px 8px; border: 3px dashed var(--ink); background: #FFFBEB; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .ascension[hidden] { display: none; }
