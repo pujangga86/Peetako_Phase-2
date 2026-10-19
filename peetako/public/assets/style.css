@@ -148,7 +148,8 @@ input[type="text"]:focus { outline: 3px solid var(--cyan); outline-offset: 2px; 
    Peetako game — retro frame (Phase 2B)
    Colours come from the pet's palette as CSS variables set by app.js:
    --pg (page around the frame), --card (frame card), --ink (outline/text), --gold, --body, --spot, --b1..--b4.
-   Two views of the same parts: Classic (framed, like the retro mockup, default) and Immersive (full screen, CRT look).
+   Two views of the same parts: Classic (framed, like the retro mockup; default on desktop) and Immersive (full screen, CRT look;
+   default on phones, and a portrait frame on desktop).
    ===================================================================================================== */
 .game.retro {
   --pg: #1A1840; --card: #FEF3C7; --ink: #1E1B4B; --gold: #F5B700; --body: #4ADE80; --spot: #16A34A;
@@ -356,17 +357,15 @@ body.immersive .toast { top: 76px; bottom: auto; }
   .game[data-view="classic"] .ctl .px { font-size: 10px; }
   .game[data-view="classic"] .stat .segs i { height: 18px; }
 
-  /* Immersive: pet centre-left, controls as a 2×2 panel on the right (GDD) */
-  body.immersive .pv { display: grid; grid-template-columns: minmax(0, 1fr) 400px; grid-template-rows: auto 1fr auto; gap: 14px 20px; }
-  body.immersive .pv-top { grid-column: 1 / -1; }
-  body.immersive .pv-screen { grid-column: 1; grid-row: 2 / 4; }
-  body.immersive .pet-box { left: 50%; bottom: 0; height: min(100%, 680px); }
-  body.immersive .pv-alive, body.immersive .pv-end { grid-column: 2; grid-row: 2; align-self: center; }
-  body.immersive .pv-code { grid-column: 2; grid-row: 3; }
-  body.immersive .pv-dock { grid-template-columns: 1fr 1fr; gap: 12px; padding-top: 18px; }
-  body.immersive .ctl { min-height: 110px; }
-  body.immersive .ctl svg { width: 36px; height: 36px; }
-  body.immersive .ctl .px { font-size: 11px; }
+  /* Immersive on desktop: the same layout as a phone, in a portrait frame in the middle of the window with a
+     neutral surround. The transform makes the frame the containing block for the fixed scene and scanline layers,
+     so they fill the frame instead of the whole window. */
+  body.immersive .game.retro { background: #14131F; }
+  body.immersive .pv {
+    width: min(100%, 460px); margin: 0 auto; overflow: hidden; transform: translateZ(0);
+    border-left: 4px solid var(--ink); border-right: 4px solid var(--ink); box-sizing: border-box;
+  }
+  body.immersive .pet-box { max-width: 92%; }
 }
 @media (max-height: 700px) {
   .game.retro { --scr: min(100%, 38dvh); }

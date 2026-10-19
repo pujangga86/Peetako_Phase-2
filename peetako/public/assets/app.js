@@ -15,9 +15,11 @@ const $ = (sel) => document.querySelector(sel);
 const screens = ['welcome', 'hatch', 'reveal', 'login', 'pet'];
 const NAMES = ['Pitak', 'Tako', 'Bujang', 'Dayang', 'Awang', 'Sago', 'Rajang', 'Bako', 'Mulu', 'Danum', 'Lundu', 'Ranau',
   'Kapit', 'Kudat', 'Sape', 'Pandan', 'Durian', 'Langsat', 'Midin', 'Tuhau', 'Kelkatu', 'Chikchak', 'Bintang', 'Gelam'];
-// v2 key: Classic became the default, so devices that saved an earlier choice get the new default once.
+// v2 key: only an explicit choice from the menu is ever saved under it, so a saved value is always the player's own.
+// Without one, the default follows the device: Classic on a desktop window, Immersive on a phone.
 const VIEW_KEY = 'peetako_view_v2';
-const VIEW_DEFAULT = 'classic';
+const DESKTOP_MQ = '(min-width: 900px) and (orientation: landscape)'; // same breakpoint the CSS uses for desktop layouts
+const isDesktop = () => matchMedia(DESKTOP_MQ).matches;
 const REF_KEY = 'peetako_ref'; // Call Code from an invite link, kept until this device hatches a pet
 const BACKDROP_NAMES = { 'bg-kinabalu': 'Kinabalu from Kundasang', 'bg-rajang': 'Rajang River' };
 const Sound = window.PeetakoSound || { play() {}, toggle() { return false; }, isEnabled() { return false; } };
@@ -115,15 +117,27 @@ function applyTheme(id) {
 
 // ---------- view: classic (default) or immersive ----------
 function loadView() {
-  state.view = VIEW_DEFAULT;
-  try { const v = localStorage.getItem(VIEW_KEY); if (v === 'classic' || v === 'immersive') state.view = v; } catch { /* storage blocked */ }
+  state.viewChosen = false;
+  try {
+    const v = localStorage.getItem(VIEW_KEY);
+    if (v === 'classic' || v === 'immersive') { state.view = v; state.viewChosen = true; }
+  } catch { /* storage blocked */ }
+  if (!state.viewChosen) state.view = isDesktop() ? 'classic' : 'immersive';
 }
 function setView(v) {
   state.view = v;
+  state.viewChosen = true;
   try { localStorage.setItem(VIEW_KEY, v); } catch { /* storage blocked */ }
   applyView();
   renderScene();
 }
+// A player who never chose a view follows the device default when the window changes (rotate, resize, drag to another screen).
+matchMedia(DESKTOP_MQ).addEventListener('change', () => {
+  if (state.viewChosen) return;
+  state.view = isDesktop() ? 'classic' : 'immersive';
+  applyView();
+  renderScene();
+});
 function applyView() {
   const onPet = !$('#screen-pet').hidden;
   document.body.classList.toggle('immersive', onPet && state.view === 'immersive');
@@ -136,8 +150,11 @@ function renderScene() {
   const pet = state.pet;
   if (!pet) return;
   const sky = skyAt(localMinute());
-  // Full screen on a tall phone: show the whole scene (sky and ground extend beyond it) rather than crop its sides.
-  const fit = document.body.classList.contains('immersive') && innerWidth < innerHeight ? 'meet' : 'slice';
+  // Portrait stage (a tall phone, or the phone-sized frame on desktop): show the whole scene (sky and ground extend
+  // beyond it) rather than crop its sides. The stage's own shape decides, not the window's.
+  const box = $('#scene').getBoundingClientRect();
+  const portrait = box.width && box.height ? box.width < box.height : innerWidth < innerHeight;
+  const fit = document.body.classList.contains('immersive') && portrait ? 'meet' : 'slice';
   const bought = pet.equipped?.backdrop;
   $('#scene').innerHTML = drawScene(pet.tier, sky, pet.palette, { label: `${BACKDROP_NAMES[bought] || pet.backdrop}, ${sky.phase}`, fit, backdrop: bought });
   $('#stage').dataset.phase = sky.phase;
