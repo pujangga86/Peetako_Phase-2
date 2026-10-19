@@ -343,20 +343,34 @@ body.immersive .toast { top: 76px; bottom: auto; }
 
 /* ---------- Bigger screens ---------- */
 @media (min-width: 900px) and (orientation: landscape) {
-  /* Classic: frame on the left, controls beside it (retro desktop mockup) */
-  body:not(.immersive) .game.retro:has(.pv:not([hidden])) { max-width: 1100px; }
+  /* Classic: the square screen takes two thirds of the frame, the controls the other third (retro desktop mockup).
+     The site header is hidden on the pet screen to give the screen more height. The frame is as wide as the screen's
+     height allows: screen side S = 100dvh - 140px, controls S/2, gap 24px, frame padding and border 30px, so the
+     columns stay 2:1 and the screen stays square. Never narrower than 760px, never wider than 1280px. */
+  body.on-pet:not(.immersive) .site-header { display: none; }
+  body.on-pet:not(.immersive) main.wrap { max-width: 1344px; } /* the page column (960px) would cap the frame */
+  body:not(.immersive) .game.retro:has(.pv:not([hidden])) { max-width: max(760px, min(1280px, calc((100dvh - 140px) * 1.5 + 54px))); }
   .game[data-view="classic"] .pv {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr auto; gap: 14px 24px;
+    display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: auto 1fr auto; gap: 14px 24px;
     grid-template-areas: "top top" "screen alive" "screen code";
   }
   .game[data-view="classic"] .pv-top { grid-area: top; }
-  .game[data-view="classic"] .pv-screen { grid-area: screen; width: min(100%, calc(100dvh - 210px)); align-self: start; }
+  .game[data-view="classic"] .pv-screen { grid-area: screen; width: min(100%, calc(100dvh - 140px)); align-self: start; }
   .game[data-view="classic"] .pv-alive, .game[data-view="classic"] .pv-end { grid-area: alive; align-self: center; }
   .game[data-view="classic"] .pv-code { grid-area: code; }
   .game[data-view="classic"] .ctl { min-height: 68px; }
   .game[data-view="classic"] .ctl svg { width: 26px; height: 26px; }
   .game[data-view="classic"] .ctl .px { font-size: 9px; }
   .game[data-view="classic"] .stat .segs i { height: 12px; }
+  /* Narrow controls column: buttons 2x2, facts 2 + 1, social 3 per row */
+  .game[data-view="classic"] .pv-dock { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .game[data-view="classic"] .pv-facts { grid-template-columns: 1fr 1fr; }
+  .game[data-view="classic"] .pv-facts .fact:last-child { grid-column: 1 / -1; }
+  .game[data-view="classic"] .pv-social { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .game[data-view="classic"] .soc { min-height: 40px; }
+  /* Call Code strip: the country drops to its own line in the narrow column instead of being clipped */
+  .game[data-view="classic"] .pv-code { flex-wrap: wrap; row-gap: 0; }
+  .game[data-view="classic"] .pv-code .pv-country { flex-basis: 100%; justify-content: flex-end; }
 
   /* Immersive on desktop: the same layout as a phone, in a portrait frame in the middle of the window with a
      neutral surround. The transform makes the frame the containing block for the fixed scene and scanline layers,

@@ -140,6 +140,7 @@ matchMedia(DESKTOP_MQ).addEventListener('change', () => {
 });
 function applyView() {
   const onPet = !$('#screen-pet').hidden;
+  document.body.classList.toggle('on-pet', onPet);
   document.body.classList.toggle('immersive', onPet && state.view === 'immersive');
   $('#game').dataset.view = state.view;
   for (const r of document.querySelectorAll('input[name="view"]')) r.checked = r.value === state.view;
