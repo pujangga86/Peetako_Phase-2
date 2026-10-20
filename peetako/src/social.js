@@ -1,17 +1,18 @@
-// Peetako Phase 2C — social and economy routes: coins (check-in), cosmetics shop, gifts, Pamper,
-// friendly battles, Tangkap Kelip-kelip and its leaderboards, Report and its admin
-// review, and the public pet page /p/PTK-XXXXXX that share links point to.
-import { advance, view as ownerView, TIERS } from './game.js';
+// Peetako Phase 2C — social and economy routes: coins (check-in), cosmetics shop, gifts, Pamper and Bond,
+// friendly battles, Mentor Boost, Friends (contacts and blocks), Tangkap Kelip-kelip and its leaderboards
+// and daily badges, Report and its admin review, and the public pet page /p/PTK-XXXXXX that share links point to.
+import { advance, view as ownerView, TIERS, HOUR, MENTOR_HOURS } from './game.js';
 import {
-  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, coinsForScore, BATTLE, battlePower, PAMPER,
-  mytDay, prevDay, msToReset,
+  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, coinsForFireflies, maxCombo, BATTLE, battlePower, PAMPER,
+  BOND, bondInfo, MAX_CONTACTS, MAX_BLOCKS, MENTOR, mytDay, prevDay, msToReset,
 } from './economy.js';
 import { codeSuffix, codeKeyOf } from './codes.js';
 import { isCountry, normCountry, UNDISCLOSED, MIN_COUNTRY_PLAYERS } from './countries.js';
 import {
   petByCodeKey, petById, dailyCounts, countDaily, earnCapped, checkIn, inventoryOf, buyItem, giftItem, saveEquipped,
   unseenEvents, markEventsSeen, addEvent, startRun, runsStartedSince, finishRun, saveScore, leaderboard, rankOf, countryBoard, countryPlayerCount, BOARD_SORT_KEYS,
-  bestScoreOf, reportField, openReports, resolveReport, recordBattle, saveMood,
+  bestScoreOf, reportField, openReports, resolveReport, recordBattle, saveMood, saveMentor, setOpenToChallenge,
+  addBond, bondOf, contactsOf, isContact, saveContact, removeContact, blockState, blockPet, unblockPet, blockedBy, badgesOf,
 } from './store.js';
 import {
   json, fail, readBody, rateLimit, petFromSession, sha256, newToken, randInt, sameSecret, NO_SESSION, SLOW_DOWN,
@@ -25,7 +26,7 @@ const isActive = (p, now) => alive(p) && now - p.last_cared_at <= 24 * 3600 * 10
 // ---------- what the owner sees about their own coins, items and news ----------
 export async function buildMe(env, row, now) {
   const day = mytDay(now);
-  const [counts, inv, events] = await Promise.all([dailyCounts(env, row.id, day), inventoryOf(env, row.id), unseenEvents(env, row.id)]);
+  const [counts, inv, events, badges] = await Promise.all([dailyCounts(env, row.id, day), inventoryOf(env, row.id), unseenEvents(env, row.id), badgesOf(env, row.id)]);
   const living = alive(row);
   return {
     coins: row.coins || 0,
@@ -34,12 +35,15 @@ export async function buildMe(env, row, now) {
     canCheckIn: living && row.checkin_day !== day,
     today: {
       careCoins: counts.care_coins || 0, gameCoins: counts.game_coins || 0, gifts: counts.gifts || 0,
-      battles: counts.battles || 0, pampers: counts.pampers || 0,
+      battles: counts.battles || 0, pampers: counts.pampers || 0, mentors: counts.mentors || 0,
+      // care types that have already paid their coins today
+      caredTypes: Object.keys(counts).filter((k) => k.startsWith('care:')).map((k) => k.slice(5)),
     },
     caps: {
       careCoins: COIN.careMaxPerDay, gameCoins: COIN.gameMaxPerDay, gifts: GIFT_MAX_PER_DAY,
-      battles: BATTLE.maxPerDay, pampers: PAMPER.maxPerDay,
+      battles: BATTLE.maxPerDay, pampers: PAMPER.maxPerDay, mentors: MENTOR.perGiverPerDay,
     },
+    badges,
     resetsInMs: msToReset(now),
     owned: inv.map((i) => i.item),
     referral: row.referred_by ? ['waiting', 'paid', 'void'][row.referral_state] || 'waiting' : null,
@@ -63,7 +67,8 @@ export function publicView(row, now) {
     country: v.country && v.country !== UNDISCLOSED ? v.country : null, // null: prefers not to say (or not chosen yet)
     type: v.type, palette: v.palette, tier: v.tier, tierName: v.tierName, backdrop: v.backdrop, status: v.status,
     ageHours: v.ageHours, careDays: v.careDays, stats: v.stats, equipped: v.equipped, battles: v.battles,
-    legacyScore: v.legacyScore,
+    legacyScore: v.legacyScore, openToChallenge: v.openToChallenge, legacy: v.legacy,
+    hibernating: !!v.hibernation?.active, mentored: !!v.mentorUntil,
   };
 }
 
@@ -71,6 +76,14 @@ async function targetFrom(env, raw) {
   const suffix = codeSuffix(env, raw);
   if (!suffix) return null;
   return petByCodeKey(env, codeKeyOf(env, suffix));
+}
+
+// Blocking is silent: a pet that was blocked only learns that the other pet is not accepting it now.
+async function blockedFail(env, row, t) {
+  const b = await blockState(env, row.id, t.id);
+  if (b.mine) return fail(403, 'you_blocked', 'You blocked this Peetako. Unblock it in Friends first.');
+  if (b.theirs) return fail(403, 'not_accepting', 'This Peetako is not accepting that right now.');
+  return null;
 }
 
 // Common start for routes that need the player's own pet.
@@ -151,14 +164,24 @@ async function visit(env, req, url) {
   const t = await targetFrom(env, url.searchParams.get('code'));
   if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
   const day = mytDay(now);
-  const counts = await dailyCounts(env, row.id, day);
-  const owns = (await inventoryOf(env, t.id)).map((i) => i.item);
+  const self = t.id === row.id;
+  const [counts, theirCounts, inv, blocks, points, saved, badges] = await Promise.all([
+    dailyCounts(env, row.id, day), dailyCounts(env, t.id, day), inventoryOf(env, t.id),
+    self ? { mine: false, theirs: false } : blockState(env, row.id, t.id), self ? 0 : bondOf(env, row.id, t.id),
+    self ? false : isContact(env, row.id, t.id), badgesOf(env, t.id),
+  ]);
+  const open = !self && !blocks.mine && !blocks.theirs;
+  const a = advance(row, now);
+  const tp = advance(t, now);
   return json({
-    pet: publicView(t, now), self: t.id === row.id, owns,
+    pet: publicView(t, now), self, owns: inv.map((i) => i.item), badges,
+    bond: self ? null : bondInfo(points), contact: saved, blocked: blocks.mine,
     can: {
-      pamper: t.id !== row.id && alive(row) && alive(t) && (counts.pampers || 0) < PAMPER.maxPerDay && !counts[`pamper:${t.id}`],
-      battle: t.id !== row.id && isActive(row, now) && alive(t) && row.tier >= 1 && t.tier >= 1 && !!t.open_to_challenge && (counts.battles || 0) < BATTLE.maxPerDay,
-      gift: t.id !== row.id && !row.died_at && alive(t) && (counts.gifts || 0) < GIFT_MAX_PER_DAY,
+      pamper: open && alive(a) && alive(tp) && (counts.pampers || 0) < PAMPER.maxPerDay && !counts[`pamper:${t.id}`],
+      battle: open && isActive(a, now) && alive(tp) && a.tier >= 1 && tp.tier >= 1 && !!t.open_to_challenge && (counts.battles || 0) < BATTLE.maxPerDay,
+      gift: open && !a.died_at && alive(tp) && (counts.gifts || 0) < GIFT_MAX_PER_DAY,
+      mentor: open && isActive(a, now) && a.tier >= MENTOR.minTier && alive(tp) && tp.tier < a.tier
+        && (counts.mentors || 0) < MENTOR.perGiverPerDay && (theirCounts.mentored || 0) < MENTOR.perReceiverPerDay,
     },
   });
 }
@@ -174,17 +197,20 @@ async function gift(env, req) {
   if (t.id === row.id) return fail(400, 'self', 'Buy it in the shop instead — gifts are for other Peetako.');
   if (row.died_at) return fail(409, 'pet_ended', 'A fallen Peetako cannot send gifts.');
   if (!alive(t)) return fail(409, 'target_ended', 'Only a living Peetako can receive gifts.');
+  const blocked = await blockedFail(env, row, t);
+  if (blocked) return blocked;
   const day = mytDay(now);
   if (((await dailyCounts(env, row.id, day)).gifts || 0) >= GIFT_MAX_PER_DAY) return fail(429, 'gift_cap', `You can send ${GIFT_MAX_PER_DAY} gifts a day. More tomorrow!`);
   if (!(await giftItem(env, { fromId: row.id, toId: t.id, item: item.id, price: item.price, now, day }))) {
     const owns = (await inventoryOf(env, t.id)).some((i) => i.item === item.id);
     return owns ? fail(409, 'owned', 'They already have this one. Pick another gift.') : fail(402, 'not_enough', `Not enough coins: this costs ${item.price}.`);
   }
+  const bond = bondInfo(await addBond(env, row.id, t.id, BOND.points.gift, now));
   const fresh = await petById(env, row.id);
-  return json({ ok: true, item: item.id, to: publicView(t, now), me: await buildMe(env, fresh, now) });
+  return json({ ok: true, item: item.id, to: publicView(t, now), bond, me: await buildMe(env, fresh, now) });
 }
 
-// Pamper: +5 FUN for the other pet, once per pet per day, 3 a day. No coins; not care.
+// Pamper: +5 FUN for both pets and Bond for the pair, once per pet per day, 3 a day. No coins; not care.
 async function pamper(env, req) {
   const { row, now, error } = await me(env, req);
   if (error) return error;
@@ -194,6 +220,8 @@ async function pamper(env, req) {
   if (t.id === row.id) return fail(400, 'self', 'Use PLAY to cheer up your own Peetako.');
   if (!alive(row)) return fail(409, 'pet_ended', 'Only a living Peetako can Pamper.');
   if (!alive(t)) return fail(409, 'target_ended', 'Only a living Peetako can be Pampered.');
+  const blocked = await blockedFail(env, row, t);
+  if (blocked) return blocked;
   const day = mytDay(now);
   const counts = await dailyCounts(env, row.id, day);
   if ((counts.pampers || 0) >= PAMPER.maxPerDay) return fail(429, 'pamper_cap', `You can Pamper ${PAMPER.maxPerDay} times a day. More tomorrow!`);
@@ -204,8 +232,12 @@ async function pamper(env, req) {
   if (tp.died_at) return fail(409, 'target_ended', 'Only a living Peetako can be Pampered.');
   tp.mood = Math.min(100, tp.mood + PAMPER.gain);
   await saveMood(env, tp);
-  await addEvent(env, { petId: t.id, kind: 'pamper', fromPet: row.id, data: { fun: PAMPER.gain }, at: now });
-  return json({ ok: true, gain: PAMPER.gain, mine: publicView(row, now), to: publicView(tp, now), me: await buildMe(env, row, now) });
+  const mp = advance(row, now);
+  if (!mp.died_at) { mp.mood = Math.min(100, mp.mood + PAMPER.gain); await saveMood(env, mp); }
+  const bond = bondInfo(await addBond(env, row.id, t.id, BOND.points.pamper, now));
+  await addEvent(env, { petId: t.id, kind: 'pamper', fromPet: row.id, data: { fun: PAMPER.gain, bond: bond.level }, at: now });
+  const fresh = await petById(env, row.id);
+  return json({ ok: true, gain: PAMPER.gain, bond, mine: publicView(fresh, now), to: publicView(tp, now), pet: ownerView(advance(fresh, now), now), me: await buildMe(env, fresh, now) });
 }
 
 // Friendly battle: stats + tier + a little luck. No penalty for the loser, no coins.
@@ -223,6 +255,8 @@ async function battle(env, req) {
   if (!alive(d)) return fail(409, 'target_ended', 'That Peetako cannot battle any more.');
   if (d.tier < 1) return fail(409, 'target_egg', 'That Peetako is still an egg.');
   if (!t.open_to_challenge) return fail(409, 'closed', 'That Peetako is not taking challenges.');
+  const blocked = await blockedFail(env, row, t);
+  if (blocked) return blocked;
   const day = mytDay(now);
   if (((await dailyCounts(env, row.id, day)).battles || 0) >= BATTLE.maxPerDay) return fail(429, 'battle_cap', `You can battle ${BATTLE.maxPerDay} times a day. More tomorrow!`);
   await countDaily(env, row.id, day, 'battles');
@@ -236,11 +270,96 @@ async function battle(env, req) {
   const winner = attackerWins ? row.id : t.id;
   await recordBattle(env, { attacker: row.id, defender: t.id, winner, now });
   await addEvent(env, { petId: t.id, kind: 'battle', fromPet: row.id, data: { won: !attackerWins }, at: now });
+  const bond = bondInfo(await addBond(env, row.id, t.id, BOND.points.battle, now));
   const [freshA, freshD] = await Promise.all([petById(env, row.id), petById(env, t.id)]);
   return json({
-    won: attackerWins, rounds, power: { me: Math.round(pa), them: Math.round(pd) },
+    won: attackerWins, rounds, power: { me: Math.round(pa), them: Math.round(pd) }, bond,
     mine: publicView(freshA, now), them: publicView(freshD, now), me: await buildMe(env, freshA, now),
   });
+}
+
+// ---------- Mentor Boost: an active Tier 4+ pet helps a younger one (slower decay for 24 h) ----------
+async function mentor(env, req) {
+  const { row, now, error } = await me(env, req);
+  if (error) return error;
+  const b = await readBody(req);
+  const t = await targetFrom(env, b.to);
+  if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
+  if (t.id === row.id) return fail(400, 'self', 'Mentor Boost is for a younger Peetako, not your own.');
+  const a = advance(row, now);
+  if (!isActive(a, now)) return fail(409, 'not_active', 'Care for your Peetako first: only an active Peetako can mentor.');
+  if (a.tier < MENTOR.minTier) return fail(403, 'tier_low', `Mentor Boost opens at Tier ${MENTOR.minTier}.`);
+  const tp = advance(t, now);
+  if (!alive(tp)) return fail(409, 'target_ended', 'Only a living Peetako can be mentored.');
+  if (tp.tier >= a.tier) return fail(409, 'not_younger', 'Mentor Boost is for a Peetako of a lower tier than yours.');
+  const blocked = await blockedFail(env, row, t);
+  if (blocked) return blocked;
+  const day = mytDay(now);
+  if (((await dailyCounts(env, row.id, day)).mentors || 0) >= MENTOR.perGiverPerDay) return fail(429, 'mentor_cap', `You can mentor ${MENTOR.perGiverPerDay} Peetako a day. More tomorrow!`);
+  if (((await dailyCounts(env, t.id, day)).mentored || 0) >= MENTOR.perReceiverPerDay) return fail(429, 'mentor_again', 'This Peetako has already been mentored today.');
+  await countDaily(env, row.id, day, 'mentors');
+  await countDaily(env, t.id, day, 'mentored');
+  const until = now + MENTOR_HOURS * HOUR;
+  await saveMentor(env, tp, until);
+  const bond = bondInfo(await addBond(env, row.id, t.id, BOND.points.mentor, now));
+  await addEvent(env, { petId: t.id, kind: 'mentor', fromPet: row.id, data: { hours: MENTOR_HOURS }, at: now });
+  const fresh = await petById(env, row.id);
+  return json({ ok: true, until, bond, mine: publicView(fresh, now), to: publicView(await petById(env, t.id), now), me: await buildMe(env, fresh, now) });
+}
+
+// ---------- Friends: saved contacts and blocked pets ----------
+async function friends(env, req) {
+  const { row, now, error } = await me(env, req);
+  if (error) return error;
+  const [list, blocked] = await Promise.all([contactsOf(env, row.id), blockedBy(env, row.id)]);
+  return json({
+    max: MAX_CONTACTS, maxBlocked: MAX_BLOCKS,
+    contacts: list.map((c) => ({
+      callCode: c.call_code, name: c.name_status === 'hidden' ? null : c.name, type: c.type, palette: c.palette, tier: c.tier,
+      tierName: TIERS[c.tier] ? TIERS[c.tier][c.type] : '',
+      status: c.died_at ? 'dead' : c.ascended_at ? 'ascended' : now - c.last_cared_at > 24 * HOUR ? 'dormant' : 'active',
+      country: c.country && c.country !== UNDISCLOSED ? c.country : null, bond: bondInfo(c.bond), savedAt: c.created_at,
+    })),
+    blocked: blocked.map((x) => ({ callCode: x.call_code, name: x.name_status === 'hidden' ? null : x.name, type: x.type, tier: x.tier, at: x.created_at })),
+  });
+}
+
+async function contact(env, req) {
+  const { row, now, error } = await me(env, req);
+  if (error) return error;
+  const b = await readBody(req);
+  const t = await targetFrom(env, b.code);
+  if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
+  if (t.id === row.id) return fail(400, 'self', 'That is your own Peetako.');
+  if (b.save === false) { await removeContact(env, row.id, t.id); return json({ ok: true, contact: false }); }
+  if ((await blockState(env, row.id, t.id)).mine) return fail(409, 'you_blocked', 'You blocked this Peetako. Unblock it first.');
+  const r = await saveContact(env, { petId: row.id, otherId: t.id, now, max: MAX_CONTACTS });
+  if (r === 'full') return fail(409, 'contacts_full', `Your Friends list is full (${MAX_CONTACTS}). Remove someone first.`);
+  return json({ ok: true, contact: true });
+}
+
+async function block(env, req) {
+  const { row, now, error } = await me(env, req);
+  if (error) return error;
+  const b = await readBody(req);
+  const t = await targetFrom(env, b.code);
+  if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
+  if (t.id === row.id) return fail(400, 'self', 'You cannot block your own Peetako.');
+  if (b.block === false) { await unblockPet(env, row.id, t.id); return json({ ok: true, blocked: false }); }
+  const r = await blockPet(env, { petId: row.id, otherId: t.id, now, max: MAX_BLOCKS });
+  if (r === 'full') return fail(409, 'blocks_full', `You have blocked ${MAX_BLOCKS} Peetako. Unblock someone first.`);
+  return json({ ok: true, blocked: true });
+}
+
+// "Open to challenges" switch (on by default).
+async function challenges(env, req) {
+  const { row, now, error } = await me(env, req);
+  if (error) return error;
+  const b = await readBody(req);
+  if (typeof b.open !== 'boolean') return fail(400, 'bad_request', 'Send { open: true | false }.');
+  await setOpenToChallenge(env, row.id, b.open);
+  const fresh = await petById(env, row.id);
+  return json({ ok: true, pet: ownerView(advance(fresh, now), now) });
 }
 
 // ---------- Report (pet name) ----------
@@ -281,7 +400,7 @@ async function gameStart(env, req) {
   if ((await runsStartedSince(env, row.id, now - 3600 * 1000)) >= GAME.startsPerHour) return fail(429, 'too_many_runs', 'Lots of fireflies caught! Rest a little and play again later.');
   const token = newToken();
   await startRun(env, { tokenHash: await sha256(token), petId: row.id, now });
-  return json({ run: token, durationMs: GAME.runMs });
+  return json({ run: token, durationMs: GAME.runMs, misses: GAME.misses, goldValue: GAME.goldValue, combo: GAME.comboSteps });
 }
 
 async function gameFinish(env, req) {
@@ -289,14 +408,20 @@ async function gameFinish(env, req) {
   if (error) return error;
   const b = await readBody(req);
   const score = Number(b.score);
-  if (typeof b.run !== 'string' || !/^[a-f0-9]{64}$/.test(b.run) || !Number.isInteger(score) || score < 0) return fail(400, 'bad_run', 'That run cannot be counted.');
+  const caught = b.fireflies === undefined ? score : Number(b.fireflies); // fireflies caught (score counts golden and combo)
+  if (typeof b.run !== 'string' || !/^[a-f0-9]{64}$/.test(b.run) || !Number.isInteger(score) || score < 0
+    || !Number.isInteger(caught) || caught < 0) return fail(400, 'bad_run', 'That run cannot be counted.');
   const started = await finishRun(env, { tokenHash: await sha256(b.run), petId: row.id, now });
   if (started === null) return fail(409, 'run_closed', 'That run was already counted or has expired.');
   const elapsed = now - started;
   if (elapsed < GAME.minMs || elapsed > GAME.maxMs) return fail(409, 'run_time', 'That run cannot be counted.');
-  if (score > Math.min(GAME.maxScore, Math.floor((elapsed / 1000) * GAME.maxPerSecond))) return fail(409, 'implausible', 'That score cannot be counted.');
+  // Plausibility, not a replay: fireflies per second of play, and each firefly worth 1 to golden × top combo.
+  const maxCaught = Math.floor((Math.min(elapsed, GAME.runMs + 10_000) / 1000) * GAME.maxPerSecond);
+  if (caught > maxCaught || score < caught || score > Math.min(GAME.maxScore, caught * GAME.goldValue * maxCombo())) {
+    return fail(409, 'implausible', 'That score cannot be counted.');
+  }
   const day = mytDay(now);
-  const coins = row.died_at ? 0 : await earnCapped(env, row.id, day, 'game_coins', coinsForScore(score), COIN.gameMaxPerDay);
+  const coins = row.died_at ? 0 : await earnCapped(env, row.id, day, 'game_coins', coinsForFireflies(caught), COIN.gameMaxPerDay);
   const best = await saveScore(env, { petId: row.id, day, score, now });
   const [rankDay, rankAll] = await Promise.all([rankOf(env, { petId: row.id, day }), rankOf(env, { petId: row.id, day: null })]);
   const fresh = await petById(env, row.id);
@@ -459,6 +584,7 @@ function pageShell({ origin, title, desc, url, code }) {
 </footer>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 <script src="/assets/sound.js"></script>
+<script src="/assets/vendor/qrcode.js"></script>
 <script type="module" src="/assets/public.js"></script>
 </body>
 </html>`;
@@ -477,9 +603,10 @@ export async function socialRoute(env, req, url) {
       if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
       const t = await targetFrom(env, url.searchParams.get('code'));
       if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
-      return json({ pet: publicView(t, Date.now()), best: await bestScoreOf(env, t.id), owns: (await inventoryOf(env, t.id)).map((i) => i.item) });
+      return json({ pet: publicView(t, Date.now()), best: await bestScoreOf(env, t.id), owns: (await inventoryOf(env, t.id)).map((i) => i.item), badges: await badgesOf(env, t.id) });
     }
     if (p === '/api/admin/reports') return adminReports(env, req);
+    if (p === '/api/friends') return friends(env, req);
     return null;
   }
   if (m === 'POST') {
@@ -494,6 +621,10 @@ export async function socialRoute(env, req, url) {
     if (p === '/api/game/start') return gameStart(env, req);
     if (p === '/api/game/finish') return gameFinish(env, req);
     if (p === '/api/admin/resolve') return adminResolve(env, req);
+    if (p === '/api/mentor') return mentor(env, req);
+    if (p === '/api/contact') return contact(env, req);
+    if (p === '/api/block') return block(env, req);
+    if (p === '/api/challenges') return challenges(env, req);
   }
   return null;
 }

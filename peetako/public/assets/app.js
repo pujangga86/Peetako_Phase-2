@@ -1,4 +1,4 @@
-// Peetako game client (Phase 2C). The colour palette is chosen once, at hatch; the player picks a
+// Peetako game client (Phase 2C; hibernation, Mentor Boost, Legacy Egg and badges added 20 Oct 2026). The colour palette is chosen once, at hatch; the player picks a
 // Call Code and a 6-digit PIN (no Secret Key). Coins, shop, friends, the mini-game and sharing live in social.js.
 // Talks to the Worker API under /api/*.
 // One set of pet-screen parts, laid out as Classic (retro frame, default) or Immersive (full screen, CRT)
@@ -8,7 +8,7 @@ import { PALETTES, PALETTE_IDS, palette } from './palettes.js';
 import { moodOf, MOOD_LABEL, EXCITED_AFTER_CARE_MS, NEED_BELOW } from './mood.js';
 import { skyAt, localMinute } from './sky.js';
 import { attachAntics } from './antics.js';
-import { initSocial } from './social.js';
+import { initSocial, badgeHtml } from './social.js';
 import { mountCountryPicker, countryHtml } from './flags.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -33,8 +33,8 @@ const STAT_META = {
 };
 const STAT_ORDER = ['energy', 'health', 'temperature', 'mood'];
 const BTN = { // short label, pixel icon, sound
-  feed: ['FEED', 'feed', 'eat'], shed: ['CLEAN', 'wash', 'bathe'], bask: ['WARM', 'sun', 'tap'], play: ['PLAY', 'ball', 'play'],
-  charge: ['CHARGE', 'bolt', 'eat'], oil: ['OIL', 'drop', 'bathe'], cool: ['COOL', 'snow', 'tap'], update: ['UPDATE', 'cycle', 'play'],
+  feed: ['FEED', 'feed', 'eat'], shed: ['CLEAN', 'wash', 'bathe'], bask: ['WARM', 'sun', 'warm'], play: ['PLAY', 'ball', 'play'],
+  charge: ['CHARGE', 'bolt', 'eat'], oil: ['OIL', 'drop', 'bathe'], cool: ['COOL', 'snow', 'warm'], update: ['UPDATE', 'cycle', 'play'],
 };
 // 8×8 pixel icons (feed, ball and wash from the retro mockup; the others drawn to match)
 const ICONS = {
@@ -167,7 +167,7 @@ function startSky() {
 }
 
 // ---------- pet screen ----------
-const STATUS_LABEL = { active: 'Active', dormant: 'Dormant', dead: 'Fallen', ascended: 'Ascended' };
+const STATUS_LABEL = { active: 'Active', dormant: 'Dormant', hibernating: 'Hibernating', dead: 'Fallen', ascended: 'Ascended' };
 
 function renderMood(pet) {
   const m = moodOf(pet, { caredAt: state.caredAt });
@@ -203,9 +203,13 @@ function renderPet(pet) {
   const hiddenNote = $('#name-hidden-note');
   hiddenNote.hidden = pet.nameStatus !== 'hidden';
   hiddenNote.textContent = `Another player reported the name “${pet.name}”. Others see “Name under review” until it is checked.`;
+  const hib = pet.hibernation?.active;
   const badge = $('#pet-status');
   badge.className = `chip ${pet.status}`;
-  badge.textContent = STATUS_LABEL[pet.status];
+  badge.textContent = STATUS_LABEL[hib ? 'hibernating' : pet.status];
+  const mentored = $('#pet-mentor');
+  mentored.hidden = !pet.mentorUntil;
+  if (pet.mentorUntil) mentored.title = `Mentor Boost: needs drop 10% slower until ${new Date(pet.mentorUntil).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}`;
   if (prevTier !== null && pet.tier > prevTier) { Sound.play('levelUp'); toast(`${pet.name} reached Tier ${pet.tier}: ${pet.tierName}!`, 4000); }
 
   const alive = pet.status === 'active' || pet.status === 'dormant';
@@ -214,8 +218,16 @@ function renderPet(pet) {
   $('#pet-dead').hidden = pet.status !== 'dead';
   $('#pet-ascended').hidden = pet.status !== 'ascended';
 
+  // Legacy Egg: a pet that fell at Day 30 or later, or ascended, can pass on one egg.
+  const egg = pet.legacyEgg;
+  for (const b of document.querySelectorAll('[data-legacy]')) b.hidden = !egg?.available;
+  for (const el of document.querySelectorAll('[data-legacy-note]')) {
+    el.textContent = !egg ? '' : egg.available
+      ? `You can claim one Legacy Egg: it hatches straight to Tier 1 with half of ${pet.name}'s coins plus 200, and every cosmetic.`
+      : egg.reason === 'claimed' ? `${pet.name}'s Legacy Egg has been claimed.` : 'A Legacy Egg needs a Peetako that lived at least 30 days.';
+  }
   if (pet.status === 'dead') {
-    $('#dead-text').textContent = `${pet.name} reached Tier ${pet.tier} (${pet.tierName}) and lived for ${fmtAge(pet.ageHours)}. Without care, its survival window ran out.`;
+    $('#dead-text').textContent = `${pet.name} reached Tier ${pet.tier} (${pet.tierName}) and lived for ${fmtAge(pet.ageHours)}. Without care, its survival window and its hibernation days ran out.`;
     stopPolling();
     return;
   }
@@ -248,7 +260,9 @@ function renderPet(pet) {
   }).join('');
 
   // Facts
-  const left = pet.hoursLeftUnattended;
+  // Survives alone = the tier's window; while hibernating, the time left before it falls.
+  const hibernating = pet.hibernation?.active;
+  const left = hibernating || pet.hoursLeftInWindow === undefined ? pet.hoursLeftUnattended : pet.hoursLeftInWindow;
   const urgent = left < 12;
   let nextLine = 'Highest tier';
   if (pet.nextTier) nextLine = `${shortTier(pet.nextTier.name)} in ${fmtShort(Math.max(0, pet.nextTier.atHours - pet.ageHours))}`;
@@ -257,7 +271,7 @@ function renderPet(pet) {
   } else if (pet.ascension) nextLine = 'Can ascend';
   $('#facts').innerHTML = `
     <div class="fact"><b>Age</b><span>${fmtShort(pet.ageHours)}</span></div>
-    <div class="fact${urgent ? ' urgent' : ''}" title="${fmtHours(left)}"><b>Survives alone</b><span>${fmtShort(left)}</span></div>
+    <div class="fact${urgent ? ' urgent' : ''}" title="${fmtHours(left)}${!hibernating && pet.hibernation?.daysLeft ? `, then up to ${pet.hibernation.daysLeft} day${pet.hibernation.daysLeft === 1 ? '' : 's'} of hibernation` : ''}"><b>${hibernating ? 'Wake it within' : 'Survives alone'}</b><span>${fmtShort(left)}</span></div>
     <div class="fact"><b>Next</b><span>${nextLine}</span></div>`;
 
   // Ascension (Tier 8, after 30 days as Ageless). Optional: the pet may simply keep living.
@@ -271,7 +285,11 @@ function renderPet(pet) {
     $('#ascend-open').hidden = !asc.available;
   }
 
-  $('#dormant-note').hidden = pet.status !== 'dormant';
+  const note = $('#dormant-note');
+  note.hidden = pet.status !== 'dormant';
+  note.textContent = hib
+    ? `${pet.name} ran out of its survival window and is hibernating instead of falling. Stats are paused. Care for it within ${fmtHours(pet.hoursLeftUnattended)} to wake it (hibernation days left this month: ${pet.hibernation.daysLeft}).`
+    : `${pet.name} has gone dormant after a day without care. Look after it to wake it up.${pet.hibernation?.daysLeft ? ` If its window runs out, it hibernates (${pet.hibernation.daysLeft} day${pet.hibernation.daysLeft === 1 ? '' : 's'} left this month).` : ''}`;
 }
 
 // ---------- coins and news (Phase 2C) ----------
@@ -281,6 +299,7 @@ function renderMe(me) {
   $('#coin-count').textContent = String(me.coins);
   $('#coins-btn').setAttribute('aria-label', `${me.coins} coins. Open the shop`);
   $('#checkin-btn').hidden = !me.canCheckIn;
+  $('#pet-medals').innerHTML = badgeHtml(me.badges);
   state.social?.showNews(me);
 }
 function earnedText(earned) {
@@ -318,6 +337,7 @@ function openMenu() {
   Sound.play('tap');
   applyView();
   setSoundLabel();
+  setChallengeLabel();
   $('#fullscreen-btn').hidden = !document.fullscreenEnabled;
   $('#menu').showModal();
 }
@@ -326,6 +346,33 @@ function setSoundLabel() {
   const b = $('#sound-btn');
   b.textContent = `Sound: ${on ? 'on' : 'off'}`;
   b.setAttribute('aria-pressed', String(on));
+  const music = Sound.isMusicOn ? Sound.isMusicOn() : false;
+  const mb = $('#music-btn');
+  mb.hidden = !Sound.toggleMusic;
+  mb.textContent = `Sape music: ${music ? 'on' : 'off'}`;
+  mb.setAttribute('aria-pressed', String(music));
+}
+// "Open to challenges" (on by default): a closed Peetako cannot be challenged to a battle.
+function setChallengeLabel() {
+  const b = $('#challenge-btn');
+  const pet = state.pet;
+  const alive = pet && (pet.status === 'active' || pet.status === 'dormant');
+  b.hidden = !alive;
+  if (!alive) return;
+  b.textContent = `Battles: ${pet.openToChallenge ? 'open' : 'closed'}`;
+  b.setAttribute('aria-pressed', String(!!pet.openToChallenge));
+  b.title = pet.openToChallenge ? 'Others can challenge your Peetako. Tap to close.' : 'Nobody can challenge your Peetako. Tap to open.';
+}
+async function toggleChallenges() {
+  const pet = state.pet;
+  if (!pet) return;
+  try {
+    const d = await api('/api/challenges', { open: !pet.openToChallenge });
+    Sound.play('tap');
+    renderPet(d.pet);
+    setChallengeLabel();
+    toast(d.pet.openToChallenge ? 'Open to challenges.' : 'Closed to challenges: nobody can battle your Peetako.');
+  } catch (e) { Sound.play('error'); toast(e.message); }
 }
 // ---------- Ascension ----------
 function openAscend() {
@@ -580,6 +627,56 @@ async function login(ev) {
   }
 }
 
+// ---------- Legacy Egg (fallen at Day 30+ or ascended) ----------
+function openLegacy() {
+  const pet = state.pet;
+  if (!pet?.legacyEgg?.available) return;
+  Sound.play('tap');
+  for (const el of document.querySelectorAll('[data-pet-name]')) el.textContent = pet.name;
+  $('#legacy-palette').innerHTML = paletteChoices('legacy-pal');
+  $('#legacy-error').textContent = '';
+  $('#legacy-pin').value = '';
+  updateLegacyPreview();
+  $('#legacy-dialog').showModal();
+}
+const paletteChoices = (name) => PALETTE_IDS.map((id) => {
+  const p = PALETTES[id];
+  return `<label class="pal" style="--sw:${p.body};--sh:${p.spot};--sb:${p.belly}">
+    <input type="radio" name="${name}" value="${id}" aria-label="${p.name}: ${p.sub}"><span class="sw" aria-hidden="true"></span><span>${p.name}</span></label>`;
+}).join('');
+function updateLegacyPreview() {
+  const pal = document.querySelector('input[name="legacy-pal"]:checked')?.value || 'hijau';
+  for (const l of document.querySelectorAll('#legacy-palette label.pal')) l.classList.toggle('on', l.querySelector('input').checked);
+  $('#legacy-preview').innerHTML = drawPet({ type: document.querySelector('input[name="legacy-type"]:checked')?.value || 'organic', tier: 1, pal });
+}
+async function claimLegacy(ev) {
+  ev.preventDefault();
+  const err = $('#legacy-error');
+  err.textContent = '';
+  const palette = document.querySelector('input[name="legacy-pal"]:checked')?.value;
+  if (!palette) { err.textContent = 'Choose a colour for the new Peetako. You can only choose it once.'; return; }
+  const code = cleanCode($('#legacy-code').value);
+  if (code.length < 6) { err.textContent = 'Choose a new Call Code: 6 to 8 letters or numbers.'; return; }
+  const btn = $('#legacy-btn');
+  btn.disabled = true;
+  try {
+    const data = await api('/api/legacy', {
+      pin: $('#legacy-pin').value, code, name: $('#legacy-name').value,
+      type: document.querySelector('input[name="legacy-type"]:checked')?.value, palette, remember: true,
+    });
+    $('#legacy-dialog').close();
+    $('#legacy-pin').value = '';
+    Sound.play('levelUp');
+    openPet(data.pet, data.me);
+    toast(`${data.pet.name} hatched from ${data.legacy.from}'s Legacy Egg! New Call Code ${data.pet.callCode}, same PIN.`, 6000);
+  } catch (e) {
+    Sound.play('error');
+    err.textContent = e.message;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 // ---------- wiring ----------
 function wire() {
   $('#go-hatch').addEventListener('click', () => { Sound.play('tap'); openHatch(); });
@@ -663,6 +760,14 @@ function wire() {
   $('#menu-btn').addEventListener('click', openMenu);
   for (const r of document.querySelectorAll('input[name="view"]')) r.addEventListener('change', (e) => { Sound.play('tap'); setView(e.target.value); });
   $('#sound-btn').addEventListener('click', () => { Sound.toggle(); setSoundLabel(); });
+  $('#music-btn').addEventListener('click', () => { Sound.toggleMusic?.(); setSoundLabel(); });
+  $('#challenge-btn').addEventListener('click', toggleChallenges);
+  for (const b of document.querySelectorAll('[data-legacy]')) b.addEventListener('click', openLegacy);
+  $('#legacy-form').addEventListener('submit', claimLegacy);
+  $('#legacy-palette').addEventListener('change', () => { Sound.play('tap'); updateLegacyPreview(); });
+  for (const r of document.querySelectorAll('input[name="legacy-type"]')) r.addEventListener('change', updateLegacyPreview);
+  $('#legacy-code').addEventListener('input', (e) => { const v = cleanCode(e.target.value); if (e.target.value !== v) e.target.value = v; });
+  $('#legacy-random').addEventListener('click', () => { $('#legacy-name').value = NAMES[Math.floor(Math.random() * NAMES.length)]; });
   $('#fullscreen-btn').addEventListener('click', async () => {
     try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch { toast('Full screen is not available here.'); }
     $('#menu').close();

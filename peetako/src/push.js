@@ -1,7 +1,7 @@
 // Peetako care alerts over Web Push.
 // Delivery: RFC 8030. Message encryption: RFC 8291 (aes128gcm). Server identity: RFC 8292 (VAPID).
 // Uses only WebCrypto, so it runs on Workers without npm packages.
-import { deathTime, tierAt, TIERS, HOUR, DORMANT_AFTER_HOURS } from './game.js';
+import { deathTime, windowEnd, hibernationLeft, tierAt, TIERS, HOUR, DORMANT_AFTER_HOURS } from './game.js';
 import { petsWithAlerts, subscriptionsForPets, savePushOutcome } from './store.js';
 
 const te = new TextEncoder();
@@ -136,8 +136,9 @@ export async function sendPush(sub, message, kind, sign) {
 // ---------- what to send ----------
 // row = pet joined with its notify_state columns (null if none yet).
 export function pickAlert(row, now) {
-  const deadline = deathTime(row);
-  if (row.died_at || row.ascended_at || now >= deadline) return null;
+  // Alerts count down to the end of the survival window, before automatic hibernation starts.
+  const deadline = windowEnd(row);
+  if (row.died_at || row.ascended_at || now >= deathTime(row) || now >= deadline) return null;
   const fresh = row.cycle_at == null || row.cycle_at !== row.last_cared_at; // cared for since the last alert
   const sent = fresh ? { dormant: 0, urgent: 0, last: 0 } : { dormant: row.dormant_sent, urgent: row.urgent_sent, last: row.last_sent };
   const hoursLeft = (deadline - now) / HOUR;
@@ -155,7 +156,8 @@ export function pickAlert(row, now) {
 export function alertMessage(kind, pet, now) {
   const name = pet.name;
   const robot = pet.type === 'robot';
-  const left = (deathTime(pet) - now) / HOUR;
+  const left = (windowEnd(pet) - now) / HOUR;
+  const sleeps = hibernationLeft(pet) > 0;
   const base = { url: '/', tag: kind === 'tier' ? 'peetako-tier' : 'peetako-care' };
   if (kind === 'dormant') {
     return robot
@@ -168,7 +170,7 @@ export function alertMessage(kind, pet, now) {
   }
   if (kind === 'last') {
     const h = Math.max(1, Math.ceil(left));
-    return { ...base, title: `Last chance for ${name}!`, body: `Under ${h} hour${h === 1 ? '' : 's'} left. Care for ${name} now or it will fall.` };
+    return { ...base, title: `Last chance for ${name}!`, body: `Under ${h} hour${h === 1 ? '' : 's'} left. Care for ${name} now or it will ${sleeps ? 'go into hibernation' : 'fall'}.` };
   }
   const t = tierAt(now - pet.born_at);
   return { ...base, title: `${name} is now a ${TIERS[t][pet.type]}!`, body: `Tier ${t} reached. New backdrop: ${TIERS[t].backdrop}.` };

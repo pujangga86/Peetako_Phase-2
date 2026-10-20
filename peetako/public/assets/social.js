@@ -1,7 +1,10 @@
-// Peetako Phase 2C client: coins and check-in, shop and wardrobe, friends (visit, Pamper, battle, gift,
-// Report), Tangkap Kelip-kelip and leaderboards, share and invite, and PIN change.
+// Peetako Phase 2C client: coins and check-in, shop and wardrobe, friends (saved contacts, blocks, visit, Pamper,
+// battle, gift, Mentor Boost, Bond and the shared selfie, Report), Tangkap Kelip-kelip and leaderboards, share and
+// invite (with QR codes), and PIN change.
 // app.js owns the pet screen; this module owns the dialogs opened from the social bar and the menu.
-import { drawPet, drawItem } from './art.js';
+import { drawPet, drawItem, drawArena } from './art.js';
+import { skyAt, localMinute } from './sky.js';
+import { qrSvg } from './qr.js';
 import { moodOf } from './mood.js';
 import { playKelip } from './kelip.js';
 import { showArena } from './arena.js';
@@ -23,6 +26,12 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const fmtReset = (ms) => { const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000); return h ? `${h}h ${m}m` : `${m}m`; };
 export const shownName = (p) => (p.name ? p.name : 'Name under review');
 export const wearOf = (p) => ({ head: p.equipped?.head, neck: p.equipped?.neck, back: p.equipped?.back });
+// Tangkap Kelip-kelip daily top-3 badges, shown beside a pet's name (medal shape plus a letter, readable without colour).
+export const badgeHtml = (b) => {
+  if (!b || !(b.gold || b.silver || b.bronze)) return '';
+  const one = (k, n, t) => (n ? `<span class="medal ${k}" title="${n} × ${t} (daily Tangkap Kelip-kelip top 3)">${k[0].toUpperCase()}${n > 1 ? `×${n}` : ''}</span>` : '');
+  return ` <span class="medals">${one('gold', b.gold, 'gold')}${one('silver', b.silver, 'silver')}${one('bronze', b.bronze, 'bronze')}</span>`;
+};
 export const petSvg = (p, mood) => drawPet({ type: p.type, tier: p.tier, status: p.status, pal: p.palette, mood: mood || moodOf(p).face, wear: wearOf(p) });
 
 export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, onPet, onMe }) {
@@ -50,13 +59,14 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     const lines = m.events.slice(0, 4).reverse().map((e) => {
       const who = e.from ? (e.from.name || e.from.callCode) : 'Someone';
       if (e.kind === 'gift') return `🎁 ${who} sent you a gift: ${itemName(e.data.item, p?.type)}!`;
-      if (e.kind === 'pamper') return `💗 ${who} Pampered ${p?.name || 'your Peetako'} (+${e.data.fun || 5} FUN).`;
+      if (e.kind === 'pamper') return `💗 ${who} Pampered ${p?.name || 'your Peetako'} (+${e.data.fun || 5} FUN each).`;
+      if (e.kind === 'mentor') return `🌟 ${who} gave ${p?.name || 'your Peetako'} a Mentor Boost: slower needs for ${e.data.hours || 24} hours.`;
       if (e.kind === 'battle') return `⚔️ ${who} challenged ${p?.name || 'your Peetako'} — ${e.data.won ? 'you won!' : 'they won this time.'}`;
       if (e.kind === 'referral') return `🥚 ${who} hatched from your invite: +${e.data.coins} coins!`;
       return null;
     }).filter(Boolean);
     if (m.events.length > 4) lines.push(`…and ${m.events.length - 4} more.`);
-    Sound.play('gift');
+    Sound.play('chikchak'); // the gecko's own call announces news (GDD)
     for (const line of lines) { toast(line, 3600); await new Promise((r) => setTimeout(r, 3700)); }
     try { await api('/api/events/seen', { upTo: m.events[0].id }); } catch { /* shown again next time */ }
     newsBusy = false;
@@ -117,8 +127,39 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     $('#visit-recent').innerHTML = recent().map((c) => `<button type="button" class="chip-btn" data-code="${esc(c)}">${esc(c)}</button>`).join('');
     const d = dlg('#friends-dialog');
     if (!d.open) d.showModal();
+    loadFriends();
     if (code) visit(code);
     else $('#visit-code').focus();
+  }
+
+  // Saved contacts (with Bond) and blocked pets.
+  const bondBadge = (b) => (b?.name ? `<span class="bond-badge l${b.level}" title="Bond ${b.points}">${'♥'.repeat(b.level)} ${esc(b.name)}</span>` : '');
+  async function loadFriends() {
+    const box = $('#friends-list');
+    box.innerHTML = '<p class="hint">Loading your friends…</p>';
+    try {
+      const f = await api('/api/friends');
+      const STATUS = { active: '', dormant: ' · dormant', dead: ' · fallen', ascended: ' · ascended' };
+      box.innerHTML = `
+        <h3 class="px shop-slot">Saved (${f.contacts.length}/${f.max})</h3>
+        ${f.contacts.length ? `<ul class="friend-list">${f.contacts.map((c) => `
+          <li><button type="button" class="friend" data-code="${esc(c.callCode)}">
+            <span class="friend-pic" aria-hidden="true">${drawPet({ type: c.type, tier: c.tier, status: c.status === 'dormant' ? 'active' : c.status, pal: c.palette, mood: c.status === 'dormant' ? 'sleepy' : 'happy' })}</span>
+            <span class="friend-who"><b>${esc(c.name || 'Name under review')}</b><small>${countryHtml(c.country)} ${esc(c.callCode)} · T${c.tier}${STATUS[c.status] || ''}</small>${bondBadge(c.bond)}</span>
+          </button></li>`).join('')}</ul>` : '<p class="hint">No saved friends yet. Visit a Call Code below, then tap Save.</p>'}
+        ${f.blocked.length ? `<details class="blocked"><summary>Blocked (${f.blocked.length})</summary><ul class="blocked-list">${f.blocked.map((x) => `
+          <li><span>${esc(x.name || 'Name under review')} <small>${esc(x.callCode)}</small></span>
+            <button type="button" class="rbtn small light" data-unblock="${esc(x.callCode)}">Unblock</button></li>`).join('')}</ul></details>` : ''}`;
+    } catch (e) { box.innerHTML = `<p class="error">${esc(e.message)}</p>`; }
+  }
+  async function friendsListClick(e) {
+    const f = e.target.closest('[data-code]');
+    if (f) { $('#visit-code').value = f.dataset.code; visit(f.dataset.code); $('#visit-card').scrollIntoView({ block: 'nearest' }); return; }
+    const u = e.target.closest('[data-unblock]');
+    if (u) {
+      u.disabled = true;
+      try { await api('/api/block', { code: u.dataset.unblock, block: false }); toast('Unblocked.'); loadFriends(); } catch (err) { fail(err); u.disabled = false; }
+    }
   }
   let visiting = null;
   async function visit(code) {
@@ -137,6 +178,14 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
       if (d.self) return 'This is your own Peetako.';
       if (p.status === 'dead' || p.status === 'ascended') return 'This Peetako is no longer playing.';
       if (key === 'pamper') return (m.today.pampers || 0) >= (m.caps.pampers || 3) ? 'No Pampers left today.' : 'Already Pampered today.';
+      if (d.blocked) return 'You blocked this Peetako.';
+      if (key === 'mentor') {
+        if ((pet()?.tier ?? 0) < 4) return 'Mentor Boost opens at Tier 4.';
+        if (p.tier >= (pet()?.tier ?? 0)) return 'Only for a Peetako of a lower tier than yours.';
+        if (pet()?.status !== 'active') return 'Care for your Peetako first.';
+        if ((m.today.mentors || 0) >= (m.caps.mentors || 3)) return 'No Mentor Boosts left today.';
+        return 'Already mentored today.';
+      }
       if (key === 'battle') {
         if (p.tier < 1) return 'Still an egg.';
         if ((pet()?.tier ?? 0) < 1) return 'Hatch first.';
@@ -150,20 +199,28 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
       ? `<button type="button" class="rbtn small" style="--b:${color}" data-act="${key}">${label}</button>`
       : `<button type="button" class="rbtn small" disabled title="${esc(why(key))}">${label}</button>`;
     const giftable = Object.keys(PRICES).filter((id) => !d.owns.includes(id));
+    const b = d.bond;
+    const bondLine = b ? `<div class="bond" title="Bond points: Pamper +10, gift +20, battle +5, Mentor Boost +10">
+        <span>Bond ${b.points}${b.name ? ` · ${bondBadge(b)}` : ''}</span>
+        ${b.next ? `<span class="bond-bar" role="meter" aria-label="Bond" aria-valuenow="${b.points}" aria-valuemin="0" aria-valuemax="${b.next.at}"><i style="width:${Math.min(100, Math.round((b.points / b.next.at) * 100))}%"></i></span><small>${b.next.at - b.points} to ${esc(b.next.name)}${b.next.level === 2 ? ' (unlocks a shared selfie)' : ''}</small>` : '<small>Highest Bond level</small>'}
+      </div>` : '';
     $('#visit-card').innerHTML = `
       <div class="visit">
         <div class="visit-pic">${petSvg(p)}</div>
         <div class="visit-info">
-          <p class="visit-name">${esc(shownName(p))}</p>
+          <p class="visit-name">${esc(shownName(p))}${badgeHtml(d.badges)}</p>
           <p class="px visit-meta">${esc(p.callCode)}</p>
           <p>T${p.tier} ${esc(p.tierName)} · ${Math.floor(p.ageHours / 24)} days · ${p.type === 'robot' ? 'Robot' : 'Organic'}</p>
-          <p>Battles: ${p.battles.wins} won, ${p.battles.losses} lost</p>
+          <p>Battles: ${p.battles.wins} won, ${p.battles.losses} lost${p.openToChallenge ? '' : ' · not taking challenges'}</p>
         </div>
       </div>
       ${d.self ? '<p class="hint">That is you! Share your Call Code so friends can visit.</p>' : `
+      ${bondLine}
       <div class="btn-row">
         ${action('pamper', 'Pamper ♥', 'var(--b4)')}${action('battle', 'Battle ⚔', 'var(--b1)')}
         <button type="button" class="rbtn small light" data-act="giftmenu" ${d.can.gift ? '' : `disabled title="${esc(why('gift'))}"`}>Gift 🎁</button>
+        ${(pet()?.tier ?? 0) >= 4 ? action('mentor', 'Mentor 🌟', 'var(--gold)') : ''}
+        ${b?.selfie ? '<button type="button" class="rbtn small light" data-act="selfie">Selfie 📸</button>' : ''}
       </div>
       <div id="gift-pick" class="gift-pick" hidden>
         <p>Send a gift (you pay the price; ${Math.max(0, (m.caps.gifts || 5) - (m.today.gifts || 0))} gifts left today). You have <b>${m.coins}</b> coins.</p>
@@ -171,6 +228,8 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
           <span class="shop-pic" aria-hidden="true">${drawItem(id, p.type, p.palette)}</span><span>${esc(itemName(id, p.type))}</span><b>${PRICES[id]}</b></button>`).join('')}</div>` : '<p>They already have every item!</p>'}
       </div>
       <p class="visit-links"><a href="/p/${encodeURIComponent(p.callCode)}" target="_blank" rel="noopener">Open their page</a>
+        ${d.blocked ? '' : `<button type="button" class="linkbtn dark" data-act="contact">${d.contact ? 'Remove from friends' : 'Save to friends'}</button>`}
+        <button type="button" class="linkbtn dark" data-act="block">${d.blocked ? 'Unblock' : 'Block'}</button>
         ${p.canReport.name ? '<button type="button" class="linkbtn dark" data-report="name">Report name</button>' : ''}</p>`}`;
   }
   async function visitClick(e) {
@@ -183,22 +242,42 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
       try { const r = await api('/api/report', { target: code, field: b.dataset.report }); toast(r.message, 4000); visit(code); } catch (err) { fail(err); }
       return;
     }
+    if (b.dataset.act === 'selfie') { makeSelfie(visiting.pet, visiting.bond).catch(fail); return; }
+    if (b.dataset.act === 'block' && !visiting.blocked
+      && !confirm(`Block ${shownName(visiting.pet)}? It will not be able to Pamper, battle, gift or mentor your Peetako, and it leaves your friends. It is not told.`)) return;
     b.disabled = true;
     try {
       if (b.dataset.gift) {
+        const before = visiting.bond?.level ?? 0;
         const d = await api('/api/gift', { to: code, item: b.dataset.gift });
         Sound.play('gift'); onMe(d.me);
         toast(`Gift sent: ${itemName(d.item, d.to.type)} for ${shownName(d.to)}!`, 4000);
+        if (d.bond.level > before) setTimeout(() => bondUp(d.bond), 1200);
       } else if (b.dataset.act === 'pamper') {
+        const before = visiting.bond?.level ?? 0;
         const d = await api('/api/pamper', { to: code });
-        onMe(d.me);
+        onMe(d.me); if (d.pet) onPet(d.pet);
         dlg('#friends-dialog').close();
-        await showArena({ mode: 'pamper', mine: d.mine, them: d.to, sound: Sound });
+        await showArena({ mode: 'pamper', mine: d.mine, them: d.to, result: d, sound: Sound });
+        if (d.bond.level > before) bondUp(d.bond);
+        return;
+      } else if (b.dataset.act === 'mentor') {
+        const d = await api('/api/mentor', { to: code });
+        Sound.play('sape'); onMe(d.me);
+        toast(`Mentor Boost sent: ${shownName(d.to)}'s needs drop 10% slower for 24 hours.`, 4500);
+      } else if (b.dataset.act === 'contact') {
+        const d = await api('/api/contact', { code, save: !visiting.contact });
+        Sound.play('tap'); toast(d.contact ? 'Saved to friends.' : 'Removed from friends.'); loadFriends();
+      } else if (b.dataset.act === 'block') {
+        const d = await api('/api/block', { code, block: !visiting.blocked });
+        Sound.play('tap'); toast(d.blocked ? 'Blocked.' : 'Unblocked.'); loadFriends();
       } else if (b.dataset.act === 'battle') {
         const d = await api('/api/battle', { to: code });
         onMe(d.me);
         dlg('#friends-dialog').close();
+        const before = visiting.bond?.level ?? 0;
         await showArena({ mode: 'battle', mine: d.mine, them: d.them, result: d, sound: Sound });
+        if (d.bond.level > before) bondUp(d.bond);
         return;
       }
       if (dlg('#friends-dialog').open) await visit(code);
@@ -212,11 +291,13 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     try { run = await api('/api/game/start', {}); } catch (e) { return fail(e); }
     const p = pet();
     playKelip({
-      durationMs: run.durationMs, petSvg: p ? petSvg(p, 'excited') : '', sound: Sound,
-      onEnd: async (score) => {
-        if (score === null) { toast('Run stopped. Fireflies will be back!'); return; }
+      durationMs: run.durationMs, misses: run.misses, goldValue: run.goldValue, combo: run.combo,
+      petSvg: p ? petSvg(p, 'excited') : '', sound: Sound,
+      onEnd: async (res) => {
+        if (res === null) { toast('Run stopped. Fireflies will be back!'); return; }
         try {
-          const d = await api('/api/game/finish', { run: run.run, score });
+          const d = await api('/api/game/finish', { run: run.run, score: res.score, fireflies: res.fireflies });
+          d.fireflies = res.fireflies;
           onMe(d.me);
           showResult(d);
         } catch (e) { fail(e); }
@@ -227,10 +308,10 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     const m = d.me;
     const capped = m.today.gameCoins >= m.caps.gameCoins;
     $('#result-body').innerHTML = `
-      <p class="result-score px">${d.score} <small>fireflies</small></p>
-      <p>${d.coins ? `+${d.coins} coins!` : capped ? 'No coins this time: today’s 50 game coins are already yours.' : 'Catch 5 fireflies for a coin.'}</p>
+      <p class="result-score px">${d.score} <small>points</small></p>
+      <p>${d.fireflies} firefl${d.fireflies === 1 ? 'y' : 'ies'} caught. ${d.coins ? `+${d.coins} coins!` : capped ? 'No coins this time: today’s 50 game coins are already yours.' : 'Catch 5 fireflies for a coin.'}</p>
       <p>Best today: <b>${d.best}</b>${d.rankDay ? ` (#${d.rankDay} today)` : ''} · Best ever: <b>${d.allTime}</b>${d.rankAll ? ` (#${d.rankAll})` : ''}</p>
-      <p class="hint">Game coins today: ${m.today.gameCoins} / ${m.caps.gameCoins}</p>`;
+      <p class="hint">Game coins today: ${m.today.gameCoins} / ${m.caps.gameCoins}. The day's top 3 earn a gold, silver or bronze badge after midnight (Malaysia time).</p>`;
     if (d.coins) Sound.play('coin');
     dlg('#result-dialog').showModal();
   }
@@ -359,7 +440,9 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     ['Threads', `https://www.threads.net/intent/post?text=${encodeURIComponent(`${text} ${url}`)}`],
   ];
   function shareBlock(id, title, blurb, url, text) {
+    const qr = qrSvg(url, { label: `QR code for ${title}` });
     return `<section class="share-block"><h3 class="px">${title}</h3><p>${blurb}</p>
+      ${qr ? `<div class="share-qr">${qr}<small>Scan to open</small></div>` : ''}
       <div class="share-url"><input type="text" readonly value="${esc(url)}" aria-label="${esc(title)} link"><button type="button" class="rbtn small light" data-copy="${esc(url)}">Copy</button></div>
       <div class="share-row">${navigator.share ? `<button type="button" class="rbtn small" data-native="${id}">Share…</button>` : ''}
         ${shareTargets(url, text).map(([n, href]) => `<a class="rbtn small light" href="${href}" target="_blank" rel="noopener">${n}</a>`).join('')}</div></section>`;
@@ -408,7 +491,67 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     } catch (e) { err.textContent = e.message; Sound.play('error'); }
   }
 
+  // ---------- Bond level-ups and the shared selfie (Level 2) ----------
+  function bondUp(b) {
+    Sound.play('sape');
+    toast(`Bond level ${b.level}: ${b.name}!${b.selfie && b.level === 2 ? ' You can now take a shared selfie.' : ''}`, 4500);
+  }
+
+  // Both pets on the arena, with names, Bond and date, drawn on a canvas and saved (or shared) as a PNG.
+  const svgImage = (svg, w, h) => new Promise((resolve, reject) => {
+    // An image does not see the page's stylesheet, so the hidden cute-move overlays (.pk-x) are hidden here too.
+    const sized = svg.replace('<svg ', `<svg width="${w}" height="${h}" `).replace(/(<svg[^>]*>)/, '$1<style>.pk-x{opacity:0}</style>');
+    const url = URL.createObjectURL(new Blob([sized], { type: 'image/svg+xml' }));
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Could not draw the selfie in this browser.')); };
+    img.src = url;
+  });
+  async function makeSelfie(them, bond) {
+    const mine = pet();
+    if (!mine || !them) return;
+    Sound.play('tap');
+    const W = 1080, H = 1080;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const [bg, a, b] = await Promise.all([
+      svgImage(drawArena(skyAt(localMinute())), W * 2, W), svgImage(petSvg(mine, 'excited'), 520, 520), svgImage(petSvg(them, 'excited'), 520, 520),
+    ]);
+    g.drawImage(bg, -W / 2, 0, W * 2, H);
+    g.drawImage(a, 20, 330, 520, 520);
+    g.drawImage(b, 540, 330, 520, 520);
+    try { await document.fonts?.load('48px Bangers'); } catch { /* use the fallback font */ }
+    g.fillStyle = 'rgba(30,27,75,0.86)';
+    g.fillRect(0, 0, W, 190); g.fillRect(0, H - 150, W, 150);
+    g.fillStyle = '#FFFFFF'; g.textAlign = 'center';
+    g.font = '72px Bangers, Nunito, sans-serif';
+    g.fillText(`${shownName(mine)} & ${shownName(them)}`, W / 2, 105);
+    g.font = '700 38px Nunito, sans-serif';
+    g.fillStyle = '#F5B700';
+    g.fillText(`${bond?.name || 'Friends'} · Bond ${bond?.points ?? 0}`, W / 2, 160);
+    g.fillStyle = '#FFFFFF';
+    g.font = '600 32px Nunito, sans-serif';
+    g.fillText(`${mine.callCode}  ·  ${them.callCode}  ·  ${new Date().toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}`, W / 2, H - 85);
+    g.font = '36px Bangers, Nunito, sans-serif';
+    g.fillText('Peetako', W / 2, H - 35);
+    const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+    if (!blob) throw new Error('Could not save the selfie.');
+    const name = `peetako-selfie-${mine.callCode}-${them.callCode}.png`.toLowerCase();
+    const file = new File([blob], name, { type: 'image/png' });
+    if (navigator.canShare?.({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'Peetako selfie' }); return; } catch { /* cancelled: fall back to saving */ }
+    }
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = name;
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 5000);
+    toast('Selfie saved.');
+  }
+
   // ---------- wiring ----------
+  $('#friends-list').addEventListener('click', friendsListClick);
   $('#social').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-open]');
     if (!b) return;
@@ -431,5 +574,5 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
   $('#menu-pin').addEventListener('click', () => { $('#menu').close(); openPin(); });
   $('#menu-invite').addEventListener('click', () => { $('#menu').close(); openShare('invite'); });
 
-  return { showNews, openFriends, openShop, askCountry };
+  return { showNews, openFriends, openShop, askCountry, openShare };
 }

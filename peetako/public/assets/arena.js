@@ -52,10 +52,14 @@ export function showArena({ mode, mine, them, result, sound = { play() {} } }) {
         sound.play('play');
         fx(R, hearts);
         R.querySelector('.arena-sprite').innerHTML = svgFor(them, 'excited');
+        L.querySelector('.arena-sprite').innerHTML = svgFor(mine, 'excited');
         await step(R, 'happy-hop', 900);
-        banner.textContent = `+5 FUN for ${nameOf(them)}!`;
+        const bond = result?.bond;
+        banner.textContent = `+5 FUN for both!${bond ? ` Bond ${bond.points}${bond.name ? ` · ${bond.name}` : ''}` : ''}`;
       } else {
         banner.textContent = 'Ready… fight!';
+        sound.play('agung'); // the agung opens a battle (GDD)
+        await wait(700);
         for (const who of result.rounds) {
           const [atk, def] = who === 'a' ? [L, R] : [R, L];
           await step(atk, 'lunge', 380);

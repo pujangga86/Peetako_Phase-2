@@ -12,6 +12,25 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 | 2B — look | Retro frame, five palettes (Hijau Rimba, Tokay, Kenyalang, Pua Kumbu, Laut Borneo), palette chosen once at hatch, Immersive / Classic views, Robot line art per tier and palette, nine tier backdrops, sound, cute moves | live since 14–17 Oct 2026 |
 | **2C — social and economy** | Coins (care +10 each, max 30/day; daily check-in +10; 7-day streak +30; mini-game 1 per 5 fireflies, max 50/day; tier-up +50 × tier; referral +100, max 3/day), cosmetics (100 / 300 / 800, backdrop 500), gifts (max 5/day), Tangkap Kelip-kelip and leaderboards, name filter and Report, share and invite buttons, Pamper and battle animations on a neutral arena; chosen Call Codes and a 6-digit PIN | **this release** |
 
+### Alignment with the GDD (decided 20 Oct 2026; migration `0005_alignment.sql`)
+
+A review of `main` against the GDD settled 17 points. Where this list differs from the 2C list below, this list applies.
+
+- **Care coins**: +10 only for the *first* care action of each type per MYT day (Feed, Clean, Warm/Cool, Play; Robot: Charge, Oil, Cool, Update), at most 30 a day. `me.today.caredTypes` lists the types already paid.
+- **Name and Call Code filter** (`src/filter.js`): religion and royalty terms added as whole words (Allah, Tuhan, Nabi, Sultan, Agong, Raja, Tunku and others), so Rajang and Tengkuk stay allowed.
+- **Pamper and Bond**: Pamper gives *both* pets +5 FUN. Each pair shares Bond points (`bonds` table, `a < b`): Pamper +10, gift +20, battle +5, Mentor Boost +10. Levels 1 Friends (30), 2 Buddies (100, shared selfie drawn and saved in the browser), 3 Best Friends (250), 4 Forever Friends (500). Pamper, gift, battle and Mentor Boost answers carry `bond`; `GET /api/visit` carries `bond`, `contact`, `blocked`, `badges` and `can.mentor`.
+- **Friends**: `GET /api/friends` (saved contacts with Bond, blocked pets), `POST /api/contact { code, save }` (up to 100), `POST /api/block { code, block }` (up to 200; blocking drops the contact). A blocked pet cannot Pamper, battle, gift or mentor its blocker and is told only "not accepting that right now"; the blocker can't act on it either until it unblocks.
+- **Open to challenges**: `POST /api/challenges { open }`, a menu switch (on by default); the pet view carries `openToChallenge`.
+- **Mentor Boost**: `POST /api/mentor { to }`. An active Tier 4+ pet boosts a living pet of a lower tier: 10% slower decay for 24 h (`pet.mentor_until`, on top of the Tier 3 rate). One per receiver per day, 3 per giver per day.
+- **Hibernation** (automatic): when the survival window runs out, the pet hibernates instead of falling, using the days left in that MYT month (3 per month; `pet.hib_month`, `pet.hibernation_days_used`). Stats stop decaying while it sleeps. Care wakes it and counts the days slept (rounded up). `deathTime` = window end + days left; the view carries `hibernation { active, daysLeft, windowEndsAt, wakeBy }`. Care alerts follow the real deadline.
+- **Legacy Egg**: `POST /api/legacy { pin, code, name, type, palette, remember }` from a session on a pet that fell at Day 30+ or ascended (`pet.legacy_claimed`, once). The PIN is checked against the old pet and carried over; the country carries over. The new pet is born a day ago (Tier 1, tier reward counted as paid), with half the old coins + 200 and every cosmetic (`passLegacy`); `legacy_from` points back. Refusals: `still_alive`, `too_young`, `legacy_claimed`, `wrong_pin`, plus the hatch checks.
+- **Tangkap Kelip-kelip**: a run ends after 3 misses or 60 s; combo ×2/×3/×4 from 5/10/20 in a row; golden fireflies (about 1 in 12) are worth 5; fireflies speed up over the run. `POST /api/game/finish { run, score, fireflies }`: plausibility only (at least 2 s, at most 4 fireflies a second, score between fireflies and fireflies × 5 × 4); coins = 1 per 5 *fireflies*. An old client that sends only `score` is treated as fireflies = score.
+- **Daily top 3**: the daily cron gives yesterday's top 3 a gold, silver or bronze badge (`game_badges`); `me.badges`, `/api/public` and `/api/visit` carry the counts, shown beside the name.
+- **QR codes**: on the public page and in the Share dialog, drawn in the browser with the vendored MIT `qrcode-generator` (`public/assets/vendor/qrcode.js`, wrapped by `public/assets/qr.js`).
+- **Borneo sounds** (`public/assets/sound.js`, synthesized): sompoton-style reeds for care, a sape phrase for tier-up and hatch, an agung strike at battle start, the gecko's chik-chak for news; an optional sape music loop (menu, off by default, `peetako_music`).
+- **Ads**: an empty, hidden `#ad-slot` container sized 320×50 / 728×90 below the game, ready for the AdSense unit once approved.
+- Kept as built (GDD updated to match): friendly battles, player country, the +50 invite bonus for the new player, the device-based default view, no Tier 7 title, sound on by default, no Turnstile on unlock, the check-in streak.
+
 ### What 2C changes (decided 14–17 Oct 2026)
 
 - **Call Code and PIN** (`src/codes.js`, `src/index.js`): the player chooses the Call Code at hatch — `PTK-` plus 6 to 8 letters and digits (O, I and L allowed). Uniqueness and login treat 0 as O and 1/L as I. *Ideas* suggests free, partly Borneo-themed codes (`GET /api/code/suggest`); the field checks availability as you type (`GET /api/code/check`). Locked after hatch. The four-word Secret Key is gone: a 6-digit PIN (very easy PINs refused) is stored as an HMAC with `KEY_PEPPER`. 5 wrong PINs lock the pet for 15 minutes, 20 in a MYT day lock it for 24 hours. No recovery; a signed-in device can change the PIN (`POST /api/pin`, other devices are signed out). Login: `POST /api/login { code, pin, remember }`.
@@ -47,7 +66,7 @@ This is a **separate build** from the Phase 1 prototype: its own repository, Wor
 ```
 src/index.js        Worker: core API routes (hatch, Call Code, PIN login, care, Ascension), daily + hourly crons
 src/countries.js    ISO 3166-1 country list, "Prefer not to say" code, minimum players for the country board
-src/social.js       2C routes: check-in, shop, gifts, Pamper, battles, mini-game, leaderboards, Report, admin, /p/ pages
+src/social.js       2C routes: check-in, shop, gifts, Pamper and Bond, battles, Mentor Boost, Friends (contacts, blocks), mini-game, leaderboards, Report, admin, /p/ pages
 src/economy.js      2C numbers: coins, catalogue, limits, battle and Pamper rules, Malaysia-time days
 src/codes.js        Call Code rules and suggestions
 src/filter.js       Blocklist for names and Call Codes
@@ -57,7 +76,7 @@ src/push.js         Care alerts: Web Push encryption (RFC 8291), VAPID (RFC 8292
 src/game.js         All game rules and tunable numbers (tiers, decay, actions, Ascension)
 migrations/         D1 schema
 public/             Static site: game (index.html), FAQ, About, Privacy, Contact, 404, ads.txt, admin.html (report review)
-public/assets/      app.js (client), social.js (2C dialogs), kelip.js (mini-game), arena.js (Pamper/battle), public.js (/p/ page), flags.js (country names, flags, picker), flags/ (SVG flags), art.js (gecko, Robot, accessories, backdrops, mood symbols), palettes.js, mood.js, sky.js, sound.js, style.css
+public/assets/      app.js (client), social.js (2C dialogs), qr.js + vendor/qrcode.js (QR codes), kelip.js (mini-game), arena.js (Pamper/battle), public.js (/p/ page), flags.js (country names, flags, picker), flags/ (SVG flags), art.js (gecko, Robot, accessories, backdrops, mood symbols), palettes.js, mood.js, sky.js, sound.js, style.css
 public/sw.js        Service worker: install/offline shell, shows care alerts
 public/icons/       App icons; public/splash/ iOS launch images
 wrangler.jsonc      Worker config (D1 binding, cron, vars)
@@ -131,12 +150,12 @@ npm test               # compare behaviour with test/golden.json (about 10 secon
 npm run test:update    # after an INTENDED behaviour change: rewrite the golden, then review its diff
 ```
 
-`test/regression.mjs` runs the real Worker against a throwaway local D1 built from `migrations/`, with a fixed clock, fixed randomness and a mocked push service. It registers pets, logs in, cares, trips the rate limits, subscribes and unsubscribes devices, runs the hourly alert cron (delivered, expired and failed pushes) and the daily cron (deaths, cleanup), then compares every API response, every outbound push request and a snapshot of every table with `test/golden.json`. It never touches the real database and needs no secrets (it generates throwaway keys on each run). The 2C scenario covers countries (the ISO list, flags on disk, hatch validation, the one-time choice for older pets, filters, sorting, the median board with odd and even counts), chosen Call Codes (look-alikes, blocklist), PIN locks and changes, coins and daily caps, check-in streaks, shop, gifts, Pamper, battles, Report and admin review, the mini-game's anti-cheat and leaderboards, invites and the public pet page. The Phase 2A scenario also raises one pet for 93 days of daily care and checks every Ascension rule (not confirmed, too young, dormant, success, twice, and that an ascended pet never falls). Tested on Node 22.
+`test/regression.mjs` runs the real Worker against a throwaway local D1 built from `migrations/`, with a fixed clock, fixed randomness and a mocked push service. It registers pets, logs in, cares, trips the rate limits, subscribes and unsubscribes devices, runs the hourly alert cron (delivered, expired and failed pushes) and the daily cron (deaths, cleanup), then compares every API response, every outbound push request and a snapshot of every table with `test/golden.json`. It never touches the real database and needs no secrets (it generates throwaway keys on each run). The 2C scenario covers countries (the ISO list, flags on disk, hatch validation, the one-time choice for older pets, filters, sorting, the median board with odd and even counts), chosen Call Codes (look-alikes, blocklist), PIN locks and changes, coins and daily caps, check-in streaks, shop, gifts, Pamper, battles, Report and admin review, the mini-game's anti-cheat and leaderboards, invites and the public pet page. The 20 Oct 2026 alignment adds care coins per type, the religion and royalty filter, Bond, contacts, block (both directions), the challenge switch, Mentor Boost and its slower decay, the daily top-3 badges, automatic hibernation (sleeping, waking, falling when the days run out) and the Legacy Egg (still alive, too young, wrong PIN, taken code, blocked name, success, twice). The Phase 2A scenario also raises one pet for 93 days of daily care and checks every Ascension rule (not confirmed, too young, dormant, success, twice, and that an ascended pet never falls). Tested on Node 22.
 
 ## Schema changes later
 
 Add a new file such as `migrations/0004_something.sql`, then run `npm run db:migrate:remote` (needs `npx wrangler login`), or paste
-its SQL into the D1 console (and record it in `d1_migrations`). Migrations `0001`–`0003` are applied on `peetako-p2`; **`0004_country.sql` still has to be applied** (`npm run db:migrate:remote`, or Workers Builds if it runs migrations; it only adds a column and an index, so no data is lost).
+its SQL into the D1 console (and record it in `d1_migrations`). Migrations `0001`–`0005` are applied on `peetako-p2` (0005 on 20 Oct 2026; it only adds columns and tables, so no data is lost).
 
 ## Tuning
 

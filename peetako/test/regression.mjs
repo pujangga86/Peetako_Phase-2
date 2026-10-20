@@ -11,6 +11,9 @@
 // Phase 2A rewrote the golden (6-character Call Codes, compressed tiers, care days, Ascension); 2B added palettes; the palette is now chosen once at hatch and locked.
 // Phase 2C rewrote it again: chosen Call Codes and 6-digit PINs (no Secret Key), coins, shop, gifts, Pamper, battles,
 // Tangkap Kelip-kelip and leaderboards, Report and admin review, invites, the public pet page.
+// Alignment (20 Oct 2026): care coins once per type a day, religion and royalty in the filter, Bond, Friends
+// (contacts, block), Open to challenges, Mentor Boost, automatic hibernation, Legacy Egg, game score with golden
+// fireflies and combo, and the daily top-3 badges.
 // Country (17 Oct 2026): chosen once at hatch from the ISO 3166-1 list, locked, country filters and sorting on the
 // leaderboard, and a country-to-country board using the median (at least 3 players per country).
 // Nothing here touches the real database; it needs no secrets and no network.
@@ -80,7 +83,8 @@ const worker = (await import(pathToFileURL(path.join(SRC, 'index.js')).href)).de
 // ---- helpers ----
 const TABLES = [['pet', 'id'], ['sessions', 'token_hash'], ['push_subscriptions', 'endpoint'], ['notify_state', 'pet_id'],
   ['daily', 'pet_id, day, kind'], ['inventory', 'pet_id, item'], ['events', 'id'], ['game_runs', 'started_at, token_hash'],
-  ['game_scores', 'pet_id, day'], ['reports', 'id'], ['battles', 'id']];
+  ['game_scores', 'pet_id, day'], ['reports', 'id'], ['battles', 'id'], ['bonds', 'a, b'], ['contacts', 'pet_id, contact_id'],
+  ['blocks', 'blocker_id, blocked_id'], ['game_badges', 'day, rank']];
 const H = 3600 * 1000;
 const log = [];
 const jar = new Map(); // who -> session cookie
@@ -145,6 +149,9 @@ async function scenario() {
   await call('register no code', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', ''), ip: '2.2.2.2' });
   await call('register code too long', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'ABCDEFGHI'), ip: '2.2.2.2' });
   await call('register blocked code', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'SEX123'), ip: '2.2.2.2' });
+  await call('code check royalty blocked', 'GET', '/api/code/check?code=RAJA88', { ip: '2.2.2.2' });
+  await call('code check Rajang allowed', 'GET', '/api/code/check?code=RAJANG1', { ip: '2.2.2.2' });
+  await call('register religious name blocked', 'POST', '/api/register', { body: reg('Nabi', 'robot', 'laut', 'CODER1'), ip: '2.2.2.2' });
   await call('register weak pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '123456'), ip: '2.2.2.2' });
   await call('register short pin', 'POST', '/api/register', { body: reg('Coder', 'robot', 'laut', 'CODER1', '4821'), ip: '2.2.2.2' });
   await call('register no country', 'POST', '/api/register', { body: { ...reg('NoLand', 'organic', 'laut', 'NOLAND1'), country: undefined }, ip: '2.2.2.2' });
@@ -161,7 +168,8 @@ async function scenario() {
 
   T += 1 * H;
   await call('get pet A', 'GET', '/api/pet', { who: 'A' });
-  for (let i = 0; i < 4; i++) await call('care A feed ' + i, 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' }); // 3 pay 10 coins, the 4th pays 0 (30/day)
+  for (let i = 0; i < 2; i++) await call('care A feed ' + i, 'POST', '/api/care', { who: 'A', body: { action: 'feed' }, ip: '2.2.2.2' }); // only the first feed of the day pays
+  for (const a of ['shed', 'bask', 'play']) await call('care A ' + a, 'POST', '/api/care', { who: 'A', body: { action: a }, ip: '2.2.2.2' }); // 2 more pay; the 4th type pays 0 (30/day)
   await call('care A bad', 'POST', '/api/care', { who: 'A', body: { action: 'nope' }, ip: '2.2.2.2' });
   await call('palette A locked', 'POST', '/api/palette', { who: 'A', body: { palette: 'tokay' }, ip: '2.2.2.2' });
   await call('palette no session', 'POST', '/api/palette', { body: { palette: 'laut' }, ip: '2.2.2.2' });
@@ -275,7 +283,7 @@ async function scenario() {
 
   // Tangkap Kelip-kelip
   const run1 = await call('game start E', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
-  T += 5000;
+  T += 1000;
   await call('game finish too fast', 'POST', '/api/game/finish', { who: 'E', body: { run: run1.run, score: 20 }, ip: '8.8.8.8' });
   await call('game finish closed', 'POST', '/api/game/finish', { who: 'E', body: { run: run1.run, score: 20 }, ip: '8.8.8.8' });
   const run2 = await call('game start E 2', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
@@ -284,6 +292,16 @@ async function scenario() {
   const run3 = await call('game start E 3', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
   T += 46_000;
   await call('game finish E 3', 'POST', '/api/game/finish', { who: 'E', body: { run: run3.run, score: 87 }, ip: '8.8.8.8' });
+  // 20 Oct 2026 rules: score counts golden fireflies and combo; coins come from fireflies caught.
+  const run3b = await call('game start E combo', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 12_000;
+  await call('game finish E score below fireflies', 'POST', '/api/game/finish', { who: 'E', body: { run: run3b.run, score: 10, fireflies: 20 }, ip: '8.8.8.8' });
+  const run3c = await call('game start E combo 2', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 12_000;
+  await call('game finish E score over golden x combo', 'POST', '/api/game/finish', { who: 'E', body: { run: run3c.run, score: 900, fireflies: 40 }, ip: '8.8.8.8' });
+  const run3d = await call('game start E combo 3', 'POST', '/api/game/start', { who: 'E', ip: '8.8.8.8' });
+  T += 12_000;
+  await call('game finish E combo ok', 'POST', '/api/game/finish', { who: 'E', body: { run: run3d.run, score: 112, fireflies: 31 }, ip: '8.8.8.8' });
   const run4 = await call('game start G', 'POST', '/api/game/start', { who: 'G', ip: '10.0.0.2' });
   T += 45_000;
   await call('game finish G wrong owner', 'POST', '/api/game/finish', { who: 'E', body: { run: run4.run, score: 10 }, ip: '8.8.8.8' });
@@ -351,7 +369,47 @@ async function scenario() {
   await call('events seen G', 'POST', '/api/events/seen', { who: 'G', body: { upTo: gnews.me.events[0].id }, ip: '10.0.0.2' });
   await call('pet G after seen', 'GET', '/api/pet', { who: 'G' });
   await call('pet E news', 'GET', '/api/pet', { who: 'E' });
+
+  // 20 Oct 2026 alignment: Bond, Friends (contacts, block), Open to challenges, Mentor Boost
+  await call('visit G from E (bond)', 'GET', '/api/visit?code=GIGIPTK', { who: 'E', ip: '8.8.8.8' });
+  await call('contact E save G', 'POST', '/api/contact', { who: 'E', body: { code: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('contact E save G again', 'POST', '/api/contact', { who: 'E', body: { code: 'gigiptk' }, ip: '8.8.8.8' });
+  await call('contact E save F', 'POST', '/api/contact', { who: 'E', body: { code: 'FAFA2026' }, ip: '8.8.8.8' });
+  await call('contact E self', 'POST', '/api/contact', { who: 'E', body: { code: 'KINABALU' }, ip: '8.8.8.8' });
+  await call('friends E', 'GET', '/api/friends', { who: 'E', ip: '8.8.8.8' });
+  await call('block E blocks F', 'POST', '/api/block', { who: 'E', body: { code: 'FAFA2026' }, ip: '8.8.8.8' });
+  await call('friends E after block', 'GET', '/api/friends', { who: 'E', ip: '8.8.8.8' });
+  await call('pamper F to E blocked (silent)', 'POST', '/api/pamper', { who: 'F', body: { to: 'KINABALU' }, ip: '10.0.0.1' });
+  await call('gift E to F blocked by me', 'POST', '/api/gift', { who: 'E', body: { to: 'FAFA2026', item: 'ikat-manik' }, ip: '8.8.8.8' });
+  await call('contact E save blocked F', 'POST', '/api/contact', { who: 'E', body: { code: 'FAFA2026' }, ip: '8.8.8.8' });
+  await call('visit E from F (blocked)', 'GET', '/api/visit?code=KINABALU', { who: 'F', ip: '10.0.0.1' });
+  await call('unblock E F', 'POST', '/api/block', { who: 'E', body: { code: 'FAFA2026', block: false }, ip: '8.8.8.8' });
+  await call('challenges G bad', 'POST', '/api/challenges', { who: 'G', body: { open: 'no' }, ip: '10.0.0.2' });
+  await call('challenges G closed', 'POST', '/api/challenges', { who: 'G', body: { open: false }, ip: '10.0.0.2' });
+  await call('battle F vs closed G', 'POST', '/api/battle', { who: 'F', body: { to: 'GIGIPTK' }, ip: '10.0.0.1' });
+  await call('challenges G open', 'POST', '/api/challenges', { who: 'G', body: { open: true }, ip: '10.0.0.2' });
+  await call('mentor G to E (tier too low)', 'POST', '/api/mentor', { who: 'G', body: { to: 'KINABALU' }, ip: '10.0.0.2' });
+  await call('mentor E to G', 'POST', '/api/mentor', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('mentor E to G again', 'POST', '/api/mentor', { who: 'E', body: { to: 'GIGIPTK' }, ip: '8.8.8.8' });
+  await call('mentor E to self', 'POST', '/api/mentor', { who: 'E', body: { to: 'KINABALU' }, ip: '8.8.8.8' });
+  T += 6 * H;
+  await call('pet G mentored (slower decay)', 'GET', '/api/pet', { who: 'G' });
   await snap('after 2C social block');
+
+  // Tangkap Kelip-kelip daily top 3: given by the daily cron after midnight Malaysia time
+  await cron('daily badges', '0 18 * * *');
+  await call('pet E badges', 'GET', '/api/pet', { who: 'E' });
+  await call('public J badges', 'GET', '/api/public?code=JAYA2026', { ip: '11.0.0.1' });
+
+  // Automatic hibernation: K is left alone past its 48 h window, sleeps instead of falling, wakes on care.
+  await call('register K', 'POST', '/api/register', { body: reg('Kiki', 'organic', 'hijau', 'KIKI2026', '604815', { remember: true }), who: 'K', ip: '14.0.0.1' });
+  T += 50 * H;
+  await call('pet K hibernating', 'GET', '/api/pet', { who: 'K' });
+  await call('care K wakes', 'POST', '/api/care', { who: 'K', body: { action: 'feed' }, ip: '14.0.0.1' });
+  T += 60 * H + 2 * 24 * H + H; // past K's Tier 2 window (60 h) and the 2 hibernation days left this month
+  await call('pet K fallen after hibernation', 'GET', '/api/pet', { who: 'K' });
+  await call('legacy K too young', 'POST', '/api/legacy', { who: 'K', body: { pin: '604815', code: 'KIKIBARU', name: 'Kiki Two', type: 'organic', palette: 'laut' }, ip: '14.0.0.1' });
+  await call('legacy E alive', 'POST', '/api/legacy', { who: 'E', body: { pin: '318275', code: 'ELDER2', name: 'Elder Two', type: 'robot', palette: 'tokay' }, ip: '8.8.8.8' });
 
   T += 25 * H; // dormant again
   await call('ascend E dormant', 'POST', '/api/ascend', { who: 'E', body: { confirm: true }, ip: '8.8.8.8' });
@@ -362,6 +420,14 @@ async function scenario() {
   await call('care E after ascension', 'POST', '/api/care', { who: 'E', body: { action: 'feed' }, ip: '8.8.8.8' });
   await call('palette E after ascension', 'POST', '/api/palette', { who: 'E', body: { palette: 'kenyalang' }, ip: '8.8.8.8' });
   await call('gift to ascended E', 'POST', '/api/gift', { who: 'G', body: { to: 'KINABALU', item: 'ikat-manik' }, ip: '10.0.0.2' });
+  // Legacy Egg after Ascension
+  await call('legacy E wrong pin', 'POST', '/api/legacy', { who: 'E', body: { pin: '111222', code: 'ELDER2', name: 'Elder Two', type: 'robot', palette: 'tokay' }, ip: '8.8.8.8' });
+  await call('legacy E taken code', 'POST', '/api/legacy', { who: 'E', body: { pin: '318275', code: 'GIGIPTK', name: 'Elder Two', type: 'robot', palette: 'tokay' }, ip: '8.8.8.8' });
+  await call('legacy E blocked name', 'POST', '/api/legacy', { who: 'E', body: { pin: '318275', code: 'ELDER2', name: 'Sultan', type: 'robot', palette: 'tokay' }, ip: '8.8.8.8' });
+  jar.set('E2', jar.get('E')); // E2 starts on the old pet's session; the claim moves it to the new pet
+  await call('legacy E ok', 'POST', '/api/legacy', { who: 'E2', body: { pin: '318275', code: 'ELDER2', name: 'Elder Two', type: 'robot', palette: 'tokay', remember: true }, ip: '8.8.8.8' });
+  await call('legacy E again', 'POST', '/api/legacy', { who: 'E', body: { pin: '318275', code: 'ELDER3', name: 'Elder Three', type: 'robot', palette: 'tokay' }, ip: '8.8.8.8' });
+  await call('pet E2 legacy egg', 'GET', '/api/pet', { who: 'E2' });
   T += 400 * H; await cron('daily after ascension', '0 18 * * *'); // 400 h > Tier 8 survival window: an ascended pet must not fall
   await call('login E after ascension', 'POST', '/api/login', { body: { code: 'KINABALU', pin: '318275', remember: false }, who: 'E', ip: '8.8.8.8' });
 }

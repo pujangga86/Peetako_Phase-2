@@ -20,7 +20,12 @@ const ANYWHERE = [
 // Matched only as a whole word, because they are also parts of innocent words.
 // (e.g. Grape, Peacock, Nazir, Semenggoh, Kelingking, Swanky, Thorny must stay allowed)
 const WHOLE = ['sial', 'anjing', 'kote', 'sex', 'sexy', 'ass', 'tits', 'boob', 'boobs', 'jalang', 'bodo', 'bangang', 'beruk',
-  'rape', 'cock', 'dick', 'nazi', 'semen', 'keling', 'wank', 'horny', 'setan'];
+  'rape', 'cock', 'dick', 'nazi', 'semen', 'keling', 'wank', 'horny', 'setan',
+  // Religion (added 20 Oct 2026, GDD Cultural sensitivity): sacred names and terms, and religious insults.
+  'allah', 'tuhan', 'nabi', 'rasul', 'rasulullah', 'muhammad', 'mohammad', 'mohamad', 'muhamad', 'quran', 'alquran',
+  'god', 'jesus', 'yesus', 'christ', 'kristus', 'buddha', 'bible', 'injil', 'kafir', 'murtad', 'jihad', 'isis', 'satan', 'syaitan',
+  // Royalty (added 20 Oct 2026): titles of Malaysia's rulers. Whole words only, so Rajang and Tengkuk stay allowed.
+  'sultan', 'sultanah', 'agong', 'raja', 'permaisuri', 'tunku', 'tengku', 'baginda', 'tuanku', 'ydpa', 'yangdipertuan', 'king', 'queen'];
 
 const LEET = { 0: 'o', 1: 'i', 3: 'e', 4: 'a', 5: 's', 7: 't', 8: 'b', '@': 'a', $: 's', '!': 'i' };
 const squash = (s) => s.replace(/(.)\1+/g, '$1');            // "fuuuck" → "fuck"

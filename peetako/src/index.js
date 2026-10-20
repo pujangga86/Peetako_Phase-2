@@ -4,15 +4,15 @@
 // Phase 2C: players choose their own Call Code and a 6-digit PIN (the four-word Secret Key is gone),
 // plus coins, cosmetics, gifts, Tangkap Kelip-kelip, leaderboards, Report, share/invite, Pamper and
 // friendly battles (social.js).
-import { advance, applyCare, ascend, ascensionBlock, view, tierAt, START_STATS, PALETTES, DAY, HOUR } from './game.js';
-import { COIN, REFERRAL_AFTER, mytDay } from './economy.js';
+import { advance, applyCare, ascend, ascensionBlock, view, tierAt, legacyEggState, START_STATS, PALETTES, TIERS, DAY, HOUR } from './game.js';
+import { COIN, REFERRAL_AFTER, LEGACY_EGG, mytDay, prevDay } from './economy.js';
 import { isBlocked } from './filter.js';
 import { pushRun, validSubscription, validTimeZone } from './push.js';
 import {
   isUniqueViolation, createPet, petByCodeKey, petById, savePet, createSession, deleteSession, deleteOtherSessions,
   saveAscension, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
   savePinFailure, savePinSuccess, savePinHash, codeKeysTaken, payTierReward, earnCapped, settleReferral, countDaily,
-  addEvent, purgeSocial, setCountryOnce,
+  addEvent, purgeSocial, setCountryOnce, claimLegacy, unclaimLegacy, passLegacy, awardBadges,
 } from './store.js';
 import { COUNTRIES, UNDISCLOSED, countryChoice, suggestedCountry } from './countries.js';
 import {
@@ -242,8 +242,10 @@ async function care(env, req) {
   if (!cared) return fail(400, 'bad_action', 'Unknown action.');
   await savePet(env, cared);
   const day = mytDay(now);
+  // Coins only for the first action of each type today (Feed, Clean, Warm/Cool, Play), at most 30 a day.
+  const firstOfType = (await countDaily(env, cared.id, day, `care:${b.action}`)) === 1;
   const earned = {
-    care: await earnCapped(env, cared.id, day, 'care_coins', COIN.care, COIN.careMaxPerDay),
+    care: firstOfType ? await earnCapped(env, cared.id, day, 'care_coins', COIN.care, COIN.careMaxPerDay) : 0,
     tier: await payTiers(env, cared),
   };
   const ref = await payReferral(env, cared, now);
@@ -296,6 +298,56 @@ async function setCountry(env, req) {
   const fresh = await petById(env, row.id);
   const now = Date.now();
   return json({ pet: view(advance(fresh, now), now), me: await buildMe(env, fresh, now) });
+}
+
+// Legacy Egg (decided 20 Oct 2026): the owner of a pet that fell at Day 30 or later, or ascended, claims one new egg.
+// They confirm with the old PIN (it carries over to the new pet) and choose a new Call Code, name, type and palette;
+// the country carries over. Head start: hatched at Tier 1, half the old coins + 200, every cosmetic.
+async function claimLegacyEgg(env, req) {
+  const row = await petFromSession(env, req);
+  if (!row) return NO_SESSION();
+  if (!(await rateLimit(env, req, 'register'))) return fail(429, 'rate_limited', 'Too many new pets from this network today. Try again tomorrow.');
+  const now = Date.now();
+  const old = advance(row, now);
+  if (old.died_at && !row.died_at) await savePet(env, old);
+  const egg = legacyEggState(old, old.ascended_at ? 'ascended' : old.died_at ? 'dead' : 'active');
+  if (!egg) return fail(409, 'still_alive', 'A Legacy Egg is for a Peetako that has fallen or ascended.');
+  if (!egg.available) {
+    return egg.reason === 'claimed'
+      ? fail(409, 'legacy_claimed', 'This Peetako’s Legacy Egg has already been claimed.')
+      : fail(403, 'too_young', 'A Legacy Egg needs a Peetako that lived at least 30 days.');
+  }
+  const b = await readBody(req);
+  if ((await pinHash(env, row.code_key, String(b.pin || ''))) !== row.pin_hash) return fail(401, 'wrong_pin', 'That is not this Peetako’s PIN.');
+  const name = cleanName(b.name);
+  if (!name) return fail(400, 'bad_name', 'Name must be 2–16 letters, numbers, spaces, hyphens or apostrophes.');
+  if (isBlocked(name)) return fail(400, 'name_blocked', 'Please choose a kinder name.');
+  if (!['organic', 'robot'].includes(b.type)) return fail(400, 'bad_type', 'Choose Organic or Robot.');
+  if (!PALETTES.includes(b.palette)) return fail(400, 'bad_palette', 'Choose a colour for your Peetako.');
+  const suffix = codeSuffix(env, b.code);
+  if (!suffix) return fail(400, 'bad_code', `A Call Code is ${CODE_MIN} to ${CODE_MAX} letters or digits after ${prefix(env)}-.`);
+  if (isBlocked(suffix)) return fail(400, 'code_blocked', 'Please choose a different Call Code.');
+  if (!(await claimLegacy(env, row.id))) return fail(409, 'legacy_claimed', 'This Peetako’s Legacy Egg has already been claimed.');
+
+  const codeKey = codeKeyOf(env, suffix);
+  let fresh;
+  try {
+    fresh = await createPet(env, {
+      callCode: `${prefix(env)}-${suffix}`, codeKey, pinHash: await pinHash(env, codeKey, String(b.pin)), regIp: await ipHash(env, req),
+      name, type: b.type, palette: b.palette, country: row.country || 'ZZ', now, stats: START_STATS,
+      bornAt: now - TIERS[1].day * DAY, tier: 1,
+      coins: Math.floor((row.coins || 0) * LEGACY_EGG.coinShare) + LEGACY_EGG.bonus,
+      equipped: row.equipped || '{}', legacyFrom: row.id,
+    });
+  } catch (e) {
+    await unclaimLegacy(env, row.id);
+    if (isUniqueViolation(e)) return fail(409, 'code_taken', 'That Call Code is taken (or looks too much like one that is). Try another.');
+    throw e;
+  }
+  await passLegacy(env, { oldId: row.id, newId: fresh.id, now });
+  const cookie = await startSession(env, fresh.id, !!b.remember);
+  const pet = await petById(env, fresh.id);
+  return json({ pet: view(pet, now), me: await buildMe(env, pet, now), legacy: { from: row.call_code } }, 201, { 'set-cookie': cookie });
 }
 
 async function logout(env, req) {
@@ -370,6 +422,7 @@ async function route(req, env) {
   if (path === '/api/palette' && m === 'POST') return setPalette();
   if (path === '/api/country' && m === 'POST') return setCountry(env, req);
   if (path === '/api/logout' && m === 'POST') return logout(env, req);
+  if (path === '/api/legacy' && m === 'POST') return claimLegacyEgg(env, req);
   if (path === '/api/push/subscribe' && m === 'POST') return pushSubscribe(env, req);
   if (path === '/api/push/unsubscribe' && m === 'POST') return pushUnsubscribe(env, req);
   const social = await socialRoute(env, req, url);
@@ -377,7 +430,7 @@ async function route(req, env) {
   return fail(404, 'not_found', 'Unknown endpoint.');
 }
 
-// Daily cron: mark deaths, clear expired sessions and rate-limit rows, tidy 2C tables.
+// Daily cron: mark deaths, clear expired sessions and rate-limit rows, tidy 2C tables, give yesterday's top-3 badges.
 async function daily(env) {
   const now = Date.now();
   const candidates = await petsNotCaredSince(env, now - 48 * HOUR); // 48 h is the shortest survival window
@@ -389,6 +442,9 @@ async function daily(env) {
   try {
     await purgeSocial(env, { dayCutoff: mytDay(now - 8 * DAY), runCutoff: now - DAY, eventCutoff: now - 30 * DAY });
   } catch (e) { console.warn('2C cleanup skipped:', e.message); }
+  try {
+    await awardBadges(env, prevDay(mytDay(now))); // runs at 02:00 MYT, so yesterday's board is final
+  } catch (e) { console.warn('badges skipped:', e.message); }
   return fallen.length;
 }
 

@@ -14,8 +14,8 @@ export const msToReset = (now) => DAY - ((now + MYT_OFFSET) % DAY);
 
 // ---------- earning ----------
 export const COIN = {
-  care: 10,              // per care action
-  careMaxPerDay: 30,     // coins from care per day
+  care: 10,              // for the FIRST care action of each type per day (Feed, Clean, Warm/Cool, Play)
+  careMaxPerDay: 30,     // coins from care per day (any 3 of the 4 types)
   checkin: 10,           // daily check-in
   streakEvery: 7,        // every 7th consecutive check-in day ...
   streakBonus: 30,       // ... pays this on top
@@ -53,19 +53,62 @@ export function parseEquipped(raw) {
   return out;
 }
 
+// ---------- Legacy Egg (decided 20 Oct 2026) ----------
+// The egg hatches straight to Tier 1, keeps half the old coins plus this bonus, and every cosmetic.
+export const LEGACY_EGG = { coinShare: 0.5, bonus: 200 };
+
 // ---------- gifts ----------
 export const GIFT_MAX_PER_DAY = 5; // gifts sent per pet per day, at the item's price; no resale
 
-// ---------- Tangkap Kelip-kelip ----------
+// ---------- Tangkap Kelip-kelip (rules aligned with the GDD on 20 Oct 2026) ----------
+// A run ends after 3 misses (a tap that catches nothing) or after 60 seconds. Consecutive catches build a combo
+// (×2 from 5, ×3 from 10, ×4 from 20); a miss resets it. Golden fireflies are worth 5. Score = points;
+// coins = 1 per 5 fireflies caught. The server checks plausibility, it does not replay the run.
 export const GAME = {
-  runMs: 45_000,           // one run (within the decided 30–60 s)
-  minMs: 20_000,           // a finish sooner than this is not accepted
+  runMs: 60_000,           // longest run
+  misses: 3,               // a run ends after this many misses
+  minMs: 2_000,            // a finish sooner than this is not accepted
   maxMs: 10 * 60_000,      // a run left open longer than this has expired
   maxPerSecond: 4,         // plausibility: fireflies caught per second of play
-  maxScore: 180,
+  goldValue: 5,            // points for a golden firefly
+  comboSteps: [[20, 4], [10, 3], [5, 2]], // [consecutive catches, multiplier]
+  maxScore: 5000,
   startsPerHour: 40,       // per pet
 };
-export const coinsForScore = (score) => Math.floor(score / COIN.firefliesPerCoin);
+export const maxCombo = () => GAME.comboSteps[0][1];
+export const coinsForFireflies = (n) => Math.floor(n / COIN.firefliesPerCoin);
+
+// ---------- Bond (decided 20 Oct 2026) ----------
+// Points shared by a pair of pets. Level names show as badges; Level 2 unlocks the shared selfie.
+export const BOND = {
+  points: { pamper: 10, gift: 20, battle: 5, mentor: 10 },
+  levels: [
+    { at: 0, name: null },
+    { at: 30, name: 'Friends' },
+    { at: 100, name: 'Buddies' },
+    { at: 250, name: 'Best Friends' },
+    { at: 500, name: 'Forever Friends' },
+  ],
+  selfieFromLevel: 2,
+};
+export function bondInfo(points = 0) {
+  let level = 0;
+  BOND.levels.forEach((l, i) => { if (points >= l.at) level = i; });
+  const next = BOND.levels[level + 1];
+  return {
+    points, level, name: BOND.levels[level].name,
+    next: next ? { level: level + 1, name: next.name, at: next.at } : null,
+    selfie: level >= BOND.selfieFromLevel,
+  };
+}
+
+// ---------- Contacts and Block ----------
+export const MAX_CONTACTS = 100;
+export const MAX_BLOCKS = 200;
+
+// ---------- Mentor Boost (decided 20 Oct 2026) ----------
+// An active Tier 4+ pet boosts a living pet of a lower tier: 10% slower decay for 24 h (game.js).
+export const MENTOR = { minTier: 4, perGiverPerDay: 3, perReceiverPerDay: 1 };
 
 // ---------- friendly battles (decided 17 Oct 2026) ----------
 // Outcome from stats + tier + a small random part. No penalty for the loser, no coins.
@@ -82,6 +125,6 @@ export function battlePower(p) {
 }
 
 // ---------- Pamper ----------
-// Raises the other pet's FUN (mood). Gives no coins and does not count as care, so nobody else
-// can keep a pet alive on its owner's behalf.
+// Both pets get +5 FUN (mood) and the pair gains Bond. Gives no coins and does not count as care, so nobody
+// else can keep a pet alive on its owner's behalf.
 export const PAMPER = { gain: 5, maxPerDay: 3 };

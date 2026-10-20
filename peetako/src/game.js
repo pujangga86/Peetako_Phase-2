@@ -38,6 +38,15 @@ export const DECAY_PER_HOUR = { energy: 3.5, health: 2, temperature: 3, mood: 3 
 export const SLOW_DECAY_FROM_TIER = 3;   // "Stats decay 10% slower" from Tier 3
 export const SLOW_DECAY_FACTOR = 0.9;
 export const DORMANT_AFTER_HOURS = 24;   // no care for 24 h → Dormant
+export const MENTOR_FACTOR = 0.9;        // Mentor Boost: the receiver decays 10% slower for 24 h (on top of Tier 3)
+export const MENTOR_HOURS = 24;
+export const LEGACY_FROM_DAY = 30;       // a pet that fell at Day 30 or later (or ascended) can claim a Legacy Egg
+
+// Hibernation (decided 20 Oct 2026): automatic. When the survival window runs out, the pet sleeps instead of
+// falling, using the days left this Malaysia calendar month. Stats stop decaying while it sleeps; care wakes it.
+export const HIBERNATION_DAYS_PER_MONTH = 3;
+const MYT = 8 * HOUR;
+export const mytMonth = (ms) => new Date(ms + MYT).toISOString().slice(0, 7);
 export const START_STATS = { energy: 80, health: 80, temperature: 80, mood: 80 };
 
 // Care actions. Each raises one stat; any action counts as care.
@@ -65,10 +74,22 @@ export function tierAt(ageMs) {
 
 const clamp = (v) => Math.max(0, Math.min(100, v));
 
-// When a pet dies if nobody cares for it again: survival window of the tier it had when last cared for.
-export function deathTime(pet) {
+// When the survival window runs out if nobody cares for it again: the window of the tier it had when last cared for.
+export function windowEnd(pet) {
   const tier = tierAt(pet.last_cared_at - pet.born_at);
   return pet.last_cared_at + TIERS[tier].survive * HOUR;
+}
+
+// Hibernation days still free for the month in which the window runs out.
+export function hibernationLeft(pet) {
+  const month = mytMonth(windowEnd(pet));
+  const used = pet.hib_month === month ? pet.hibernation_days_used || 0 : 0;
+  return Math.max(0, HIBERNATION_DAYS_PER_MONTH - used);
+}
+
+// When a pet falls if nobody cares for it again: the end of its window plus the hibernation days it has left.
+export function deathTime(pet) {
+  return windowEnd(pet) + hibernationLeft(pet) * DAY;
 }
 
 // Bring a stored pet row up to `now`. Pure: returns a new object, never writes.
@@ -77,32 +98,45 @@ export function advance(pet, now) {
   if (p.died_at || p.ascended_at) return p; // fallen or ascended pets no longer change
 
   const deadline = deathTime(p);
-  const until = Math.min(now, deadline);
+  // Stats decay until the window ends; during hibernation they stay where they were.
+  const decayUntil = Math.min(now, windowEnd(p));
 
-  // Decay stats from stats_at to `until`, applying the slower rate once Tier 3 is reached.
+  // Decay stats from stats_at, applying the slower rate from Tier 3 and while a Mentor Boost lasts.
   let t = p.stats_at;
-  while (t < until) {
+  const mentorUntil = p.mentor_until || 0;
+  while (t < decayUntil) {
     const tier = tierAt(t - p.born_at);
-    // Step to the next tier boundary (or `until`) so the decay factor changes exactly there.
+    // Step to the next tier boundary, the end of a Mentor Boost (or `decayUntil`) so the factor changes exactly there.
     const next = TIERS[tier + 1] ? p.born_at + TIERS[tier + 1].day * DAY : Infinity;
-    const end = Math.min(until, next);
+    const end = Math.min(decayUntil, next, t < mentorUntil ? mentorUntil : Infinity);
     const hours = (end - t) / HOUR;
-    const f = tier >= SLOW_DECAY_FROM_TIER ? SLOW_DECAY_FACTOR : 1;
+    let f = tier >= SLOW_DECAY_FROM_TIER ? SLOW_DECAY_FACTOR : 1;
+    if (t < mentorUntil) f *= MENTOR_FACTOR;
     for (const s of Object.keys(DECAY_PER_HOUR)) p[s] = clamp(p[s] - DECAY_PER_HOUR[s] * f * hours);
     t = end;
   }
-  p.stats_at = until;
-  p.tier = tierAt(until - p.born_at);
+  p.stats_at = Math.max(p.stats_at, Math.min(now, deadline));
+  p.tier = tierAt(Math.min(now, deadline) - p.born_at);
   if (now >= deadline) p.died_at = deadline;
   return p;
 }
 
 export const utcDay = (ms) => new Date(ms).toISOString().slice(0, 10);
 
+// True while the pet sleeps through hibernation (its window has run out, it has not fallen yet).
+export const isHibernating = (pet, now) => !pet.died_at && !pet.ascended_at && now >= windowEnd(pet) && now < deathTime(pet);
+
 export function applyCare(pet, action, now) {
   const def = ACTIONS[pet.type][action];
   if (!def) return null;
   const p = { ...pet };
+  if (isHibernating(pet, now)) { // waking up: the days slept count against this month (whole days)
+    const end = windowEnd(pet);
+    const month = mytMonth(end);
+    const used = pet.hib_month === month ? pet.hibernation_days_used || 0 : 0;
+    p.hib_month = month;
+    p.hibernation_days_used = Math.min(HIBERNATION_DAYS_PER_MONTH, used + Math.max(1, Math.ceil((now - end) / DAY)));
+  }
   p[def.stat] = clamp(p[def.stat] + def.gain);
   p.last_cared_at = now;
   const day = utcDay(now);
@@ -128,6 +162,14 @@ export function ascend(pet, now) {
 }
 
 // Owner's view of the pet. Never includes pin_hash, reg_ip or id.
+// Whether this ended pet's owner can claim a Legacy Egg: null for a living pet.
+export function legacyEggState(pet, status) {
+  if (status !== 'dead' && status !== 'ascended') return null;
+  if (pet.legacy_claimed) return { available: false, reason: 'claimed' };
+  if (status === 'dead' && pet.died_at - pet.born_at < LEGACY_FROM_DAY * DAY) return { available: false, reason: 'too_young' };
+  return { available: true, reason: null };
+}
+
 export function view(pet, now) {
   const tier = TIERS[pet.tier];
   const end = pet.died_at || pet.ascended_at || now;
@@ -140,6 +182,7 @@ export function view(pet, now) {
   else if (sinceCare > DORMANT_AFTER_HOURS * HOUR) status = 'dormant';
   const ended = status === 'dead' || status === 'ascended';
   const block = ended ? null : ascensionBlock(pet, now);
+  const hibernating = isHibernating(pet, now);
 
   return {
     name: pet.name,
@@ -160,7 +203,19 @@ export function view(pet, now) {
     backdrop: tier.backdrop,
     nextTier: next ? { tier: pet.tier + 1, name: next[pet.type], atHours: next.day * 24 } : null,
     survivesUnattendedHours: tier.survive,
-    hoursLeftUnattended: ended ? 0 : Math.max(0, (deathTime(pet) - now) / HOUR),
+    hoursLeftUnattended: ended ? 0 : Math.max(0, (deathTime(pet) - now) / HOUR),   // including hibernation days
+    hoursLeftInWindow: ended ? 0 : Math.max(0, (windowEnd(pet) - now) / HOUR),      // before hibernation starts
+    // Hibernation: automatic when the window runs out; `daysLeft` is what is free in that month.
+    hibernation: ended ? null : {
+      active: hibernating,
+      daysLeft: hibernationLeft(pet),
+      windowEndsAt: windowEnd(pet),
+      wakeBy: hibernating ? deathTime(pet) : null,
+    },
+    mentorUntil: !ended && (pet.mentor_until || 0) > now ? pet.mentor_until : null,
+    openToChallenge: !!pet.open_to_challenge,
+    legacy: !!pet.legacy_from,
+    legacyEgg: legacyEggState(pet, status),
     // Age that counts for rankings and power stops at the soft cap.
     rankAgeHours: Math.floor(Math.min(ageMs, SOFT_CAP_DAY * DAY) / HOUR),
     careDays: pet.care_days || 0,

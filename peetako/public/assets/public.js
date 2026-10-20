@@ -5,7 +5,8 @@ import { applyPalette } from './theme.js';
 import { skyAt, localMinute } from './sky.js';
 import { moodOf, MOOD_LABEL } from './mood.js';
 import { showArena } from './arena.js';
-import { itemName, PRICES, shownName, wearOf } from './social.js';
+import { itemName, PRICES, shownName, wearOf, badgeHtml } from './social.js';
+import { qrSvg } from './qr.js';
 import { countryHtml } from './flags.js';
 
 const $ = (s) => document.querySelector(s);
@@ -28,6 +29,7 @@ async function api(path, body) {
 }
 
 const STATUS = { active: 'Active', dormant: 'Dormant', dead: 'Fallen', ascended: 'Ascended' };
+const statusLabel = (p) => (p.hibernating ? 'Hibernating' : STATUS[p.status] || '');
 let visit = null;
 
 async function load() {
@@ -37,10 +39,10 @@ async function load() {
     root.innerHTML = `<div class="frame"><p class="error">${esc(e.message)}</p><a class="rbtn" href="/">Go to Peetako</a></div>`; return;
   }
   try { visit = await api(`/api/visit?code=${encodeURIComponent(code)}`); } catch { visit = null; } // no pet signed in here
-  render(pub.pet, pub.best);
+  render(pub.pet, pub.best, pub.badges);
 }
 
-function render(p, best) {
+function render(p, best, badges) {
   applyPalette(root, p.palette);
   const m = moodOf(p);
   const sky = skyAt(localMinute());
@@ -53,10 +55,10 @@ function render(p, best) {
         <div class="scene-layer">${drawScene(p.tier, sky, p.palette, { backdrop: p.equipped?.backdrop, label: p.backdrop })}</div>
         <div class="pet-layer">${drawPet({ type: p.type, tier: p.tier, status: p.status, pal: p.palette, mood: m.face, wear: wearOf(p) })}</div>
         <div class="scan" aria-hidden="true"></div>
-        <div class="pv-badges"><span class="chip ${p.status}">${STATUS[p.status] || ''}</span>${p.status === 'dead' ? '' : `<span class="chip mood">${MOOD_LABEL[m.face] || ''}</span>`}</div>
+        <div class="pv-badges"><span class="chip ${p.status}">${statusLabel(p)}</span>${p.status === 'dead' ? '' : `<span class="chip mood">${MOOD_LABEL[m.face] || ''}</span>`}</div>
       </div>
       <div>
-        <h1 class="pub-name">${esc(shownName(p))}</h1>
+        <h1 class="pub-name">${esc(shownName(p))}${badgeHtml(badges)}</h1>
         <p class="px" style="font-size:9px">${esc(p.callCode)} · T${p.tier} ${esc(p.tierName)}</p>
         ${p.country ? `<p class="pub-country">${countryHtml(p.country)}</p>` : ''}
       </div>
@@ -70,7 +72,9 @@ function render(p, best) {
           <button class="rbtn small" style="--b:var(--b4)" data-act="pamper" ${can.pamper ? '' : 'disabled'}>Pamper ♥</button>
           <button class="rbtn small" style="--b:var(--b1)" data-act="battle" ${can.battle ? '' : 'disabled'}>Battle ⚔</button>
           <button class="rbtn small light" data-act="giftmenu" ${can.gift ? '' : 'disabled'}>Gift 🎁</button>
+          ${can.mentor ? '<button class="rbtn small" style="--b:var(--gold)" data-act="mentor">Mentor 🌟</button>' : ''}
         </div>
+        ${visit.bond?.name ? `<p class="hint">Your Bond: ${esc(visit.bond.name)} (${visit.bond.points} points)</p>` : ''}
         <div id="gift-pick" class="gift-pick" hidden>${giftable.length ? `<div class="gift-grid">${giftable.map((id) => `<button type="button" class="gift-opt" data-gift="${id}"><span>${esc(itemName(id, p.type))}</span><b>${PRICES[id]}</b></button>`).join('')}</div>` : '<p>They already have every item!</p>'}</div>
         <p class="visit-links">
           ${p.canReport.name ? '<button type="button" class="linkbtn dark" data-report="name">Report name</button>' : ''}
@@ -78,6 +82,7 @@ function render(p, best) {
       : self ? '<p>This is your Peetako. Share this page so friends can visit!</p><a class="rbtn" href="/">Open my Peetako</a>'
       : `<p>Want to Pamper ${esc(shownName(p))}, send a gift or battle? Hatch your own Peetako — free, no account.</p>
          <div class="btn-row"><a class="rbtn" style="--b:var(--b1)" href="/">Hatch a Peetako</a><a class="rbtn light" href="/">I have a Peetako</a></div>`}
+      <div class="pub-qr">${qrSvg(location.origin + '/p/' + p.callCode, { label: `QR code for ${shownName(p)}'s page` })}<small>Scan to visit ${esc(shownName(p))}</small></div>
     </div>`;
 }
 
@@ -97,7 +102,10 @@ root.addEventListener('click', async (e) => {
       Sound.play('gift'); toast(`Gift sent: ${itemName(d.item, d.to.type)}!`, 4000);
     } else if (b.dataset.act === 'pamper') {
       const d = await api('/api/pamper', { to: code });
-      await showArena({ mode: 'pamper', mine: d.mine, them: d.to, sound: Sound });
+      await showArena({ mode: 'pamper', mine: d.mine, them: d.to, result: d, sound: Sound });
+    } else if (b.dataset.act === 'mentor') {
+      const d = await api('/api/mentor', { to: code });
+      Sound.play('sape'); toast(`Mentor Boost sent: ${shownName(d.to)}'s needs drop 10% slower for 24 hours.`, 4500);
     } else if (b.dataset.act === 'battle') {
       const d = await api('/api/battle', { to: code });
       await showArena({ mode: 'battle', mine: d.mine, them: d.them, result: d, sound: Sound });

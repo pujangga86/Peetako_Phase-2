@@ -29,13 +29,33 @@ export async function rateLimitHit(env, bucket, expiresAt) {
 // ---------- pets ----------
 // Creates a pet and returns the full row. Throws a unique violation (see isUniqueViolation)
 // when the Call Code (or its look-alike form) is already taken.
-export async function createPet(env, { callCode, codeKey, pinHash, regIp, name, type, palette, country, now, stats, referredBy }) {
+// A Legacy Egg passes bornAt (a head start), tier, coins, equipped and legacyFrom.
+export async function createPet(env, { callCode, codeKey, pinHash, regIp, name, type, palette, country, now, stats, referredBy,
+  bornAt = now, tier = 0, coins = 0, equipped = '{}', legacyFrom = null }) {
   return env.DB.prepare(
     `INSERT INTO pet (call_code, code_key, pin_hash, reg_ip, name, type, born_at, last_cared_at, stats_at,
-       energy, health, temperature, mood, tier, palette, referred_by, country)
-     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?7, ?7, ?8, ?9, ?10, ?11, 0, ?12, ?13, ?14) RETURNING *`
+       energy, health, temperature, mood, tier, palette, referred_by, country, coins, equipped, legacy_from, tier_paid)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?15, ?7, ?7, ?8, ?9, ?10, ?11, ?16, ?12, ?13, ?14, ?17, ?18, ?19, ?16) RETURNING *`
   ).bind(callCode, codeKey, pinHash, regIp, name, type, now, stats.energy, stats.health, stats.temperature, stats.mood,
-    palette, referredBy ?? null, country).first();
+    palette, referredBy ?? null, country, bornAt, tier, coins, equipped, legacyFrom).first();
+}
+
+// ---------- Legacy Egg ----------
+// Marks an ended pet's Legacy Egg as claimed. Returns true when this call claimed it (only once per pet).
+export async function claimLegacy(env, oldId) {
+  const r = await env.DB.prepare('UPDATE pet SET legacy_claimed = 1 WHERE id = ?1 AND legacy_claimed = 0').bind(oldId).run();
+  return r.meta.changes === 1;
+}
+export async function unclaimLegacy(env, oldId) {
+  await env.DB.prepare('UPDATE pet SET legacy_claimed = 0 WHERE id = ?1').bind(oldId).run();
+}
+// Moves the cosmetics to the new pet and empties the old pet's purse (half of it went to the egg).
+export async function passLegacy(env, { oldId, newId, now }) {
+  await env.DB.batch([
+    env.DB.prepare('INSERT OR IGNORE INTO inventory (pet_id, item, acquired_at) SELECT ?1, item, ?3 FROM inventory WHERE pet_id = ?2')
+      .bind(newId, oldId, now),
+    env.DB.prepare('UPDATE pet SET coins = 0 WHERE id = ?1').bind(oldId),
+  ]);
 }
 
 // The one-time country choice for a pet that hatched before countries existed. Returns true when it was
@@ -65,9 +85,9 @@ export async function codeKeysTaken(env, keys) {
 export async function savePet(env, p) {
   await env.DB.prepare(
     `UPDATE pet SET last_cared_at=?1, stats_at=?2, energy=?3, health=?4, temperature=?5, mood=?6, tier=?7, died_at=?8,
-       care_days=?9, last_care_day=?10 WHERE id=?11`
+       care_days=?9, last_care_day=?10, hib_month=?11, hibernation_days_used=?12 WHERE id=?13`
   ).bind(p.last_cared_at, p.stats_at, p.energy, p.health, p.temperature, p.mood, p.tier, p.died_at ?? null,
-    p.care_days ?? 0, p.last_care_day ?? null, p.id).run();
+    p.care_days ?? 0, p.last_care_day ?? null, p.hib_month ?? null, p.hibernation_days_used ?? 0, p.id).run();
 }
 
 // Ascension is a one-way switch: the WHERE clause refuses a pet that has already ascended or fallen.
@@ -411,6 +431,108 @@ export async function recordBattle(env, { attacker, defender, winner, now }) {
 export async function saveMood(env, p) {
   await env.DB.prepare('UPDATE pet SET stats_at=?1, energy=?2, health=?3, temperature=?4, mood=?5, tier=?6, died_at=?7 WHERE id=?8')
     .bind(p.stats_at, p.energy, p.health, p.temperature, p.mood, p.tier, p.died_at ?? null, p.id).run();
+}
+
+// Mentor Boost: the receiver's stats are brought up to now and its slower decay runs until `until`.
+export async function saveMentor(env, p, until) {
+  await env.DB.prepare('UPDATE pet SET stats_at=?1, energy=?2, health=?3, temperature=?4, mood=?5, tier=?6, mentor_until=?7 WHERE id=?8')
+    .bind(p.stats_at, p.energy, p.health, p.temperature, p.mood, p.tier, until, p.id).run();
+}
+
+export async function setOpenToChallenge(env, petId, open) {
+  await env.DB.prepare('UPDATE pet SET open_to_challenge = ?1 WHERE id = ?2').bind(open ? 1 : 0, petId).run();
+}
+
+// ---------- Bond (shared by a pair of pets; stored once with a < b) ----------
+const pair = (x, y) => (x < y ? [x, y] : [y, x]);
+export async function addBond(env, x, y, points, now) {
+  const [a, b] = pair(x, y);
+  const row = await env.DB.prepare(
+    `INSERT INTO bonds (a, b, points, updated_at) VALUES (?1, ?2, ?3, ?4)
+     ON CONFLICT(a, b) DO UPDATE SET points = points + excluded.points, updated_at = excluded.updated_at RETURNING points`
+  ).bind(a, b, points, now).first();
+  return row.points;
+}
+export async function bondOf(env, x, y) {
+  const [a, b] = pair(x, y);
+  const row = await env.DB.prepare('SELECT points FROM bonds WHERE a = ?1 AND b = ?2').bind(a, b).first();
+  return row?.points ?? 0;
+}
+
+// ---------- contacts ----------
+// Saved pets with their public columns and the pair's Bond, newest first.
+export async function contactsOf(env, petId) {
+  const { results } = await env.DB.prepare(
+    `SELECT c.created_at, p.id, p.call_code, p.name, p.name_status, p.type, p.palette, p.tier, p.died_at, p.ascended_at,
+            p.born_at, p.last_cared_at, p.country, COALESCE(b.points, 0) AS bond
+       FROM contacts c JOIN pet p ON p.id = c.contact_id
+       LEFT JOIN bonds b ON b.a = MIN(c.pet_id, c.contact_id) AND b.b = MAX(c.pet_id, c.contact_id)
+      WHERE c.pet_id = ?1 ORDER BY c.created_at DESC`
+  ).bind(petId).all();
+  return results;
+}
+export async function isContact(env, petId, otherId) {
+  return !!(await env.DB.prepare('SELECT 1 AS x FROM contacts WHERE pet_id = ?1 AND contact_id = ?2').bind(petId, otherId).first());
+}
+// Saves a contact unless the list is full. Returns 'saved', 'already' or 'full'.
+export async function saveContact(env, { petId, otherId, now, max }) {
+  const r = await env.DB.prepare(
+    `INSERT OR IGNORE INTO contacts (pet_id, contact_id, created_at)
+     SELECT ?1, ?2, ?3 WHERE (SELECT COUNT(*) FROM contacts WHERE pet_id = ?1) < ?4`
+  ).bind(petId, otherId, now, max).run();
+  if (r.meta.changes === 1) return 'saved';
+  return (await isContact(env, petId, otherId)) ? 'already' : 'full';
+}
+export async function removeContact(env, petId, otherId) {
+  await env.DB.prepare('DELETE FROM contacts WHERE pet_id = ?1 AND contact_id = ?2').bind(petId, otherId).run();
+}
+
+// ---------- blocks ----------
+// { mine: I blocked them, theirs: they blocked me }
+export async function blockState(env, petId, otherId) {
+  const { results } = await env.DB.prepare(
+    'SELECT blocker_id FROM blocks WHERE (blocker_id = ?1 AND blocked_id = ?2) OR (blocker_id = ?2 AND blocked_id = ?1)'
+  ).bind(petId, otherId).all();
+  return { mine: results.some((r) => r.blocker_id === petId), theirs: results.some((r) => r.blocker_id === otherId) };
+}
+// Blocks a pet (and drops it from the blocker's contacts). Returns 'blocked', 'already' or 'full'.
+export async function blockPet(env, { petId, otherId, now, max }) {
+  const [ins] = await env.DB.batch([
+    env.DB.prepare(
+      `INSERT OR IGNORE INTO blocks (blocker_id, blocked_id, created_at)
+       SELECT ?1, ?2, ?3 WHERE (SELECT COUNT(*) FROM blocks WHERE blocker_id = ?1) < ?4`
+    ).bind(petId, otherId, now, max),
+    env.DB.prepare('DELETE FROM contacts WHERE pet_id = ?1 AND contact_id = ?2').bind(petId, otherId),
+  ]);
+  if (ins.meta.changes === 1) return 'blocked';
+  return (await blockState(env, petId, otherId)).mine ? 'already' : 'full';
+}
+export async function unblockPet(env, petId, otherId) {
+  await env.DB.prepare('DELETE FROM blocks WHERE blocker_id = ?1 AND blocked_id = ?2').bind(petId, otherId).run();
+}
+export async function blockedBy(env, petId) {
+  const { results } = await env.DB.prepare(
+    `SELECT bl.created_at, p.call_code, p.name, p.name_status, p.type, p.tier
+       FROM blocks bl JOIN pet p ON p.id = bl.blocked_id WHERE bl.blocker_id = ?1 ORDER BY bl.created_at DESC`
+  ).bind(petId).all();
+  return results;
+}
+
+// ---------- Tangkap Kelip-kelip daily top 3 ----------
+// Gives the day's top 3 (best score, earlier score wins a tie) their badge. Safe to run more than once.
+export async function awardBadges(env, day) {
+  await env.DB.prepare(
+    `INSERT OR IGNORE INTO game_badges (day, rank, pet_id, score)
+     SELECT ?1, rn, pet_id, best FROM
+       (SELECT pet_id, best, ROW_NUMBER() OVER (ORDER BY best DESC, at ASC) AS rn FROM game_scores WHERE day = ?1)
+     WHERE rn <= 3`
+  ).bind(day).run();
+}
+// { gold, silver, bronze, latest: { day, rank } | null }
+export async function badgesOf(env, petId) {
+  const { results } = await env.DB.prepare('SELECT day, rank FROM game_badges WHERE pet_id = ?1 ORDER BY day DESC').bind(petId).all();
+  const n = (r) => results.filter((x) => x.rank === r).length;
+  return { gold: n(1), silver: n(2), bronze: n(3), latest: results[0] ? { day: results[0].day, rank: results[0].rank } : null };
 }
 
 // ---------- care-alert subscriptions ----------

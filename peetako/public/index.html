@@ -175,7 +175,7 @@
     <div class="pv-top">
       <div class="pv-title">
         <span class="leds" aria-hidden="true"><i></i><i></i><i></i></span>
-        <h2 id="pet-name" class="pv-name"></h2>
+        <h2 id="pet-name" class="pv-name"></h2><span id="pet-medals"></span>
         <span id="pet-tier" class="pv-tier"></span>
       </div>
       <div class="pv-tools">
@@ -189,7 +189,7 @@
       <div id="scene" class="scene-layer"></div>
       <div class="pet-box"><div id="pet-art" class="pet-layer" tabindex="0" aria-describedby="pet-art-hint"></div><span id="pet-art-hint" hidden>Tap or press Enter to play with your Peetako.</span><div id="mood-fx" class="fx-layer"></div></div>
       <div class="scan" aria-hidden="true"></div>
-      <div class="pv-badges"><span id="pet-status" class="chip"></span><span id="pet-mood" class="chip mood" hidden></span></div>
+      <div class="pv-badges"><span id="pet-status" class="chip"></span><span id="pet-mood" class="chip mood" hidden></span><span id="pet-mentor" class="chip mentor" hidden>Mentored</span></div>
       <p id="pet-backdrop" class="pv-place"></p>
     </div>
 
@@ -215,12 +215,20 @@
     <div id="pet-dead" class="pv-end" hidden>
       <h3 class="px">A legend has fallen</h3>
       <p id="dead-text"></p>
-      <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+      <p class="hint" data-legacy-note></p>
+      <div class="btn-row">
+        <button class="rbtn" style="--b: var(--gold)" type="button" data-legacy hidden>Claim the Legacy Egg</button>
+        <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+      </div>
     </div>
     <div id="pet-ascended" class="pv-end" hidden>
       <h3 class="px">Ascended to the Hall of Legends</h3>
       <p id="ascended-text"></p>
-      <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+      <p class="hint" data-legacy-note></p>
+      <div class="btn-row">
+        <button class="rbtn" style="--b: var(--gold)" type="button" data-legacy hidden>Claim the Legacy Egg</button>
+        <button class="rbtn" style="--b: var(--b1)" data-new-pet>Hatch a new Peetako</button>
+      </div>
     </div>
     <div class="pv-code"><span class="px">Call Code</span><span id="call-code"></span><span id="pet-country" class="pv-country" hidden></span></div>
   </div>
@@ -239,7 +247,11 @@
     </fieldset>
     <div class="sheet-row">
       <button id="sound-btn" type="button" class="rbtn light small" aria-pressed="true">Sound: on</button>
+      <button id="music-btn" type="button" class="rbtn light small" aria-pressed="false">Sape music: off</button>
       <button id="fullscreen-btn" type="button" class="rbtn light small" hidden>Full screen</button>
+    </div>
+    <div class="sheet-row">
+      <button id="challenge-btn" type="button" class="rbtn light small" aria-pressed="true" hidden>Battles: open</button>
     </div>
     <nav class="sheet-links" aria-label="Pages"><a href="/faq">FAQ</a><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></nav>
     <div class="sheet-row">
@@ -258,7 +270,7 @@
     <ul>
       <li>Care stops for good: no more feeding, decay or survival timer.</li>
       <li>Your Call Code and PIN still open it, so you can visit its record.</li>
-      <li>A stronger Legacy Egg comes in a later update.</li>
+      <li>You can then claim a Legacy Egg: a new Peetako that starts at Tier 1 with half the coins plus 200, and every cosmetic.</li>
     </ul>
     <p class="warn">This cannot be undone. If you would rather keep playing, simply close this — <span data-pet-name></span> lives on as before.</p>
     <label class="check"><input id="ascend-check" type="checkbox"> I understand Ascension is permanent.</label>
@@ -274,7 +286,7 @@
 <!-- Phase 2C dialogs: shop, friends, game result, leaderboards, share, PIN -->
 <dialog id="shop-dialog" class="sheet retro wide-sheet" aria-labelledby="shop-title">
   <div class="sheet-head"><h2 id="shop-title" class="px">Shop · <span id="shop-coins">0</span> coins</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close shop">✕</button></div>
-  <p class="hint">Earn coins by caring (+10, up to 30 a day), checking in every day, Tangkap Kelip-kelip and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
+  <p class="hint">Earn coins by caring (+10 for the first Feed, Clean, Warm and Play of each day, up to 30), checking in every day, Tangkap Kelip-kelip and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
   <div id="shop-list"></div>
 </dialog>
 
@@ -288,7 +300,8 @@
   <div id="visit-recent" class="chips"></div>
   <div id="visit-error" class="error" role="alert"></div>
   <div id="visit-card"></div>
-  <p class="hint">Pamper gives another Peetako +5 FUN (3 a day). Battles are friendly: nobody loses anything (5 a day).</p>
+  <div id="friends-list"></div>
+  <p class="hint">Pamper gives both Peetako +5 FUN (3 a day). Battles are friendly: nobody loses anything (5 a day). From Tier 4 you can give a younger Peetako a Mentor Boost. Pamper, gifts, battles and Mentor Boosts build Bond; at Buddies you can take a shared selfie.</p>
 </dialog>
 
 <dialog id="result-dialog" class="sheet retro" aria-labelledby="result-title">
@@ -356,7 +369,40 @@
   </form>
 </dialog>
 
-<!-- Ad slot reserved: add AdSense here only after approval, below the game and never over the pet. -->
+<!-- Legacy Egg: the owner of a pet that fell at Day 30+ or ascended confirms with the PIN and hatches one new egg. -->
+<dialog id="legacy-dialog" class="sheet retro" aria-labelledby="legacy-title">
+  <form id="legacy-form">
+    <div class="sheet-head"><h2 id="legacy-title" class="px">Legacy Egg</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+    <p>A new Peetako hatches from <span data-pet-name></span>'s Legacy Egg. It starts at Tier 1, with half of <span data-pet-name></span>'s coins plus 200, every cosmetic, the same country and the same PIN. One egg per Peetako.</p>
+    <div class="legacy-grid">
+      <div id="legacy-preview" class="legacy-preview" aria-hidden="true"></div>
+      <div>
+        <fieldset class="plain"><legend class="px">Type</legend>
+          <div class="seg">
+            <label><input type="radio" name="legacy-type" value="organic" checked><span>Organic</span></label>
+            <label><input type="radio" name="legacy-type" value="robot"><span>Robot</span></label>
+          </div>
+        </fieldset>
+        <div class="field"><label for="legacy-name">Name</label>
+          <div class="input-row"><input id="legacy-name" type="text" maxlength="16" autocomplete="off" required><button id="legacy-random" class="rbtn small light" type="button">Random</button></div></div>
+      </div>
+    </div>
+    <fieldset class="plain"><legend class="px">Colour (chosen once)</legend><div id="legacy-palette" class="palette-pick"></div></fieldset>
+    <div class="field"><label for="legacy-code">New Call Code</label>
+      <div class="input-row code-row"><span class="code-prefix" aria-hidden="true">PTK-</span>
+        <input id="legacy-code" type="text" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="TOKAY88" required></div></div>
+    <div class="field"><label for="legacy-pin"><span data-pet-name></span>'s PIN</label>
+      <input id="legacy-pin" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="current-password" required>
+      <p class="hint">The new Peetako keeps this PIN.</p></div>
+    <div id="legacy-error" class="error" role="alert"></div>
+    <div class="btn-row"><button id="legacy-btn" class="rbtn" style="--b: var(--gold)" type="submit">Hatch the Legacy Egg</button>
+      <button class="rbtn light" type="button" onclick="this.closest('dialog').close()">Not now</button></div>
+  </form>
+</dialog>
+
+<!-- Ad container (320×50 on phones, 728×90 on desktop), below the game and never over the pet. It stays hidden
+     until AdSense is approved: then paste the ad unit inside and remove the hidden attribute. -->
+<aside id="ad-slot" class="ad-slot" aria-label="Advertisement" hidden></aside>
 
 
 <section class="content">
@@ -377,7 +423,7 @@
     </div>
     <div>
       <h3>Age is power</h3>
-      <p>A Peetako has no maximum lifespan. The older it gets, the higher its tier, and the longer it can survive on its own: a Hatchling lasts two days without care, while an Ageless Peetako (Day 60) lasts two weeks. If the survival window runs out, it falls and joins the Hall of Legends. After a month as Ageless, you may also choose Ascension: retire your Peetako to the Hall of Legends with a Legacy Score.</p>
+      <p>A Peetako has no maximum lifespan. The older it gets, the higher its tier, and the longer it can survive on its own: a Hatchling lasts two days without care, while an Ageless Peetako (Day 60) lasts two weeks. If the survival window runs out, it hibernates for up to 3 days a month, and only falls (joining the Hall of Legends) when those run out too. A Peetako that lived 30 days or more leaves a Legacy Egg for a fresh start. After a month as Ageless, you may also choose Ascension: retire your Peetako to the Hall of Legends with a Legacy Score.</p>
     </div>
   </div>
 
@@ -399,6 +445,7 @@
 </footer>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 <script src="/assets/sound.js"></script>
+<script src="/assets/vendor/qrcode.js"></script>
 <script type="module" src="/assets/app.js"></script>
 </body>
 </html>

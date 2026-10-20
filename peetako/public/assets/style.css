@@ -650,3 +650,58 @@ body.kelip-open { overflow: hidden; }
 .board .who small .flag { vertical-align: -3px; }
 .pv-country { display: inline-flex; align-items: center; gap: 6px; font-size: 20px; color: var(--card); }
 .pub-country { margin: 4px 0 0; font-size: 20px; }
+
+/* ---------- Alignment with the GDD (20 Oct 2026) ---------- */
+/* Mentor Boost chip */
+.chip.mentor { background: #FEF3C7; }
+
+/* Kelip daily top-3 medals beside a name: shape and letter carry the meaning, colour only adds to it */
+#pet-medals:empty { display: none; }
+.medals { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+.medal { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 4px; border-radius: 11px;
+  border: 2px solid #1E1B4B; font: 400 8px/1 'Press Start 2P', monospace; color: #1E1B4B; }
+.medal.gold { background: #F5B700; }
+.medal.silver { background: #CBD5E1; }
+.medal.bronze { background: #E7A26B; }
+
+/* Bond */
+.bond { display: grid; gap: 4px; margin: 6px 0 8px; font-weight: 700; }
+.bond small { font-weight: 600; opacity: .85; }
+.bond-bar { display: block; height: 10px; border: 2px solid var(--ink); background: #fff; }
+.bond-bar i { display: block; height: 100%; background: var(--b4, #FB7185); }
+.bond-badge { display: inline-block; padding: 2px 6px; border: 2px solid var(--ink); background: #FFE4E6; color: #1E1B4B;
+  font: 400 8px/1.4 'Press Start 2P', monospace; white-space: nowrap; }
+.bond-badge.l3, .bond-badge.l4 { background: #FDE68A; }
+
+/* Saved friends and blocked pets */
+.friend-list, .blocked-list { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; gap: 6px; }
+.friend { display: grid; grid-template-columns: 52px 1fr; gap: 8px; align-items: center; width: 100%; min-height: 56px; padding: 4px 8px;
+  border: 2px solid var(--ink); background: #fff; color: var(--ink); text-align: left; cursor: pointer; font: inherit; }
+.friend:hover, .friend:focus-visible { background: var(--gold); }
+.friend-pic { width: 48px; height: 48px; }
+.friend-pic svg { width: 100%; height: 100%; }
+.friend-who { display: grid; gap: 2px; min-width: 0; }
+.friend-who b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.friend-who small { opacity: .85; }
+.friend-who .bond-badge { justify-self: start; }
+.blocked summary { cursor: pointer; font-weight: 700; min-height: 32px; }
+.blocked-list li { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+/* QR codes in the Share dialog and on the public page */
+.share-qr { display: inline-grid; justify-items: center; gap: 2px; margin: 4px 0 6px; }
+.share-qr .qr, .pub-qr .qr { width: 132px; height: 132px; border: 3px solid var(--ink); background: #fff; }
+.pub-qr { display: grid; justify-items: center; gap: 4px; margin: 6px 0; }
+
+/* Tangkap Kelip-kelip HUD: combo and misses left */
+.kelip-hud .kelip-combo { color: #F5B700; min-width: 3ch; }
+.kelip-hud .kelip-lives { letter-spacing: 2px; color: #FB7185; }
+
+/* Legacy Egg dialog */
+.legacy-grid { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: center; }
+.legacy-preview { width: 110px; height: 110px; border: 3px solid var(--ink); background: linear-gradient(#BAE6FD, #E0F2FE 70%, #BBF7D0 70%); }
+.legacy-preview svg { width: 100%; height: 100%; }
+
+/* Ad container: sized for 320×50 (phone) and 728×90 (desktop); hidden until AdSense is approved */
+.ad-slot { display: block; width: 320px; max-width: 100%; height: 50px; margin: 12px auto; overflow: hidden; }
+.ad-slot[hidden] { display: none; }
+@media (min-width: 900px) { .ad-slot { width: 728px; height: 90px; } }
