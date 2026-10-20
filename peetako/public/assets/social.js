@@ -335,9 +335,11 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     let run;
     try { run = await api('/api/game/start', { game: info.id }); } catch (e) { return fail(e); }
     if (dlg('#games-dialog').open) dlg('#games-dialog').close();
+    Sound.pauseMusic?.(); // the sape loop gets in the way of listening to the game; it comes back afterwards
     const p = pet();
     const art = p ? petSvg(p, 'excited') : '';
     const onEnd = async (res) => {
+      Sound.resumeMusic?.();
       if (res === null) { toast(`${info.name} stopped. Come back any time!`); return; }
       try {
         const d = await api('/api/game/finish', { run: run.run, ...res }); // Kelip-kelip sends fireflies, the others count

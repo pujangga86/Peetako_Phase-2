@@ -209,9 +209,10 @@
   var musicOn = false;
   var musicTimer = null;
   var musicSeed = 0;
+  var musicPaused = false; // paused while a mini-game is open (20 Oct 2026); the saved setting is unchanged
   try { musicOn = localStorage.getItem(MUSIC_KEY) === 'on'; } catch (e) {}
   function musicTick() {
-    if (!musicOn || !ctx || document.hidden) return;
+    if (!musicOn || musicPaused || !ctx || document.hidden) return;
     sapePhrase(0, 0.22, musicSeed);
     musicSeed = (musicSeed + 3) % 5;
   }
@@ -240,6 +241,10 @@
       if (musicOn) startMusic(); else stopMusic();
       return musicOn;
     },
+
+    // Mini-games pause the music and resume it when they end. Does not change the player's music setting.
+    pauseMusic: function () { musicPaused = true; },
+    resumeMusic: function () { musicPaused = false; },
 
     isEnabled: function () { return enabled; },
 
