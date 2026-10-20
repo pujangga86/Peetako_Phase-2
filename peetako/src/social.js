@@ -1,9 +1,9 @@
 // Peetako Phase 2C — social and economy routes: coins (check-in), cosmetics shop, gifts, Pamper and Bond,
-// friendly battles, Mentor Boost, Friends (contacts and blocks), Tangkap Kelip-kelip and its leaderboards
+// friendly battles, Mentor Boost, Friends (contacts and blocks), the five mini-games and their leaderboards
 // and daily badges, Report and its admin review, and the public pet page /p/PTK-XXXXXX that share links point to.
 import { advance, view as ownerView, TIERS, HOUR, MENTOR_HOURS } from './game.js';
 import {
-  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, coinsForFireflies, maxCombo, BATTLE, battlePower, PAMPER,
+  COIN, CATALOG, ITEMS, SLOTS, parseEquipped, GIFT_MAX_PER_DAY, GAME, isGame, gameSetup, judgeRun, coinsFor, BATTLE, battlePower, PAMPER,
   BOND, bondInfo, MAX_CONTACTS, MAX_BLOCKS, MENTOR, mytDay, prevDay, msToReset,
 } from './economy.js';
 import { codeSuffix, codeKeyOf } from './codes.js';
@@ -11,7 +11,7 @@ import { isCountry, normCountry, UNDISCLOSED, MIN_COUNTRY_PLAYERS } from './coun
 import {
   petByCodeKey, petById, dailyCounts, countDaily, earnCapped, checkIn, inventoryOf, buyItem, giftItem, saveEquipped,
   unseenEvents, markEventsSeen, addEvent, startRun, runsStartedSince, finishRun, saveScore, leaderboard, rankOf, countryBoard, countryPlayerCount, BOARD_SORT_KEYS,
-  bestScoreOf, reportField, openReports, resolveReport, recordBattle, saveMood, saveMentor, setOpenToChallenge,
+  bestScoresOf, reportField, openReports, resolveReport, recordBattle, saveMood, saveMentor, setOpenToChallenge,
   addBond, bondOf, contactsOf, isContact, saveContact, removeContact, blockState, blockPet, unblockPet, blockedBy, badgesOf,
 } from './store.js';
 import {
@@ -392,41 +392,52 @@ async function eventsSeen(env, req) {
   return json({ ok: true });
 }
 
-// ---------- Tangkap Kelip-kelip ----------
+// ---------- mini-games ----------
+// Tangkap Kelip-kelip, Ikut Rentak, Lidah Pantas, Padan Motif and Panjat Pokok. A run is started by the server
+// (so its length is measured here), finished once, and checked by judgeRun (economy.js). Coins from every game
+// share one daily cap.
+const gameOf = (b) => (b && b.game !== undefined ? b.game : 'kelip'); // older clients only knew Kelip-kelip
+
 async function gameStart(env, req) {
   const { row, now, error } = await me(env, req);
   if (error) return error;
+  const b = await readBody(req);
+  const game = gameOf(b);
+  if (!isGame(game)) return fail(400, 'bad_game', 'Choose a game from the list.');
   if (row.died_at) return fail(409, 'pet_ended', 'A fallen Peetako cannot play.');
-  if ((await runsStartedSince(env, row.id, now - 3600 * 1000)) >= GAME.startsPerHour) return fail(429, 'too_many_runs', 'Lots of fireflies caught! Rest a little and play again later.');
+  if ((await runsStartedSince(env, row.id, now - 3600 * 1000)) >= GAME.startsPerHour) return fail(429, 'too_many_runs', 'Lots of games played! Rest a little and play again later.');
   const token = newToken();
-  await startRun(env, { tokenHash: await sha256(token), petId: row.id, now });
-  return json({ run: token, durationMs: GAME.runMs, misses: GAME.misses, goldValue: GAME.goldValue, combo: GAME.comboSteps });
+  await startRun(env, { tokenHash: await sha256(token), petId: row.id, now, game });
+  const setup = gameSetup(game);
+  // Tangkap Kelip-kelip keeps its original field names for the client.
+  const extra = game === 'kelip' ? { durationMs: GAME.runMs, misses: GAME.misses, goldValue: GAME.goldValue, combo: GAME.comboSteps } : {};
+  return json({ run: token, ...extra, setup });
 }
 
 async function gameFinish(env, req) {
   const { row, now, error } = await me(env, req);
   if (error) return error;
   const b = await readBody(req);
-  const score = Number(b.score);
-  const caught = b.fireflies === undefined ? score : Number(b.fireflies); // fireflies caught (score counts golden and combo)
-  if (typeof b.run !== 'string' || !/^[a-f0-9]{64}$/.test(b.run) || !Number.isInteger(score) || score < 0
-    || !Number.isInteger(caught) || caught < 0) return fail(400, 'bad_run', 'That run cannot be counted.');
-  const started = await finishRun(env, { tokenHash: await sha256(b.run), petId: row.id, now });
-  if (started === null) return fail(409, 'run_closed', 'That run was already counted or has expired.');
-  const elapsed = now - started;
+  if (typeof b.run !== 'string' || !/^[a-f0-9]{64}$/.test(b.run)) return fail(400, 'bad_run', 'That run cannot be counted.');
+  const run = await finishRun(env, { tokenHash: await sha256(b.run), petId: row.id, now });
+  if (run === null) return fail(409, 'run_closed', 'That run was already counted or has expired.');
+  const { game } = run;
+  const elapsed = now - run.startedAt;
   if (elapsed < GAME.minMs || elapsed > GAME.maxMs) return fail(409, 'run_time', 'That run cannot be counted.');
-  // Plausibility, not a replay: fireflies per second of play, and each firefly worth 1 to golden × top combo.
-  const maxCaught = Math.floor((Math.min(elapsed, GAME.runMs + 10_000) / 1000) * GAME.maxPerSecond);
-  if (caught > maxCaught || score < caught || score > Math.min(GAME.maxScore, caught * GAME.goldValue * maxCombo())) {
-    return fail(409, 'implausible', 'That score cannot be counted.');
-  }
+  const judged = judgeRun(game, b, elapsed);
+  if (judged.error === 'bad_run') return fail(400, 'bad_run', 'That run cannot be counted.');
+  if (judged.error) return fail(409, 'implausible', 'That score cannot be counted.');
+  const { score, count } = judged;
   const day = mytDay(now);
-  const coins = row.died_at ? 0 : await earnCapped(env, row.id, day, 'game_coins', coinsForFireflies(caught), COIN.gameMaxPerDay);
-  const best = await saveScore(env, { petId: row.id, day, score, now });
-  const [rankDay, rankAll] = await Promise.all([rankOf(env, { petId: row.id, day }), rankOf(env, { petId: row.id, day: null })]);
+  const coins = row.died_at ? 0 : await earnCapped(env, row.id, day, 'game_coins', coinsFor(game, count), COIN.gameMaxPerDay);
+  const best = await saveScore(env, { game, petId: row.id, day, score, now });
+  const [rankDay, rankAll] = await Promise.all([rankOf(env, { game, petId: row.id, day }), rankOf(env, { game, petId: row.id, day: null })]);
   const fresh = await petById(env, row.id);
-  return json({ score, coins, best: best.best, allTime: best.allTime, rankDay: rankDay?.rank ?? null, rankAll: rankAll?.rank ?? null, me: await buildMe(env, fresh, now) });
+  return json({ game, score, count, coins, best: best.best, allTime: best.allTime, rankDay: rankDay?.rank ?? null, rankAll: rankAll?.rank ?? null, me: await buildMe(env, fresh, now) });
 }
+
+// Which game a leaderboard is for (?game=..., Tangkap Kelip-kelip when left out).
+const boardGame = (url) => url.searchParams.get('game') || 'kelip';
 
 const BOARD_LIMIT = 20;
 const COUNTRY_BOARD_LIMIT = 50;
@@ -437,6 +448,8 @@ const periodDay = (url, now) => (url.searchParams.get('period') === 'all' ? null
 async function board(env, req, url) {
   if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
   const now = Date.now();
+  const game = boardGame(url);
+  if (!isGame(game)) return fail(400, 'bad_game', 'Choose a game from the list.');
   const day = periodDay(url, now);
   const period = day ? 'day' : 'all';
   const sortRaw = url.searchParams.get('sort') || 'score';
@@ -457,10 +470,10 @@ async function board(env, req, url) {
     if (!country || !isCountry(country)) return fail(400, 'bad_country', 'Choose a country from the list.');
   }
 
-  const rows = await leaderboard(env, { day, country, sort, limit: BOARD_LIMIT });
-  const mine = row && sort === 'score' ? await rankOf(env, { petId: row.id, day, country }) : null;
+  const rows = await leaderboard(env, { game, day, country, sort, limit: BOARD_LIMIT });
+  const mine = row && sort === 'score' ? await rankOf(env, { game, petId: row.id, day, country }) : null;
   return json({
-    period, day, scope, country, sort, resetsInMs: day ? msToReset(now) : null,
+    game, period, day, scope, country, sort, resetsInMs: day ? msToReset(now) : null,
     rows: rows.map((r, i) => ({
       rank: i + 1, callCode: r.call_code, name: r.name_status === 'hidden' ? null : r.name, score: r.score,
       type: r.type, palette: r.palette, tier: r.tier, status: r.died_at ? 'dead' : r.ascended_at ? 'ascended' : 'alive',
@@ -476,16 +489,18 @@ async function board(env, req, url) {
 async function countriesBoard(env, req, url) {
   if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
   const now = Date.now();
+  const game = boardGame(url);
+  if (!isGame(game)) return fail(400, 'bad_game', 'Choose a game from the list.');
   const day = periodDay(url, now);
-  const rows = await countryBoard(env, { day, minPlayers: MIN_COUNTRY_PLAYERS, limit: COUNTRY_BOARD_LIMIT });
+  const rows = await countryBoard(env, { game, day, minPlayers: MIN_COUNTRY_PLAYERS, limit: COUNTRY_BOARD_LIMIT });
   const row = await petFromSession(env, req);
   let mine = null;
   if (row?.country && row.country !== UNDISCLOSED) {
-    mine = { country: row.country, players: await countryPlayerCount(env, { day, country: row.country }) };
+    mine = { country: row.country, players: await countryPlayerCount(env, { game, day, country: row.country }) };
     mine.listed = rows.some((r) => r.country === row.country);
   }
   return json({
-    period: day ? 'day' : 'all', day, resetsInMs: day ? msToReset(now) : null, minPlayers: MIN_COUNTRY_PLAYERS,
+    game, period: day ? 'day' : 'all', day, resetsInMs: day ? msToReset(now) : null, minPlayers: MIN_COUNTRY_PLAYERS,
     rows: rows.map((r, i) => ({ rank: i + 1, country: r.country, players: r.players, median: Math.round(r.median * 10) / 10 })),
     mine,
   });
@@ -603,7 +618,8 @@ export async function socialRoute(env, req, url) {
       if (!(await rateLimit(env, req, 'social'))) return SLOW_DOWN();
       const t = await targetFrom(env, url.searchParams.get('code'));
       if (!t) return fail(404, 'not_found', 'No Peetako has that Call Code.');
-      return json({ pet: publicView(t, Date.now()), best: await bestScoreOf(env, t.id), owns: (await inventoryOf(env, t.id)).map((i) => i.item), badges: await badgesOf(env, t.id) });
+      const bests = await bestScoresOf(env, t.id);
+      return json({ pet: publicView(t, Date.now()), best: bests.kelip ?? 0, bests, owns: (await inventoryOf(env, t.id)).map((i) => i.item), badges: await badgesOf(env, t.id) });
     }
     if (p === '/api/admin/reports') return adminReports(env, req);
     if (p === '/api/friends') return friends(env, req);

@@ -261,9 +261,10 @@ export async function markEventsSeen(env, petId, upToId) {
   await env.DB.prepare('UPDATE events SET seen = 1 WHERE pet_id = ?1 AND id <= ?2 AND seen = 0').bind(petId, upToId).run();
 }
 
-// ---------- Tangkap Kelip-kelip ----------
-export async function startRun(env, { tokenHash, petId, now }) {
-  await env.DB.prepare('INSERT INTO game_runs (token_hash, pet_id, started_at) VALUES (?1, ?2, ?3)').bind(tokenHash, petId, now).run();
+// ---------- mini-games (Tangkap Kelip-kelip, Ikut Rentak, Lidah Pantas, Padan Motif, Panjat Pokok) ----------
+// Scores and badges live in game_best and game_medals (migration 0007), one set per game.
+export async function startRun(env, { tokenHash, petId, now, game = 'kelip' }) {
+  await env.DB.prepare('INSERT INTO game_runs (token_hash, pet_id, started_at, game) VALUES (?1, ?2, ?3, ?4)').bind(tokenHash, petId, now, game).run();
 }
 
 export async function runsStartedSince(env, petId, since) {
@@ -271,23 +272,23 @@ export async function runsStartedSince(env, petId, since) {
   return row.n;
 }
 
-// Closes a run once. Returns its start time, or null when unknown, someone else's, or already finished.
+// Closes a run once. Returns { startedAt, game }, or null when unknown, someone else's, or already finished.
 export async function finishRun(env, { tokenHash, petId, now }) {
   const row = await env.DB.prepare(
-    'UPDATE game_runs SET finished_at = ?3 WHERE token_hash = ?1 AND pet_id = ?2 AND finished_at IS NULL RETURNING started_at'
+    'UPDATE game_runs SET finished_at = ?3 WHERE token_hash = ?1 AND pet_id = ?2 AND finished_at IS NULL RETURNING started_at, game'
   ).bind(tokenHash, petId, now).first();
-  return row ? row.started_at : null;
+  return row ? { startedAt: row.started_at, game: row.game || 'kelip' } : null;
 }
 
-// Keeps the best score per pet per day. Returns { best, allTime }.
-export async function saveScore(env, { petId, day, score, now }) {
+// Keeps the best score per game per pet per day. Returns { best, allTime }.
+export async function saveScore(env, { game = 'kelip', petId, day, score, now }) {
   const [, best, all] = await env.DB.batch([
     env.DB.prepare(
-      `INSERT INTO game_scores (pet_id, day, best, at) VALUES (?1, ?2, ?3, ?4)
-       ON CONFLICT(pet_id, day) DO UPDATE SET best = excluded.best, at = excluded.at WHERE excluded.best > game_scores.best`
-    ).bind(petId, day, score, now),
-    env.DB.prepare('SELECT best FROM game_scores WHERE pet_id = ?1 AND day = ?2').bind(petId, day),
-    env.DB.prepare('SELECT MAX(best) AS best FROM game_scores WHERE pet_id = ?1').bind(petId),
+      `INSERT INTO game_best (game, pet_id, day, best, at) VALUES (?5, ?1, ?2, ?3, ?4)
+       ON CONFLICT(game, pet_id, day) DO UPDATE SET best = excluded.best, at = excluded.at WHERE excluded.best > game_best.best`
+    ).bind(petId, day, score, now, game),
+    env.DB.prepare('SELECT best FROM game_best WHERE game = ?3 AND pet_id = ?1 AND day = ?2').bind(petId, day, game),
+    env.DB.prepare('SELECT MAX(best) AS best FROM game_best WHERE game = ?2 AND pet_id = ?1').bind(petId, game),
   ]);
   return { best: best.results[0]?.best ?? 0, allTime: all.results[0]?.best ?? 0 };
 }
@@ -304,72 +305,73 @@ export const BOARD_SORT_KEYS = Object.keys(BOARD_SORTS);
 
 // Top scores for one day (day set) or all time (day null), best per pet, ties to the earlier score.
 // Optionally only pets of one country (an ISO code), in one of the BOARD_SORTS orders.
-export async function leaderboard(env, { day, country = null, sort = 'score', limit }) {
-  const args = [day ?? null, limit];
+export async function leaderboard(env, { game = 'kelip', day, country = null, sort = 'score', limit }) {
+  const args = [day ?? null, limit, game];
   let cw = '';
-  if (country) { args.push(country); cw = 'AND p.country = ?3'; }
+  if (country) { args.push(country); cw = 'AND p.country = ?4'; }
   const order = BOARD_SORTS[sort] || BOARD_SORTS.score;
   const sql = day
-    ? `SELECT ${BOARD_COLS}, s.best AS score, s.at AS at, s.at AS last_at FROM game_scores s JOIN pet p ON p.id = s.pet_id
-        WHERE s.day = ?1 ${cw} ORDER BY ${order} LIMIT ?2`
+    ? `SELECT ${BOARD_COLS}, s.best AS score, s.at AS at, s.at AS last_at FROM game_best s JOIN pet p ON p.id = s.pet_id
+        WHERE s.game = ?3 AND s.day = ?1 ${cw} ORDER BY ${order} LIMIT ?2`
     : `SELECT ${BOARD_COLS}, b.score, b.at, b.last_at
-         FROM (SELECT pet_id, MAX(best) AS score, MIN(at) AS at, MAX(at) AS last_at FROM game_scores GROUP BY pet_id) b
-         JOIN pet p ON p.id = b.pet_id WHERE 1 = 1 ${cw} ORDER BY ${order} LIMIT ?2`;
+         FROM (SELECT pet_id, MAX(best) AS score, MIN(at) AS at, MAX(at) AS last_at FROM game_best WHERE game = ?3 GROUP BY pet_id) b
+         JOIN pet p ON p.id = b.pet_id WHERE ?1 IS NULL ${cw} ORDER BY ${order} LIMIT ?2`;
   const { results } = await env.DB.prepare(sql).bind(...args).all();
   return results;
 }
 
 // A pet's best and rank (1 = top) for a day or all time, optionally among one country's pets only;
 // null when it has no score there.
-export async function rankOf(env, { petId, day, country = null }) {
+export async function rankOf(env, { game = 'kelip', petId, day, country = null }) {
   if (day) {
-    const cw = country ? 'AND op.country = ?3' : '';
+    const cw = country ? 'AND op.country = ?4' : '';
     const stmt = env.DB.prepare(
       `SELECT s.best AS score,
-         (SELECT COUNT(*) FROM game_scores o JOIN pet op ON op.id = o.pet_id
-            WHERE o.day = ?2 ${cw} AND (o.best > s.best OR (o.best = s.best AND o.at < s.at))) + 1 AS rank
-       FROM game_scores s WHERE s.pet_id = ?1 AND s.day = ?2`
+         (SELECT COUNT(*) FROM game_best o JOIN pet op ON op.id = o.pet_id
+            WHERE o.game = ?3 AND o.day = ?2 ${cw} AND (o.best > s.best OR (o.best = s.best AND o.at < s.at))) + 1 AS rank
+       FROM game_best s WHERE s.game = ?3 AND s.pet_id = ?1 AND s.day = ?2`
     );
-    return (await (country ? stmt.bind(petId, day, country) : stmt.bind(petId, day)).first()) || null;
+    return (await (country ? stmt.bind(petId, day, game, country) : stmt.bind(petId, day, game)).first()) || null;
   }
-  const cw = country ? 'JOIN pet gp ON gp.id = g.pet_id WHERE gp.country = ?2' : '';
+  const cw = country ? 'JOIN pet gp ON gp.id = g.pet_id WHERE g.game = ?2 AND gp.country = ?3' : 'WHERE g.game = ?2';
   const stmt = env.DB.prepare(
-    `WITH b AS (SELECT g.pet_id, MAX(g.best) AS score FROM game_scores g ${cw} GROUP BY g.pet_id)
+    `WITH b AS (SELECT g.pet_id, MAX(g.best) AS score FROM game_best g ${cw} GROUP BY g.pet_id)
      SELECT score, (SELECT COUNT(*) FROM b o WHERE o.score > b.score) + 1 AS rank FROM b WHERE pet_id = ?1`
   );
-  return (await (country ? stmt.bind(petId, country) : stmt.bind(petId)).first()) || null;
+  return (await (country ? stmt.bind(petId, game, country) : stmt.bind(petId, game)).first()) || null;
 }
 
 // Country-to-country board: the MEDIAN of each player's best score (fair to small and large countries alike),
 // listing only countries with at least minPlayers players. Players who prefer not to say are left out.
 // Median = the middle score, or the average of the two middle scores when the count is even.
-export async function countryBoard(env, { day, minPlayers, limit }) {
+export async function countryBoard(env, { game = 'kelip', day, minPlayers, limit }) {
   const pool = day
-    ? `SELECT p.country AS c, s.best AS v FROM game_scores s JOIN pet p ON p.id = s.pet_id
-        WHERE s.day = ?1 AND p.country IS NOT NULL AND p.country <> 'ZZ'`
-    : `SELECT p.country AS c, MAX(g.best) AS v FROM game_scores g JOIN pet p ON p.id = g.pet_id
-        WHERE ?1 IS NULL AND p.country IS NOT NULL AND p.country <> 'ZZ' GROUP BY g.pet_id`;
+    ? `SELECT p.country AS c, s.best AS v FROM game_best s JOIN pet p ON p.id = s.pet_id
+        WHERE s.game = ?4 AND s.day = ?1 AND p.country IS NOT NULL AND p.country <> 'ZZ'`
+    : `SELECT p.country AS c, MAX(g.best) AS v FROM game_best g JOIN pet p ON p.id = g.pet_id
+        WHERE g.game = ?4 AND ?1 IS NULL AND p.country IS NOT NULL AND p.country <> 'ZZ' GROUP BY g.pet_id`;
   const { results } = await env.DB.prepare(
     `WITH pool AS (${pool}),
      ranked AS (SELECT c, v, ROW_NUMBER() OVER (PARTITION BY c ORDER BY v) AS rn, COUNT(*) OVER (PARTITION BY c) AS n FROM pool)
      SELECT c AS country, n AS players, AVG(v) AS median FROM ranked
        WHERE rn IN ((n + 1) / 2, (n + 2) / 2) GROUP BY c, n HAVING n >= ?2
        ORDER BY median DESC, players DESC, c ASC LIMIT ?3`
-  ).bind(day ?? null, minPlayers, limit).all();
+  ).bind(day ?? null, minPlayers, limit, game).all();
   return results;
 }
 
 // How many players of one country have a score in the period (explains why a country is not listed yet).
-export async function countryPlayerCount(env, { day, country }) {
+export async function countryPlayerCount(env, { game = 'kelip', day, country }) {
   const row = day
-    ? await env.DB.prepare('SELECT COUNT(*) AS n FROM game_scores s JOIN pet p ON p.id = s.pet_id WHERE s.day = ?1 AND p.country = ?2').bind(day, country).first()
-    : await env.DB.prepare('SELECT COUNT(DISTINCT g.pet_id) AS n FROM game_scores g JOIN pet p ON p.id = g.pet_id WHERE p.country = ?1').bind(country).first();
+    ? await env.DB.prepare('SELECT COUNT(*) AS n FROM game_best s JOIN pet p ON p.id = s.pet_id WHERE s.game = ?3 AND s.day = ?1 AND p.country = ?2').bind(day, country, game).first()
+    : await env.DB.prepare('SELECT COUNT(DISTINCT g.pet_id) AS n FROM game_best g JOIN pet p ON p.id = g.pet_id WHERE g.game = ?2 AND p.country = ?1').bind(country, game).first();
   return row?.n ?? 0;
 }
 
-export async function bestScoreOf(env, petId) {
-  const row = await env.DB.prepare('SELECT MAX(best) AS best FROM game_scores WHERE pet_id = ?1').bind(petId).first();
-  return row?.best ?? 0;
+// A pet's best score ever in each game it has played: { kelip: 87, rentak: 120, ... }.
+export async function bestScoresOf(env, petId) {
+  const { results } = await env.DB.prepare('SELECT game, MAX(best) AS best FROM game_best WHERE pet_id = ?1 GROUP BY game').bind(petId).all();
+  return Object.fromEntries(results.map((r) => [r.game, r.best]));
 }
 
 // ---------- names and reports ----------
@@ -518,21 +520,21 @@ export async function blockedBy(env, petId) {
   return results;
 }
 
-// ---------- Tangkap Kelip-kelip daily top 3 ----------
-// Gives the day's top 3 (best score, earlier score wins a tie) their badge. Safe to run more than once.
+// ---------- mini-game daily top 3, per game ----------
+// Gives each game's top 3 of the day (best score, earlier score wins a tie) their badge. Safe to run more than once.
 export async function awardBadges(env, day) {
   await env.DB.prepare(
-    `INSERT OR IGNORE INTO game_badges (day, rank, pet_id, score)
-     SELECT ?1, rn, pet_id, best FROM
-       (SELECT pet_id, best, ROW_NUMBER() OVER (ORDER BY best DESC, at ASC) AS rn FROM game_scores WHERE day = ?1)
+    `INSERT OR IGNORE INTO game_medals (game, day, rank, pet_id, score)
+     SELECT game, ?1, rn, pet_id, best FROM
+       (SELECT game, pet_id, best, ROW_NUMBER() OVER (PARTITION BY game ORDER BY best DESC, at ASC) AS rn FROM game_best WHERE day = ?1)
      WHERE rn <= 3`
   ).bind(day).run();
 }
-// { gold, silver, bronze, latest: { day, rank } | null }
+// Totals over every game: { gold, silver, bronze, latest: { day, rank, game } | null }
 export async function badgesOf(env, petId) {
-  const { results } = await env.DB.prepare('SELECT day, rank FROM game_badges WHERE pet_id = ?1 ORDER BY day DESC').bind(petId).all();
+  const { results } = await env.DB.prepare('SELECT game, day, rank FROM game_medals WHERE pet_id = ?1 ORDER BY day DESC, rank ASC').bind(petId).all();
   const n = (r) => results.filter((x) => x.rank === r).length;
-  return { gold: n(1), silver: n(2), bronze: n(3), latest: results[0] ? { day: results[0].day, rank: results[0].rank } : null };
+  return { gold: n(1), silver: n(2), bronze: n(3), latest: results[0] ? { day: results[0].day, rank: results[0].rank, game: results[0].game } : null };
 }
 
 // ---------- care-alert subscriptions ----------

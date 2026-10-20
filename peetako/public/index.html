@@ -284,10 +284,10 @@
 </dialog>
 
 
-<!-- Phase 2C dialogs: shop, friends, game result, leaderboards, share, PIN -->
+<!-- Phase 2C dialogs: shop, friends, game menu, game result, leaderboards, share, PIN -->
 <dialog id="shop-dialog" class="sheet retro wide-sheet" aria-labelledby="shop-title">
   <div class="sheet-head"><h2 id="shop-title" class="px">Shop · <span id="shop-coins">0</span> coins</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close shop">✕</button></div>
-  <p class="hint">Earn coins by caring (+10 for the first Feed, Clean, Warm and Play of each day, up to 30), checking in every day, Tangkap Kelip-kelip and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
+  <p class="hint">Earn coins by caring (+10 for the first Feed, Clean, Warm and Play of each day, up to 30), checking in every day, the mini-games and new tiers. No real money, no lucky draws: every item has a fixed price.</p>
   <div id="shop-list"></div>
 </dialog>
 
@@ -305,6 +305,13 @@
   <p class="hint">Pamper gives both Peetako +5 FUN (3 a day). Battles are friendly: nobody loses anything (5 a day). From Tier 4 you can give a younger Peetako a Mentor Boost. Pamper, gifts, battles and Mentor Boosts build Bond; at Buddies you can take a shared selfie.</p>
 </dialog>
 
+<dialog id="games-dialog" class="sheet retro" aria-labelledby="games-title">
+  <div class="sheet-head"><h2 id="games-title" class="px">Games</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <p id="games-note" class="hint"></p>
+  <div id="games-list" class="game-picks"></div>
+  <button id="games-board" class="rbtn light wide" type="button">Leaderboards</button>
+</dialog>
+
 <dialog id="result-dialog" class="sheet retro" aria-labelledby="result-title">
   <h2 id="result-title" class="px">Tangkap Kelip-kelip</h2>
   <div id="result-body"></div>
@@ -316,7 +323,8 @@
 </dialog>
 
 <dialog id="board-dialog" class="sheet retro" aria-labelledby="board-title">
-  <div class="sheet-head"><h2 id="board-title" class="px">Top catchers</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <div class="sheet-head"><h2 id="board-title" class="px">Leaderboards</h2><button class="icon-btn" type="button" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <div class="field"><label for="board-game">Game</label><select id="board-game" class="cp-select"></select></div>
   <div class="seg grid4" role="radiogroup" aria-label="Which leaderboard">
     <label><input type="radio" name="bscope" value="global" checked><span>Global</span></label>
     <label><input type="radio" name="bscope" value="mine"><span>My country</span></label>
@@ -432,7 +440,7 @@
   <p>Organic Peetako eat <em>kelkatu</em> (termite alates) and bask under a lamp because geckos are cold-blooded. Robot Peetako charge on Hydro Cells powered by the Rajang River and need coolant to stop overheating. As your pet grows, its backdrop travels across Malaysian Borneo: a longhouse, a kampung garden, the sago gardens of Mukah, the rainforest of Danum and Bako, the fireflies of the Kinabatangan, the bat exodus at Mulu, the sea at Semporna, the Bario highlands and finally the summit of Kinabalu.</p>
   <p>Your Peetako shows how it feels: a smile and floating hearts when it is happy, a thought bubble when it is hungry, Z letters when it is sleepy and a little rain cloud when it is sad. Its sky follows your own clock, from dawn to night.</p>
   <h2>Friends, coins and fireflies</h2>
-  <p>The first Feed, Clean, Warm (or Cool) and Play of each day, a daily check-in and every new tier earn coins. Spend them on a beaded headband, a terendak hat, a pua sash, firefly wings or a new backdrop — no real money, no lucky draws. Play <em>Tangkap Kelip-kelip</em> to catch fireflies for coins and a spot on the daily leaderboard. Share your Call Code so friends can Pamper your Peetako, send it a gift or challenge it to a friendly battle where nobody loses anything.</p>
+  <p>The first Feed, Clean, Warm (or Cool) and Play of each day, a daily check-in and every new tier earn coins. Spend them on a beaded headband, a terendak hat, a pua sash, firefly wings or a new backdrop — no real money, no lucky draws. Play five mini-games, from catching fireflies in <em>Tangkap Kelip-kelip</em> to climbing a tapang tree in <em>Panjat Pokok</em>, for coins and a spot on each game's daily leaderboard. Share your Call Code so friends can Pamper your Peetako, send it a gift or challenge it to a friendly battle where nobody loses anything.</p>
   <p>Fun fact: the English word "gecko" comes from the Malay <em>gekok</em>, which imitates the call of the big tokay gecko. The small house gecko says <em>chik-chak</em>.</p>
 </section>
 

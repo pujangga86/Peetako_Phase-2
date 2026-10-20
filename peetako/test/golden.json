@@ -4337,13 +4337,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -5004,13 +5004,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -5667,13 +5667,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -6321,13 +6321,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -6975,13 +6975,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -7629,13 +7629,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -8283,13 +8283,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -8937,13 +8937,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -9601,13 +9601,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -10110,13 +10110,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -10604,13 +10604,13 @@
     "inventory": [],
     "events": [],
     "game_runs": [],
-    "game_scores": [],
+    "game_best": [],
     "reports": [],
     "battles": [],
     "bonds": [],
     "contacts": [],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -28160,6 +28160,7 @@
      "mentored": false
     },
     "best": 0,
+    "bests": {},
     "owns": [
      "bg-rajang",
      "sayap-kelip"
@@ -28285,6 +28286,7 @@
      "mentored": false
     },
     "best": 0,
+    "bests": {},
     "owns": [
      "bg-rajang",
      "sayap-kelip"
@@ -28334,7 +28336,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28380,7 +28408,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28416,7 +28470,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28425,7 +28505,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 87,
+    "count": 87,
     "coins": 17,
     "best": 87,
     "allTime": 87,
@@ -28508,7 +28590,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28544,7 +28652,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28580,7 +28714,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28589,7 +28749,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 112,
+    "count": 31,
     "coins": 6,
     "best": 112,
     "allTime": 112,
@@ -28672,7 +28834,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28691,7 +28879,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 140,
+    "count": 140,
     "coins": 28,
     "best": 140,
     "allTime": 140,
@@ -28809,7 +28999,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28818,7 +29034,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 120,
+    "count": 120,
     "coins": 24,
     "best": 120,
     "allTime": 120,
@@ -28901,7 +29119,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -28910,7 +29154,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 120,
+    "count": 120,
     "coins": 3,
     "best": 120,
     "allTime": 120,
@@ -28993,7 +29239,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -29002,7 +29274,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 120,
+    "count": 120,
     "coins": 0,
     "best": 120,
     "allTime": 120,
@@ -29068,6 +29342,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "scope": "global",
@@ -29113,6 +29388,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "scope": "global",
@@ -29146,6 +29422,994 @@
      }
     ],
     "me": null
+   }
+  },
+  {
+   "label": "game start unknown game",
+   "t": 1801423274000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_game",
+    "message": "Choose a game from the list."
+   }
+  },
+  {
+   "label": "rentak start G too fast",
+   "t": 1801423274000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "b1bbec0abed0847dbd5ebe3fbedf72b92e02e9be3bff150dfdc8c1021cbfafcb",
+    "setup": {
+     "game": "rentak",
+     "name": "Ikut Rentak",
+     "unit": "round",
+     "units": "rounds",
+     "perCoin": 1,
+     "startLen": 3,
+     "maxRounds": 40,
+     "pointsPerNote": 10,
+     "minMsPerNote": 500
+    }
+   }
+  },
+  {
+   "label": "rentak finish G too fast",
+   "t": 1801423279000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "rentak start G over max rounds",
+   "t": 1801423279000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "1d0ad4d8a4bf3258396ef1ec69cebb01548d865d09924bdb28244869bfcae0b3",
+    "setup": {
+     "game": "rentak",
+     "name": "Ikut Rentak",
+     "unit": "round",
+     "units": "rounds",
+     "perCoin": 1,
+     "startLen": 3,
+     "maxRounds": 40,
+     "pointsPerNote": 10,
+     "minMsPerNote": 500
+    }
+   }
+  },
+  {
+   "label": "rentak finish G over max rounds",
+   "t": 1801423579000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "rentak start G ok, client game ignored",
+   "t": 1801423579000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "5fdd2e23c118d70f9aa0bd40695a9a3b4a79a0e73b9fa7714e0b94a4ae99e303",
+    "setup": {
+     "game": "rentak",
+     "name": "Ikut Rentak",
+     "unit": "round",
+     "units": "rounds",
+     "perCoin": 1,
+     "startLen": 3,
+     "maxRounds": 40,
+     "pointsPerNote": 10,
+     "minMsPerNote": 500
+    }
+   }
+  },
+  {
+   "label": "rentak finish G ok, client game ignored",
+   "t": 1801423609000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "rentak",
+    "score": 330,
+    "count": 6,
+    "coins": 6,
+    "best": 330,
+    "allTime": 330,
+    "rankDay": 1,
+    "rankAll": 1,
+    "me": {
+     "coins": 34,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 34,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 1,
+      "mentors": 0,
+      "caredTypes": []
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3,
+      "mentors": 3
+     },
+     "badges": {
+      "gold": 0,
+      "silver": 0,
+      "bronze": 0,
+      "latest": null
+     },
+     "resetsInMs": 73991000,
+     "owned": [
+      "payung",
+      "rantai-manik",
+      "terendak"
+     ],
+     "referral": null,
+     "events": [
+      {
+       "id": 4,
+       "kind": "pamper",
+       "at": 1801422966000,
+       "data": {
+        "fun": 5,
+        "bond": 1
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 3,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "payung"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 2,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "terendak"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 1,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "rantai-manik"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "lidah start G too many bugs",
+   "t": 1801423609000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "7697a358cdb4379bbc8fad47a5a9899267b9462b85b1fa4ce7e9d96307417ba5",
+    "setup": {
+     "game": "lidah",
+     "name": "Lidah Pantas",
+     "unit": "bug",
+     "units": "bugs",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       15,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 2.5,
+     "maxScore": 3000
+    }
+   }
+  },
+  {
+   "label": "lidah finish G too many bugs",
+   "t": 1801423639000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "lidah start G ok",
+   "t": 1801423639000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "943c2c28f651ad7b2ff823d3f940183539e6de3c0e3aa7691c4e231be03b818c",
+    "setup": {
+     "game": "lidah",
+     "name": "Lidah Pantas",
+     "unit": "bug",
+     "units": "bugs",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       15,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 2.5,
+     "maxScore": 3000
+    }
+   }
+  },
+  {
+   "label": "lidah finish G ok",
+   "t": 1801423669000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "lidah",
+    "score": 40,
+    "count": 20,
+    "coins": 4,
+    "best": 40,
+    "allTime": 40,
+    "rankDay": 1,
+    "rankAll": 1,
+    "me": {
+     "coins": 38,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 38,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 1,
+      "mentors": 0,
+      "caredTypes": []
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3,
+      "mentors": 3
+     },
+     "badges": {
+      "gold": 0,
+      "silver": 0,
+      "bronze": 0,
+      "latest": null
+     },
+     "resetsInMs": 73931000,
+     "owned": [
+      "payung",
+      "rantai-manik",
+      "terendak"
+     ],
+     "referral": null,
+     "events": [
+      {
+       "id": 4,
+       "kind": "pamper",
+       "at": 1801422966000,
+       "data": {
+        "fun": 5,
+        "bond": 1
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 3,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "payung"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 2,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "terendak"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 1,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "rantai-manik"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "motif start G too fast",
+   "t": 1801423669000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "22781987df9327af36bf517c310be955803b2170738ea64ecbf150034164e2ab",
+    "setup": {
+     "game": "motif",
+     "name": "Padan Motif",
+     "unit": "pair",
+     "units": "pairs",
+     "perCoin": 3,
+     "boards": [
+      6,
+      8,
+      10
+     ],
+     "pairPoints": 10,
+     "missPenalty": 2,
+     "clearBonus": 50,
+     "minMsPerPair": 500,
+     "maxMisses": 2000
+    }
+   }
+  },
+  {
+   "label": "motif finish G too fast",
+   "t": 1801423674000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "motif start G more pairs than boards",
+   "t": 1801423674000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "b9970eb09bff26bec9eb419a115ab22a32981d64c1e5820186a9111726fd9ffc",
+    "setup": {
+     "game": "motif",
+     "name": "Padan Motif",
+     "unit": "pair",
+     "units": "pairs",
+     "perCoin": 3,
+     "boards": [
+      6,
+      8,
+      10
+     ],
+     "pairPoints": 10,
+     "missPenalty": 2,
+     "clearBonus": 50,
+     "minMsPerPair": 500,
+     "maxMisses": 2000
+    }
+   }
+  },
+  {
+   "label": "motif finish G more pairs than boards",
+   "t": 1801423734000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "motif start G ok, two boards",
+   "t": 1801423734000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "288b011eb5ffc0b195a6ce4c50e03fed788132f57e5b5c0f9373ee1780adcb79",
+    "setup": {
+     "game": "motif",
+     "name": "Padan Motif",
+     "unit": "pair",
+     "units": "pairs",
+     "perCoin": 3,
+     "boards": [
+      6,
+      8,
+      10
+     ],
+     "pairPoints": 10,
+     "missPenalty": 2,
+     "clearBonus": 50,
+     "minMsPerPair": 500,
+     "maxMisses": 2000
+    }
+   }
+  },
+  {
+   "label": "motif finish G ok, two boards",
+   "t": 1801423794000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "motif",
+    "score": 230,
+    "count": 14,
+    "coins": 4,
+    "best": 230,
+    "allTime": 230,
+    "rankDay": 1,
+    "rankAll": 1,
+    "me": {
+     "coins": 42,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 42,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 1,
+      "mentors": 0,
+      "caredTypes": []
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3,
+      "mentors": 3
+     },
+     "badges": {
+      "gold": 0,
+      "silver": 0,
+      "bronze": 0,
+      "latest": null
+     },
+     "resetsInMs": 73806000,
+     "owned": [
+      "payung",
+      "rantai-manik",
+      "terendak"
+     ],
+     "referral": null,
+     "events": [
+      {
+       "id": 4,
+       "kind": "pamper",
+       "at": 1801422966000,
+       "data": {
+        "fun": 5,
+        "bond": 1
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 3,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "payung"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 2,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "terendak"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 1,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "rantai-manik"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "panjat start G too high",
+   "t": 1801423794000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "73ea3e932ae39e15f940a87496b46edeae1d16489ff0e686eb703f88327c9126",
+    "setup": {
+     "game": "panjat",
+     "name": "Panjat Pokok",
+     "unit": "metre",
+     "units": "metres",
+     "perCoin": 20,
+     "maxPerSecond": 8,
+     "maxScore": 5000
+    }
+   }
+  },
+  {
+   "label": "panjat finish G too high",
+   "t": 1801423824000,
+   "status": 409,
+   "setCookie": null,
+   "data": {
+    "error": "implausible",
+    "message": "That score cannot be counted."
+   }
+  },
+  {
+   "label": "panjat start G ok",
+   "t": 1801423824000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "d0ee63156bdbfefc092a54b88351313e6539d2c2918968fa3de534b217d72c04",
+    "setup": {
+     "game": "panjat",
+     "name": "Panjat Pokok",
+     "unit": "metre",
+     "units": "metres",
+     "perCoin": 20,
+     "maxPerSecond": 8,
+     "maxScore": 5000
+    }
+   }
+  },
+  {
+   "label": "panjat finish G ok",
+   "t": 1801423854000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "panjat",
+    "score": 150,
+    "count": 150,
+    "coins": 7,
+    "best": 150,
+    "allTime": 150,
+    "rankDay": 1,
+    "rankAll": 1,
+    "me": {
+     "coins": 49,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 49,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 1,
+      "mentors": 0,
+      "caredTypes": []
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3,
+      "mentors": 3
+     },
+     "badges": {
+      "gold": 0,
+      "silver": 0,
+      "bronze": 0,
+      "latest": null
+     },
+     "resetsInMs": 73746000,
+     "owned": [
+      "payung",
+      "rantai-manik",
+      "terendak"
+     ],
+     "referral": null,
+     "events": [
+      {
+       "id": 4,
+       "kind": "pamper",
+       "at": 1801422966000,
+       "data": {
+        "fun": 5,
+        "bond": 1
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 3,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "payung"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 2,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "terendak"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 1,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "rantai-manik"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "panjat start G cap",
+   "t": 1801423854000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "run": "ab7565eb5effb2fb8dfc2a81aa9690556343c30f34eebf83eb3bce9ff990ed1e",
+    "setup": {
+     "game": "panjat",
+     "name": "Panjat Pokok",
+     "unit": "metre",
+     "units": "metres",
+     "perCoin": 20,
+     "maxPerSecond": 8,
+     "maxScore": 5000
+    }
+   }
+  },
+  {
+   "label": "panjat finish G cap",
+   "t": 1801423884000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "panjat",
+    "score": 60,
+    "count": 60,
+    "coins": 1,
+    "best": 150,
+    "allTime": 150,
+    "rankDay": 1,
+    "rankAll": 1,
+    "me": {
+     "coins": 50,
+     "streak": 0,
+     "checkedIn": false,
+     "canCheckIn": true,
+     "today": {
+      "careCoins": 0,
+      "gameCoins": 50,
+      "gifts": 0,
+      "battles": 0,
+      "pampers": 1,
+      "mentors": 0,
+      "caredTypes": []
+     },
+     "caps": {
+      "careCoins": 30,
+      "gameCoins": 50,
+      "gifts": 5,
+      "battles": 5,
+      "pampers": 3,
+      "mentors": 3
+     },
+     "badges": {
+      "gold": 0,
+      "silver": 0,
+      "bronze": 0,
+      "latest": null
+     },
+     "resetsInMs": 73716000,
+     "owned": [
+      "payung",
+      "rantai-manik",
+      "terendak"
+     ],
+     "referral": null,
+     "events": [
+      {
+       "id": 4,
+       "kind": "pamper",
+       "at": 1801422966000,
+       "data": {
+        "fun": 5,
+        "bond": 1
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 3,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "payung"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 2,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "terendak"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      },
+      {
+       "id": 1,
+       "kind": "gift",
+       "at": 1801422966000,
+       "data": {
+        "item": "rantai-manik"
+       },
+       "from": {
+        "callCode": "PTK-KINABALU",
+        "name": "Elder"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "label": "leaderboard rentak day",
+   "t": 1801423884000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "rentak",
+    "period": "day",
+    "day": "2027-02-01",
+    "scope": "global",
+    "country": null,
+    "sort": "score",
+    "resetsInMs": 73716000,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 330,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": {
+     "callCode": "PTK-GIGIPTK",
+     "rank": 1,
+     "score": 330
+    }
+   }
+  },
+  {
+   "label": "leaderboard motif all",
+   "t": 1801423884000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "motif",
+    "period": "all",
+    "day": null,
+    "scope": "global",
+    "country": null,
+    "sort": "score",
+    "resetsInMs": null,
+    "rows": [
+     {
+      "rank": 1,
+      "callCode": "PTK-GIGIPTK",
+      "name": "Gigi",
+      "score": 230,
+      "type": "organic",
+      "palette": "laut",
+      "tier": 0,
+      "status": "alive",
+      "country": "MY",
+      "ageHours": 0
+     }
+    ],
+    "me": null
+   }
+  },
+  {
+   "label": "leaderboard bad game",
+   "t": 1801423884000,
+   "status": 400,
+   "setCookie": null,
+   "data": {
+    "error": "bad_game",
+    "message": "Choose a game from the list."
+   }
+  },
+  {
+   "label": "countries board panjat",
+   "t": 1801423884000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "game": "panjat",
+    "period": "all",
+    "day": null,
+    "resetsInMs": null,
+    "minPlayers": 3,
+    "rows": [],
+    "mine": null
+   }
+  },
+  {
+   "label": "public G best per game",
+   "t": 1801423884000,
+   "status": 200,
+   "setCookie": null,
+   "data": {
+    "pet": {
+     "callCode": "PTK-GIGIPTK",
+     "name": "Gigi",
+     "nameHidden": false,
+     "canReport": {
+      "name": true
+     },
+     "country": "MY",
+     "type": "organic",
+     "palette": "laut",
+     "tier": 0,
+     "tierName": "Egg",
+     "backdrop": "Longhouse",
+     "status": "active",
+     "ageHours": 0,
+     "careDays": 0,
+     "stats": {
+      "energy": 79,
+      "health": 79,
+      "temperature": 79,
+      "mood": 89
+     },
+     "equipped": {},
+     "battles": {
+      "wins": 0,
+      "losses": 0
+     },
+     "legacyScore": null,
+     "openToChallenge": true,
+     "legacy": false,
+     "hibernating": false,
+     "mentored": false
+    },
+    "best": 140,
+    "bests": {
+     "kelip": 140,
+     "lidah": 40,
+     "motif": 230,
+     "panjat": 150,
+     "rentak": 330
+    },
+    "owns": [
+     "payung",
+     "rantai-manik",
+     "terendak"
+    ],
+    "badges": {
+     "gold": 0,
+     "silver": 0,
+     "bronze": 0,
+     "latest": null
+    }
    }
   },
   {
@@ -29445,6 +30709,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "scope": "mine",
@@ -29490,6 +30755,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "scope": "country",
@@ -29506,6 +30772,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "resetsInMs": null,
@@ -29866,7 +31133,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
-    "run": "943c2c28f651ad7b2ff823d3f940183539e6de3c0e3aa7691c4e231be03b818c",
+    "run": "1be886aa9ca13ff07c1fd26281b3e336969a47ebf0975db6463cc703efa06c5b",
     "durationMs": 60000,
     "misses": 3,
     "goldValue": 5,
@@ -29883,7 +31150,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -29892,7 +31185,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 60,
+    "count": 60,
     "coins": 12,
     "best": 60,
     "allTime": 60,
@@ -29939,6 +31234,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "resetsInMs": null,
@@ -29964,7 +31260,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
-    "run": "22781987df9327af36bf517c310be955803b2170738ea64ecbf150034164e2ab",
+    "run": "0991015ceb7d7ca77f9e3ee2611dd13dbf4a7a1265121189814dcf68ea96106c",
     "durationMs": 60000,
     "misses": 3,
     "goldValue": 5,
@@ -29981,7 +31277,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -29990,7 +31312,9 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "score": 75,
+    "count": 75,
     "coins": 15,
     "best": 75,
     "allTime": 75,
@@ -30037,7 +31361,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
-    "run": "b9970eb09bff26bec9eb419a115ab22a32981d64c1e5820186a9111726fd9ffc",
+    "run": "12bc2ed3e111f8fc1d146d3e2c3bb95841e79e2a56c4ca86740dbb5629933e63",
     "durationMs": 60000,
     "misses": 3,
     "goldValue": 5,
@@ -30054,7 +31378,33 @@
       5,
       2
      ]
-    ]
+    ],
+    "setup": {
+     "game": "kelip",
+     "name": "Tangkap Kelip-kelip",
+     "unit": "firefly",
+     "units": "fireflies",
+     "perCoin": 5,
+     "runMs": 60000,
+     "misses": 3,
+     "goldValue": 5,
+     "combo": [
+      [
+       20,
+       4
+      ],
+      [
+       10,
+       3
+      ],
+      [
+       5,
+       2
+      ]
+     ],
+     "maxPerSecond": 4,
+     "maxScore": 5000
+    }
    }
   },
   {
@@ -30073,6 +31423,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "resetsInMs": null,
@@ -30098,6 +31449,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "scope": "mine",
@@ -30167,6 +31519,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "scope": "country",
@@ -30183,6 +31536,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "resetsInMs": 74191000,
@@ -30204,6 +31558,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "scope": "country",
@@ -30269,6 +31624,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "scope": "country",
@@ -30334,6 +31690,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "all",
     "day": null,
     "scope": "country",
@@ -30399,6 +31756,7 @@
    "status": 200,
    "setCookie": null,
    "data": {
+    "game": "kelip",
     "period": "day",
     "day": "2027-02-01",
     "scope": "global",
@@ -30498,6 +31856,7 @@
      "mentored": false
     },
     "best": 0,
+    "bests": {},
     "owns": [],
     "badges": {
      "gold": 0,
@@ -30994,7 +32353,7 @@
      ]
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -31096,13 +32455,13 @@
    "data": {
     "won": true,
     "rounds": [
-     "a",
      "d",
+     "a",
      "a"
     ],
     "power": {
-     "me": 65,
-     "them": 23
+     "me": 68,
+     "them": 24
     },
     "bond": {
      "points": 85,
@@ -31263,8 +32622,8 @@
      "d"
     ],
     "power": {
-     "me": 60,
-     "them": 21
+     "me": 64,
+     "them": 23
     },
     "bond": {
      "points": 90,
@@ -31421,11 +32780,11 @@
     "won": true,
     "rounds": [
      "a",
-     "a",
-     "d"
+     "d",
+     "a"
     ],
     "power": {
-     "me": 66,
+     "me": 56,
      "them": 19
     },
     "bond": {
@@ -31587,8 +32946,8 @@
      "d"
     ],
     "power": {
-     "me": 60,
-     "them": 20
+     "me": 62,
+     "them": 30
     },
     "bond": {
      "points": 100,
@@ -31749,8 +33108,8 @@
      "a"
     ],
     "power": {
-     "me": 65,
-     "them": 25
+     "me": 54,
+     "them": 35
     },
     "bond": {
      "points": 105,
@@ -31921,8 +33280,8 @@
      "d"
     ],
     "power": {
-     "me": 23,
-     "them": 57
+     "me": 31,
+     "them": 66
     },
     "bond": {
      "points": 110,
@@ -32005,7 +33364,7 @@
      "mentored": false
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -32234,7 +33593,7 @@
      ]
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -32464,7 +33823,7 @@
      ]
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -32703,7 +34062,7 @@
      ]
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -33698,7 +35057,7 @@
      ]
     },
     "me": {
-     "coins": 88,
+     "coins": 110,
      "streak": 0,
      "checkedIn": false,
      "canCheckIn": true,
@@ -34342,7 +35701,7 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "coins": 88,
+      "coins": 110,
       "equipped": "{}",
       "checkin_day": null,
       "streak": 0,
@@ -34496,6 +35855,12 @@
     ],
     "sessions": [
      {
+      "token_hash": "0f6556751534e7fc643235d199a9273d111c75aa3de45ba5d61fbe7935ebaa56",
+      "pet_id": 16,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
       "token_hash": "112708c38d3741becfeab96de9bc9fd2451bee1435eed6037c9573df7ef94180",
       "pet_id": 3,
       "created_at": 1791590400000,
@@ -34506,6 +35871,18 @@
       "pet_id": 13,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
+     },
+     {
+      "token_hash": "33ac8591f5b6602e2c6e6f7050cf7b20a4f9b25f9e01ffb406f6ae1f6ac04eb9",
+      "pet_id": 2,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
+      "token_hash": "3ee3022e2fdd1a741e9ed86ab22c1d9c019ed24e8bbb28ac4db2a744e295a653",
+      "pet_id": 15,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
      },
      {
       "token_hash": "4621744eb357ea19aa031f6aed996bdbf479ba0b405e43520dc2d7d93b539016",
@@ -34520,8 +35897,8 @@
       "expires_at": 1802502966000
      },
      {
-      "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
-      "pet_id": 16,
+      "token_hash": "81e0c028528d2bc02a8f366b8bede8871887635ef424235701cc9a07c17444bd",
+      "pet_id": 14,
       "created_at": 1801423274000,
       "expires_at": 1804015274000
      },
@@ -34532,22 +35909,10 @@
       "expires_at": 1796166966000
      },
      {
-      "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
-      "pet_id": 14,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
-     },
-     {
       "token_hash": "8bcc9db11a41c94bb1f5de277f93b594c6c043faa2426f4f172adf7729521a65",
       "pet_id": 12,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
-     },
-     {
-      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
-      "pet_id": 2,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
      },
      {
       "token_hash": "d48e776d8e7f87e0c64b1994bc7dea3657f55673cb7e3c2ddd0fb4b3f577dede",
@@ -34560,12 +35925,6 @@
       "pet_id": 10,
       "created_at": 1795691766000,
       "expires_at": 1798283766000
-     },
-     {
-      "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
-      "pet_id": 15,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
      },
      {
       "token_hash": "eef32cde14c839ec8d10c8bfa6c6a807a64b85d00c9210ae20e7bd76275f38cb",
@@ -36339,7 +37698,7 @@
       "pet_id": 13,
       "day": "2027-02-01",
       "kind": "game_coins",
-      "n": 28
+      "n": 50
      },
      {
       "pet_id": 13,
@@ -36561,105 +37920,227 @@
       "token_hash": "6dfd73a42dbda0361935af5a1dbf7f18f2b7dd1f864a97574f70e9c2e46f608b",
       "pet_id": 10,
       "started_at": 1801422966000,
-      "finished_at": 1801422967000
+      "finished_at": 1801422967000,
+      "game": "kelip"
      },
      {
       "token_hash": "d336981b98fdc4e858ca30902b80e0f96b0a4204a4ee64f8cddb84b7a2f7cff8",
       "pet_id": 10,
       "started_at": 1801422967000,
-      "finished_at": 1801423012000
+      "finished_at": 1801423012000,
+      "game": "kelip"
      },
      {
       "token_hash": "01886d1de274d0c1b1eb4461367c4a8d795948fbd77acd3046b89ff2c8bc54f4",
       "pet_id": 10,
       "started_at": 1801423012000,
-      "finished_at": 1801423058000
+      "finished_at": 1801423058000,
+      "game": "kelip"
      },
      {
       "token_hash": "f7ec152c52a94a7035b771414026f8adb847535e074d99ab5a66a16ec23e7b1e",
       "pet_id": 10,
       "started_at": 1801423058000,
-      "finished_at": 1801423070000
+      "finished_at": 1801423070000,
+      "game": "kelip"
      },
      {
       "token_hash": "70b406bb066e97fe40a183146195a9c992953c315cde78ecf50f3bea8be08770",
       "pet_id": 10,
       "started_at": 1801423070000,
-      "finished_at": 1801423082000
+      "finished_at": 1801423082000,
+      "game": "kelip"
      },
      {
       "token_hash": "7fd5a3bbf9188483d8a187bdb9d855d4874fc3c403fd1b6d38a206696d804a22",
       "pet_id": 10,
       "started_at": 1801423082000,
-      "finished_at": 1801423094000
+      "finished_at": 1801423094000,
+      "game": "kelip"
      },
      {
       "token_hash": "b9bfcf925ebd6a8986a88692cb1809dbf0510adbbefb1c63dda2000d03ac6b31",
       "pet_id": 13,
       "started_at": 1801423094000,
-      "finished_at": 1801423139000
+      "finished_at": 1801423139000,
+      "game": "kelip"
      },
      {
       "token_hash": "80ca19e56e901dd8077b7e4d8c2391ffb9323b49a20563337c2801e8e30716fa",
       "pet_id": 10,
       "started_at": 1801423139000,
-      "finished_at": 1801423184000
+      "finished_at": 1801423184000,
+      "game": "kelip"
      },
      {
       "token_hash": "7f81356be05946d5e5ae0da8f2116f202daa8ffbd34c065de53d2421fad032b9",
       "pet_id": 10,
       "started_at": 1801423184000,
-      "finished_at": 1801423229000
+      "finished_at": 1801423229000,
+      "game": "kelip"
      },
      {
       "token_hash": "90d2b839a5942afe2c789c4881cfe3deaf719dafe8b0251200540e0d2d8cf15e",
       "pet_id": 10,
       "started_at": 1801423229000,
-      "finished_at": 1801423274000
+      "finished_at": 1801423274000,
+      "game": "kelip"
+     },
+     {
+      "token_hash": "8f7856c7f0b6fbb0d7f2629c5fd6993aba751ce4ebae9ef73d9f1b4de3883af5",
+      "pet_id": 14,
+      "started_at": 1801423274000,
+      "finished_at": 1801423319000,
+      "game": "kelip"
+     },
+     {
+      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
+      "pet_id": 13,
+      "started_at": 1801423274000,
+      "finished_at": 1801423279000,
+      "game": "rentak"
+     },
+     {
+      "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
+      "pet_id": 13,
+      "started_at": 1801423279000,
+      "finished_at": 1801423579000,
+      "game": "rentak"
+     },
+     {
+      "token_hash": "ca093a69388effed5368bc895f6749f59ea23e1800ec291f8d888c0b8a471e81",
+      "pet_id": 15,
+      "started_at": 1801423319000,
+      "finished_at": 1801423364000,
+      "game": "kelip"
+     },
+     {
+      "token_hash": "8e10d4678d44aad9211a425911918bfbf5ce66a4de78ee6ea2df22b623e2d49a",
+      "pet_id": 16,
+      "started_at": 1801423364000,
+      "finished_at": 1801423409000,
+      "game": "kelip"
+     },
+     {
+      "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
+      "pet_id": 13,
+      "started_at": 1801423579000,
+      "finished_at": 1801423609000,
+      "game": "rentak"
+     },
+     {
+      "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
+      "pet_id": 13,
+      "started_at": 1801423609000,
+      "finished_at": 1801423639000,
+      "game": "lidah"
      },
      {
       "token_hash": "e88e494ef29eeaec575f84e9162d3b00b4eb85f505aa4c8e7e4af29308e6f267",
-      "pet_id": 14,
-      "started_at": 1801423274000,
-      "finished_at": 1801423319000
+      "pet_id": 13,
+      "started_at": 1801423639000,
+      "finished_at": 1801423669000,
+      "game": "lidah"
      },
      {
       "token_hash": "976a3c230faa38ed59edeb83f236b0bd0047a9826a94c9af05a6f8e3ac5ba45e",
-      "pet_id": 15,
-      "started_at": 1801423319000,
-      "finished_at": 1801423364000
+      "pet_id": 13,
+      "started_at": 1801423669000,
+      "finished_at": 1801423674000,
+      "game": "motif"
      },
      {
       "token_hash": "bdb7c35327eb23f600789dceabb93786412afcc139b39b2e92f33c9a29c019bd",
-      "pet_id": 16,
-      "started_at": 1801423364000,
-      "finished_at": 1801423409000
+      "pet_id": 13,
+      "started_at": 1801423674000,
+      "finished_at": 1801423734000,
+      "game": "motif"
+     },
+     {
+      "token_hash": "a9e3db96420fe8815d20e5ff58835f35fff0d1eaceaadd5a5887f3b45f06cdfa",
+      "pet_id": 13,
+      "started_at": 1801423734000,
+      "finished_at": 1801423794000,
+      "game": "motif"
+     },
+     {
+      "token_hash": "976ad930298684039a74404196cdd9f93771785354a9831952a77d69df267ea0",
+      "pet_id": 13,
+      "started_at": 1801423794000,
+      "finished_at": 1801423824000,
+      "game": "panjat"
+     },
+     {
+      "token_hash": "bf0a7c8b94de1baec18179f44df316f14ff2213691d704bded540df28f802401",
+      "pet_id": 13,
+      "started_at": 1801423824000,
+      "finished_at": 1801423854000,
+      "game": "panjat"
+     },
+     {
+      "token_hash": "521f58e8129bb3ba7b68a840ba0226f1d504cb4ccf2812e273eb20cce72b5a76",
+      "pet_id": 13,
+      "started_at": 1801423854000,
+      "finished_at": 1801423884000,
+      "game": "panjat"
      }
     ],
-    "game_scores": [
+    "game_best": [
      {
+      "game": "kelip",
       "pet_id": 10,
       "day": "2027-02-01",
       "best": 120,
       "at": 1801423184000
      },
      {
+      "game": "kelip",
       "pet_id": 13,
       "day": "2027-02-01",
       "best": 140,
       "at": 1801423139000
      },
      {
+      "game": "kelip",
       "pet_id": 14,
       "day": "2027-02-01",
       "best": 60,
       "at": 1801423319000
      },
      {
+      "game": "kelip",
       "pet_id": 15,
       "day": "2027-02-01",
       "best": 75,
       "at": 1801423364000
+     },
+     {
+      "game": "lidah",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 40,
+      "at": 1801423669000
+     },
+     {
+      "game": "motif",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 230,
+      "at": 1801423794000
+     },
+     {
+      "game": "panjat",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 150,
+      "at": 1801423854000
+     },
+     {
+      "game": "rentak",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 330,
+      "at": 1801423609000
      }
     ],
     "reports": [
@@ -36740,7 +38221,7 @@
      }
     ],
     "blocks": [],
-    "game_badges": []
+    "game_medals": []
    }
   },
   {
@@ -37338,7 +38819,7 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "coins": 88,
+      "coins": 110,
       "equipped": "{}",
       "checkin_day": null,
       "streak": 0,
@@ -37492,10 +38973,28 @@
     ],
     "sessions": [
      {
+      "token_hash": "0f6556751534e7fc643235d199a9273d111c75aa3de45ba5d61fbe7935ebaa56",
+      "pet_id": 16,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
       "token_hash": "31daa366b318eeae59d82e8be2fe615d2518e3ee4fdd31e275255ce921ac90ab",
       "pet_id": 13,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
+     },
+     {
+      "token_hash": "33ac8591f5b6602e2c6e6f7050cf7b20a4f9b25f9e01ffb406f6ae1f6ac04eb9",
+      "pet_id": 2,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
+      "token_hash": "3ee3022e2fdd1a741e9ed86ab22c1d9c019ed24e8bbb28ac4db2a744e295a653",
+      "pet_id": 15,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
      },
      {
       "token_hash": "4621744eb357ea19aa031f6aed996bdbf479ba0b405e43520dc2d7d93b539016",
@@ -37510,13 +39009,7 @@
       "expires_at": 1802502966000
      },
      {
-      "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
-      "pet_id": 16,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
-     },
-     {
-      "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
+      "token_hash": "81e0c028528d2bc02a8f366b8bede8871887635ef424235701cc9a07c17444bd",
       "pet_id": 14,
       "created_at": 1801423274000,
       "expires_at": 1804015274000
@@ -37526,18 +39019,6 @@
       "pet_id": 12,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
-     },
-     {
-      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
-      "pet_id": 2,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
-     },
-     {
-      "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
-      "pet_id": 15,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
      }
     ],
     "push_subscriptions": [],
@@ -37799,7 +39280,7 @@
       "pet_id": 13,
       "day": "2027-02-01",
       "kind": "game_coins",
-      "n": 28
+      "n": 50
      },
      {
       "pet_id": 13,
@@ -38017,30 +39498,62 @@
      }
     ],
     "game_runs": [],
-    "game_scores": [
+    "game_best": [
      {
+      "game": "kelip",
       "pet_id": 10,
       "day": "2027-02-01",
       "best": 120,
       "at": 1801423184000
      },
      {
+      "game": "kelip",
       "pet_id": 13,
       "day": "2027-02-01",
       "best": 140,
       "at": 1801423139000
      },
      {
+      "game": "kelip",
       "pet_id": 14,
       "day": "2027-02-01",
       "best": 60,
       "at": 1801423319000
      },
      {
+      "game": "kelip",
       "pet_id": 15,
       "day": "2027-02-01",
       "best": 75,
       "at": 1801423364000
+     },
+     {
+      "game": "lidah",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 40,
+      "at": 1801423669000
+     },
+     {
+      "game": "motif",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 230,
+      "at": 1801423794000
+     },
+     {
+      "game": "panjat",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 150,
+      "at": 1801423854000
+     },
+     {
+      "game": "rentak",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 330,
+      "at": 1801423609000
      }
     ],
     "reports": [
@@ -38121,24 +39634,55 @@
      }
     ],
     "blocks": [],
-    "game_badges": [
+    "game_medals": [
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 1,
       "pet_id": 13,
       "score": 140
      },
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 2,
       "pet_id": 10,
       "score": 120
      },
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 3,
       "pet_id": 15,
       "score": 75
+     },
+     {
+      "game": "lidah",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 40
+     },
+     {
+      "game": "motif",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 230
+     },
+     {
+      "game": "panjat",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 150
+     },
+     {
+      "game": "rentak",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 330
      }
     ]
    }
@@ -38255,7 +39799,8 @@
       "bronze": 0,
       "latest": {
        "day": "2027-02-01",
-       "rank": 2
+       "rank": 2,
+       "game": "kelip"
       }
      },
      "resetsInMs": 48991000,
@@ -38347,6 +39892,7 @@
      "mentored": false
     },
     "best": 0,
+    "bests": {},
     "owns": [],
     "badges": {
      "gold": 0,
@@ -38948,7 +40494,8 @@
       "bronze": 0,
       "latest": {
        "day": "2027-02-01",
-       "rank": 2
+       "rank": 2,
+       "game": "kelip"
       }
      },
      "resetsInMs": 77791000,
@@ -39087,7 +40634,8 @@
       "bronze": 0,
       "latest": {
        "day": "2027-02-01",
-       "rank": 2
+       "rank": 2,
+       "game": "kelip"
       }
      },
      "resetsInMs": 77791000,
@@ -39232,7 +40780,8 @@
       "bronze": 0,
       "latest": {
        "day": "2027-02-01",
-       "rank": 2
+       "rank": 2,
+       "game": "kelip"
       }
      },
      "resetsInMs": 77791000,
@@ -40180,7 +41729,7 @@
       "ascended_at": null,
       "legacy_score": null,
       "legacy_from": null,
-      "coins": 88,
+      "coins": 110,
       "equipped": "{}",
       "checkin_day": null,
       "streak": 0,
@@ -40426,10 +41975,28 @@
     ],
     "sessions": [
      {
+      "token_hash": "0f6556751534e7fc643235d199a9273d111c75aa3de45ba5d61fbe7935ebaa56",
+      "pet_id": 16,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
       "token_hash": "31daa366b318eeae59d82e8be2fe615d2518e3ee4fdd31e275255ce921ac90ab",
       "pet_id": 13,
       "created_at": 1801422966000,
       "expires_at": 1804014966000
+     },
+     {
+      "token_hash": "33ac8591f5b6602e2c6e6f7050cf7b20a4f9b25f9e01ffb406f6ae1f6ac04eb9",
+      "pet_id": 2,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
+     },
+     {
+      "token_hash": "3ee3022e2fdd1a741e9ed86ab22c1d9c019ed24e8bbb28ac4db2a744e295a653",
+      "pet_id": 15,
+      "created_at": 1801423274000,
+      "expires_at": 1804015274000
      },
      {
       "token_hash": "4621744eb357ea19aa031f6aed996bdbf479ba0b405e43520dc2d7d93b539016",
@@ -40438,19 +42005,7 @@
       "expires_at": 1804014966000
      },
      {
-      "token_hash": "4c6cfa1709cc058c443b36339ef7a40805f5b1506b9d62af7506622e67bac216",
-      "pet_id": 17,
-      "created_at": 1801535009000,
-      "expires_at": 1804127009000
-     },
-     {
-      "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
-      "pet_id": 16,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
-     },
-     {
-      "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
+      "token_hash": "81e0c028528d2bc02a8f366b8bede8871887635ef424235701cc9a07c17444bd",
       "pet_id": 14,
       "created_at": 1801423274000,
       "expires_at": 1804015274000
@@ -40462,22 +42017,16 @@
       "expires_at": 1804014966000
      },
      {
-      "token_hash": "b1ff55d6c381cfe59ca30fbbc17e5b6f0675cb2bd020164e5829da943a2be102",
+      "token_hash": "94ddfef3e1f44198e8e8cd82a99d080235946e91996b8fedd5a15ed2f907330d",
+      "pet_id": 17,
+      "created_at": 1801535009000,
+      "expires_at": 1804127009000
+     },
+     {
+      "token_hash": "ef6c370c5863605e4287ed3e68e400ac3a832b7ea952521eb7e084afd68a20ac",
       "pet_id": 18,
       "created_at": 1802197409000,
       "expires_at": 1804789409000
-     },
-     {
-      "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
-      "pet_id": 2,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
-     },
-     {
-      "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
-      "pet_id": 15,
-      "created_at": 1801423274000,
-      "expires_at": 1804015274000
      }
     ],
     "push_subscriptions": [],
@@ -40656,30 +42205,62 @@
      }
     ],
     "game_runs": [],
-    "game_scores": [
+    "game_best": [
      {
+      "game": "kelip",
       "pet_id": 10,
       "day": "2027-02-01",
       "best": 120,
       "at": 1801423184000
      },
      {
+      "game": "kelip",
       "pet_id": 13,
       "day": "2027-02-01",
       "best": 140,
       "at": 1801423139000
      },
      {
+      "game": "kelip",
       "pet_id": 14,
       "day": "2027-02-01",
       "best": 60,
       "at": 1801423319000
      },
      {
+      "game": "kelip",
       "pet_id": 15,
       "day": "2027-02-01",
       "best": 75,
       "at": 1801423364000
+     },
+     {
+      "game": "lidah",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 40,
+      "at": 1801423669000
+     },
+     {
+      "game": "motif",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 230,
+      "at": 1801423794000
+     },
+     {
+      "game": "panjat",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 150,
+      "at": 1801423854000
+     },
+     {
+      "game": "rentak",
+      "pet_id": 13,
+      "day": "2027-02-01",
+      "best": 330,
+      "at": 1801423609000
      }
     ],
     "reports": [
@@ -40760,24 +42341,55 @@
      }
     ],
     "blocks": [],
-    "game_badges": [
+    "game_medals": [
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 1,
       "pet_id": 13,
       "score": 140
      },
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 2,
       "pet_id": 10,
       "score": 120
      },
      {
+      "game": "kelip",
       "day": "2027-02-01",
       "rank": 3,
       "pet_id": 15,
       "score": 75
+     },
+     {
+      "game": "lidah",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 40
+     },
+     {
+      "game": "motif",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 230
+     },
+     {
+      "game": "panjat",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 150
+     },
+     {
+      "game": "rentak",
+      "day": "2027-02-01",
+      "rank": 1,
+      "pet_id": 13,
+      "score": 330
      }
     ]
    }
@@ -40864,7 +42476,8 @@
       "bronze": 0,
       "latest": {
        "day": "2027-02-01",
-       "rank": 2
+       "rank": 2,
+       "game": "kelip"
       }
      },
      "resetsInMs": 20191000,
@@ -41649,7 +43262,7 @@
     "ascended_at": null,
     "legacy_score": null,
     "legacy_from": null,
-    "coins": 88,
+    "coins": 110,
     "equipped": "{}",
     "checkin_day": null,
     "streak": 0,
@@ -41895,10 +43508,10 @@
   ],
   "sessions": [
    {
-    "token_hash": "099551a90fb882dcee599b4168f2ca7c0e592dbff9d264e50cf3f7929549517f",
-    "pet_id": 10,
-    "created_at": 1803637409000,
-    "expires_at": 1803680609000
+    "token_hash": "0f6556751534e7fc643235d199a9273d111c75aa3de45ba5d61fbe7935ebaa56",
+    "pet_id": 16,
+    "created_at": 1801423274000,
+    "expires_at": 1804015274000
    },
    {
     "token_hash": "31daa366b318eeae59d82e8be2fe615d2518e3ee4fdd31e275255ce921ac90ab",
@@ -41907,25 +43520,25 @@
     "expires_at": 1804014966000
    },
    {
+    "token_hash": "33ac8591f5b6602e2c6e6f7050cf7b20a4f9b25f9e01ffb406f6ae1f6ac04eb9",
+    "pet_id": 2,
+    "created_at": 1801423274000,
+    "expires_at": 1804015274000
+   },
+   {
+    "token_hash": "3ee3022e2fdd1a741e9ed86ab22c1d9c019ed24e8bbb28ac4db2a744e295a653",
+    "pet_id": 15,
+    "created_at": 1801423274000,
+    "expires_at": 1804015274000
+   },
+   {
     "token_hash": "4621744eb357ea19aa031f6aed996bdbf479ba0b405e43520dc2d7d93b539016",
     "pet_id": 11,
     "created_at": 1801422966000,
     "expires_at": 1804014966000
    },
    {
-    "token_hash": "4c6cfa1709cc058c443b36339ef7a40805f5b1506b9d62af7506622e67bac216",
-    "pet_id": 17,
-    "created_at": 1801535009000,
-    "expires_at": 1804127009000
-   },
-   {
-    "token_hash": "55152c3b69976ae0bccfeb380d392d9fe3c1aa92c1373eb8858559ddf47b8166",
-    "pet_id": 16,
-    "created_at": 1801423274000,
-    "expires_at": 1804015274000
-   },
-   {
-    "token_hash": "8b9b942ad813533d0fd2ccfa897822229b28da309c18208ecbfb6b5a1c408082",
+    "token_hash": "81e0c028528d2bc02a8f366b8bede8871887635ef424235701cc9a07c17444bd",
     "pet_id": 14,
     "created_at": 1801423274000,
     "expires_at": 1804015274000
@@ -41937,22 +43550,22 @@
     "expires_at": 1804014966000
    },
    {
-    "token_hash": "b1ff55d6c381cfe59ca30fbbc17e5b6f0675cb2bd020164e5829da943a2be102",
+    "token_hash": "94813643b6d73dba41f0d5b0120b72273517e94dc9236bbc352bb2a3e2d74193",
+    "pet_id": 10,
+    "created_at": 1803637409000,
+    "expires_at": 1803680609000
+   },
+   {
+    "token_hash": "94ddfef3e1f44198e8e8cd82a99d080235946e91996b8fedd5a15ed2f907330d",
+    "pet_id": 17,
+    "created_at": 1801535009000,
+    "expires_at": 1804127009000
+   },
+   {
+    "token_hash": "ef6c370c5863605e4287ed3e68e400ac3a832b7ea952521eb7e084afd68a20ac",
     "pet_id": 18,
     "created_at": 1802197409000,
     "expires_at": 1804789409000
-   },
-   {
-    "token_hash": "b60dccad1a89be934433b419ef61ae3c3f6bf992c8ef66ba91784c252f3b0585",
-    "pet_id": 2,
-    "created_at": 1801423274000,
-    "expires_at": 1804015274000
-   },
-   {
-    "token_hash": "e04d564cdee08991232ca1dbca6b980948b16d981a15b786bc7e5a78462ce6d6",
-    "pet_id": 15,
-    "created_at": 1801423274000,
-    "expires_at": 1804015274000
    }
   ],
   "push_subscriptions": [],
@@ -42131,30 +43744,62 @@
    }
   ],
   "game_runs": [],
-  "game_scores": [
+  "game_best": [
    {
+    "game": "kelip",
     "pet_id": 10,
     "day": "2027-02-01",
     "best": 120,
     "at": 1801423184000
    },
    {
+    "game": "kelip",
     "pet_id": 13,
     "day": "2027-02-01",
     "best": 140,
     "at": 1801423139000
    },
    {
+    "game": "kelip",
     "pet_id": 14,
     "day": "2027-02-01",
     "best": 60,
     "at": 1801423319000
    },
    {
+    "game": "kelip",
     "pet_id": 15,
     "day": "2027-02-01",
     "best": 75,
     "at": 1801423364000
+   },
+   {
+    "game": "lidah",
+    "pet_id": 13,
+    "day": "2027-02-01",
+    "best": 40,
+    "at": 1801423669000
+   },
+   {
+    "game": "motif",
+    "pet_id": 13,
+    "day": "2027-02-01",
+    "best": 230,
+    "at": 1801423794000
+   },
+   {
+    "game": "panjat",
+    "pet_id": 13,
+    "day": "2027-02-01",
+    "best": 150,
+    "at": 1801423854000
+   },
+   {
+    "game": "rentak",
+    "pet_id": 13,
+    "day": "2027-02-01",
+    "best": 330,
+    "at": 1801423609000
    }
   ],
   "reports": [
@@ -42235,24 +43880,55 @@
    }
   ],
   "blocks": [],
-  "game_badges": [
+  "game_medals": [
    {
+    "game": "kelip",
     "day": "2027-02-01",
     "rank": 1,
     "pet_id": 13,
     "score": 140
    },
    {
+    "game": "kelip",
     "day": "2027-02-01",
     "rank": 2,
     "pet_id": 10,
     "score": 120
    },
    {
+    "game": "kelip",
     "day": "2027-02-01",
     "rank": 3,
     "pet_id": 15,
     "score": 75
+   },
+   {
+    "game": "lidah",
+    "day": "2027-02-01",
+    "rank": 1,
+    "pet_id": 13,
+    "score": 40
+   },
+   {
+    "game": "motif",
+    "day": "2027-02-01",
+    "rank": 1,
+    "pet_id": 13,
+    "score": 230
+   },
+   {
+    "game": "panjat",
+    "day": "2027-02-01",
+    "rank": 1,
+    "pet_id": 13,
+    "score": 150
+   },
+   {
+    "game": "rentak",
+    "day": "2027-02-01",
+    "rank": 1,
+    "pet_id": 13,
+    "score": 330
    }
   ],
   "rate_limits": [

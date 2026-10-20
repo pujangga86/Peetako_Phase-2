@@ -16,6 +16,8 @@
 // fireflies and combo, and the daily top-3 badges.
 // Country (17 Oct 2026): chosen once at hatch from the ISO 3166-1 list, locked, country filters and sorting on the
 // leaderboard, and a country-to-country board using the median (at least 3 players per country).
+// More mini-games (20 Oct 2026): Ikut Rentak, Lidah Pantas, Padan Motif and Panjat Pokok beside Tangkap Kelip-kelip,
+// a leaderboard and daily badges per game, one shared daily cap for game coins.
 // Nothing here touches the real database; it needs no secrets and no network.
 
 import { execFileSync } from 'node:child_process';
@@ -83,8 +85,8 @@ const worker = (await import(pathToFileURL(path.join(SRC, 'index.js')).href)).de
 // ---- helpers ----
 const TABLES = [['pet', 'id'], ['sessions', 'token_hash'], ['push_subscriptions', 'endpoint'], ['notify_state', 'pet_id'],
   ['daily', 'pet_id, day, kind'], ['inventory', 'pet_id, item'], ['events', 'id'], ['game_runs', 'started_at, token_hash'],
-  ['game_scores', 'pet_id, day'], ['reports', 'id'], ['battles', 'id'], ['bonds', 'a, b'], ['contacts', 'pet_id, contact_id'],
-  ['blocks', 'blocker_id, blocked_id'], ['game_badges', 'day, rank']];
+  ['game_best', 'game, pet_id, day'], ['reports', 'id'], ['battles', 'id'], ['bonds', 'a, b'], ['contacts', 'pet_id, contact_id'],
+  ['blocks', 'blocker_id, blocked_id'], ['game_medals', 'game, day, rank']];
 const H = 3600 * 1000;
 const log = [];
 const jar = new Map(); // who -> session cookie
@@ -313,6 +315,34 @@ async function scenario() {
   }
   await call('leaderboard day', 'GET', '/api/leaderboard', { who: 'E', ip: '8.8.8.8' });
   await call('leaderboard all', 'GET', '/api/leaderboard?period=all', { ip: '11.0.0.1' });
+
+  // More mini-games (20 Oct 2026): the run decides the game, each game is judged by its own rules, has its own
+  // leaderboard, and all of them share the 50-coin daily cap (G already has 28 coins from Kelip-kelip today).
+  const T0 = T; // the clock is put back afterwards so the rest of the scenario runs at the same times as before
+  const runG = async (label, game, wait, body) => {
+    const r = await call(`${game} start G ${label}`, 'POST', '/api/game/start', { who: 'G', body: { game }, ip: '10.0.0.2' });
+    T += wait;
+    return call(`${game} finish G ${label}`, 'POST', '/api/game/finish', { who: 'G', body: { run: r.run, ...body }, ip: '10.0.0.2' });
+  };
+  await call('game start unknown game', 'POST', '/api/game/start', { who: 'G', body: { game: 'congkak' }, ip: '10.0.0.2' });
+  await runG('too fast', 'rentak', 5_000, { count: 6 });                        // 33 notes need 16.5 s
+  await runG('over max rounds', 'rentak', 300_000, { count: 41 });
+  await runG('ok, client game ignored', 'rentak', 30_000, { count: 6, game: 'kelip', score: 9999 }); // 330 points, 6 coins
+  await runG('too many bugs', 'lidah', 30_000, { score: 200, count: 200 });
+  await runG('ok', 'lidah', 30_000, { score: 40, count: 20 });                  // 4 coins
+  await runG('too fast', 'motif', 5_000, { count: 24, misses: 0 });
+  await runG('more pairs than boards', 'motif', 60_000, { count: 25, misses: 0 });
+  await runG('ok, two boards', 'motif', 60_000, { count: 14, misses: 5 });      // 140 − 10 + 100 = 230, 4 coins
+  await runG('too high', 'panjat', 30_000, { count: 300 });
+  await runG('ok', 'panjat', 30_000, { count: 150 });                           // 7 coins (49 today)
+  const capped = await runG('cap', 'panjat', 30_000, { count: 60 });            // 3 earned, 1 paid
+  expect('shared daily game cap', [capped.coins, capped.me.today.gameCoins], [1, 50]);
+  await call('leaderboard rentak day', 'GET', '/api/leaderboard?game=rentak', { who: 'G', ip: '10.0.0.2' });
+  await call('leaderboard motif all', 'GET', '/api/leaderboard?game=motif&period=all', { ip: '11.0.0.1' });
+  await call('leaderboard bad game', 'GET', '/api/leaderboard?game=congkak', { ip: '11.0.0.1' });
+  await call('countries board panjat', 'GET', '/api/leaderboard/countries?game=panjat&period=all', { ip: '11.0.0.1' });
+  await call('public G best per game', 'GET', '/api/public?code=GIGIPTK', { ip: '11.0.0.1' });
+  T = T0;
 
   // Country: one-time choice for a pet that hatched before countries (country not set), filters, sorting, median board
   await call('login B for board', 'POST', '/api/login', { body: { code: 'RIMBA21', pin: '730154', remember: true }, who: 'Bg', ip: '3.3.3.3' });

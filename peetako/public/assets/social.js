@@ -1,5 +1,5 @@
 // Peetako Phase 2C client: coins and check-in, shop and wardrobe, friends (saved contacts, blocks, visit, Pamper,
-// battle, gift, Mentor Boost, Bond and the shared selfie, Report), Tangkap Kelip-kelip and leaderboards, share and
+// battle, gift, Mentor Boost, Bond and the shared selfie, Report), the five mini-games and their leaderboards, share and
 // invite (with QR codes), and PIN change.
 // app.js owns the pet screen; this module owns the dialogs opened from the social bar and the menu.
 import { drawPet, drawItem, drawArena } from './art.js';
@@ -7,6 +7,23 @@ import { skyAt, localMinute } from './sky.js';
 import { qrSvg } from './qr.js';
 import { moodOf } from './mood.js';
 import { playKelip } from './kelip.js';
+import { ICONS } from './icons.js';
+
+// The mini-games (20 Oct 2026). Tangkap Kelip-kelip is loaded with the page; the others load when first played.
+export const GAMES = [
+  { id: 'kelip', name: 'Tangkap Kelip-kelip', icon: 'kelip', unit: ['firefly', 'fireflies'], perCoin: 5, blurb: 'Tap fireflies in the night sky.' },
+  { id: 'rentak', name: 'Ikut Rentak', icon: 'sape', unit: ['round', 'rounds'], perCoin: 1, blurb: 'Repeat the beat of Borneo sounds.' },
+  { id: 'lidah', name: 'Lidah Pantas', icon: 'chikchak', unit: ['bug', 'bugs'], perCoin: 5, blurb: 'Flick your tongue at passing bugs.' },
+  { id: 'motif', name: 'Padan Motif', icon: 'pua', unit: ['pair', 'pairs'], perCoin: 3, blurb: 'Match Borneo motifs. No clock.' },
+  { id: 'panjat', name: 'Panjat Pokok', icon: 'pokok', unit: ['metre', 'metres'], perCoin: 20, blurb: 'Climb the tapang tree, dodge branches.' },
+];
+const GAME_BY_ID = Object.fromEntries(GAMES.map((x) => [x.id, x]));
+const LOADERS = {
+  rentak: () => import('./rentak.js').then((m) => m.playRentak),
+  lidah: () => import('./lidah.js').then((m) => m.playLidah),
+  motif: () => import('./motif.js').then((m) => m.playMotif),
+  panjat: () => import('./panjat.js').then((m) => m.playPanjat),
+};
 import { showArena } from './arena.js';
 import { countryHtml, countryName, mountCountryPicker, sortedCountries } from './flags.js';
 
@@ -26,10 +43,10 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const fmtReset = (ms) => { const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000); return h ? `${h}h ${m}m` : `${m}m`; };
 export const shownName = (p) => (p.name ? p.name : 'Name under review');
 export const wearOf = (p) => ({ head: p.equipped?.head, neck: p.equipped?.neck, back: p.equipped?.back });
-// Tangkap Kelip-kelip daily top-3 badges, shown beside a pet's name (medal shape plus a letter, readable without colour).
+// Mini-game daily top-3 badges (all games together), shown beside a pet's name (medal shape plus a letter, readable without colour).
 export const badgeHtml = (b) => {
   if (!b || !(b.gold || b.silver || b.bronze)) return '';
-  const one = (k, n, t) => (n ? `<span class="medal ${k}" title="${n} × ${t} (daily Tangkap Kelip-kelip top 3)">${k[0].toUpperCase()}${n > 1 ? `×${n}` : ''}</span>` : '');
+  const one = (k, n, t) => (n ? `<span class="medal ${k}" title="${n} × ${t} (daily mini-game top 3)">${k[0].toUpperCase()}${n > 1 ? `×${n}` : ''}</span>` : '');
   return ` <span class="medals">${one('gold', b.gold, 'gold')}${one('silver', b.silver, 'silver')}${one('bronze', b.bronze, 'bronze')}</span>`;
 };
 export const petSvg = (p, mood) => drawPet({ type: p.type, tier: p.tier, status: p.status, pal: p.palette, mood: mood || moodOf(p).face, wear: wearOf(p) });
@@ -284,34 +301,68 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     } catch (err) { fail(err); b.disabled = false; }
   }
 
-  // ---------- Tangkap Kelip-kelip ----------
-  async function playGame() {
+  // ---------- mini-games ----------
+  // GAME opens a menu of the five games. Coins from all of them share one daily cap.
+  let lastGame = 'kelip';
+  async function openGames() {
     Sound.play('tap');
-    let run;
-    try { run = await api('/api/game/start', {}); } catch (e) { return fail(e); }
+    const m = me();
+    const left = Math.max(0, (m.caps.gameCoins ?? 50) - (m.today.gameCoins ?? 0));
+    $('#games-note').textContent = left ? `Game coins left today: ${left} of ${m.caps.gameCoins ?? 50}, shared by all games.` : 'You have all of today’s game coins. Play for fun and for the leaderboards!';
+    renderGameList({});
+    const d = dlg('#games-dialog');
+    if (!d.open) d.showModal();
     const p = pet();
-    playKelip({
-      durationMs: run.durationMs, misses: run.misses, goldValue: run.goldValue, combo: run.combo,
-      petSvg: p ? petSvg(p, 'excited') : '', sound: Sound,
-      onEnd: async (res) => {
-        if (res === null) { toast('Run stopped. Fireflies will be back!'); return; }
-        try {
-          const d = await api('/api/game/finish', { run: run.run, score: res.score, fireflies: res.fireflies });
-          d.fireflies = res.fireflies;
-          onMe(d.me);
-          showResult(d);
-        } catch (e) { fail(e); }
-      },
-    });
+    if (p) { // best ever per game, from the public view of this pet
+      try { const pub = await api(`/api/public?code=${encodeURIComponent(p.callCode)}`); renderGameList(pub.bests || {}); } catch { /* the menu works without bests */ }
+    }
   }
-  function showResult(d) {
+  function renderGameList(bests) {
+    $('#games-list').innerHTML = GAMES.map((x) => `
+      <button type="button" class="game-pick" data-game="${x.id}">
+        <span class="game-pick-icon">${ICONS[x.icon].svg}</span>
+        <span class="game-pick-text"><b class="px">${x.name}</b><span>${x.blurb}</span>
+          <small>${bests[x.id] ? `Your best: ${bests[x.id]} · ` : ''}1 coin per ${x.perCoin === 1 ? x.unit[0] : `${x.perCoin} ${x.unit[1]}`}</small></span>
+      </button>`).join('');
+  }
+
+  async function playGame(id = lastGame) {
+    const info = GAME_BY_ID[id] || GAME_BY_ID.kelip;
+    lastGame = info.id;
+    Sound.play('tap');
+    let play;
+    try { play = info.id === 'kelip' ? null : await LOADERS[info.id](); } catch { toast('Could not load the game. Check your connection.'); return; }
+    let run;
+    try { run = await api('/api/game/start', { game: info.id }); } catch (e) { return fail(e); }
+    if (dlg('#games-dialog').open) dlg('#games-dialog').close();
+    const p = pet();
+    const art = p ? petSvg(p, 'excited') : '';
+    const onEnd = async (res) => {
+      if (res === null) { toast(`${info.name} stopped. Come back any time!`); return; }
+      try {
+        const d = await api('/api/game/finish', { run: run.run, ...res }); // Kelip-kelip sends fireflies, the others count
+        onMe(d.me);
+        showResult(d, info);
+      } catch (e) { fail(e); }
+    };
+    if (info.id === 'kelip') {
+      playKelip({ durationMs: run.durationMs, misses: run.misses, goldValue: run.goldValue, combo: run.combo, petSvg: art, sound: Sound, onEnd });
+    } else {
+      play({ setup: run.setup || {}, petSvg: art, sound: Sound, onEnd });
+    }
+  }
+  function showResult(d, info) {
     const m = d.me;
     const capped = m.today.gameCoins >= m.caps.gameCoins;
+    const n = d.count ?? 0;
+    const unit = n === 1 ? info.unit[0] : info.unit[1];
+    const how = info.perCoin === 1 ? `Every ${info.unit[0]} = 1 coin.` : `Every ${info.perCoin} ${info.unit[1]} = 1 coin.`;
+    $('#result-title').textContent = info.name;
     $('#result-body').innerHTML = `
       <p class="result-score px">${d.score} <small>points</small></p>
-      <p>${d.fireflies} firefl${d.fireflies === 1 ? 'y' : 'ies'} caught. ${d.coins ? `+${d.coins} coins!` : capped ? 'No coins this time: today’s 50 game coins are already yours.' : 'Catch 5 fireflies for a coin.'}</p>
+      <p>${n} ${unit}. ${d.coins ? `+${d.coins} coin${d.coins === 1 ? '' : 's'}!` : capped ? `No coins this time: today’s ${m.caps.gameCoins} game coins are already yours.` : how}</p>
       <p>Best today: <b>${d.best}</b>${d.rankDay ? ` (#${d.rankDay} today)` : ''} · Best ever: <b>${d.allTime}</b>${d.rankAll ? ` (#${d.rankAll})` : ''}</p>
-      <p class="hint">Game coins today: ${m.today.gameCoins} / ${m.caps.gameCoins}. The day's top 3 earn a gold, silver or bronze badge after midnight (Malaysia time).</p>`;
+      <p class="hint">Game coins today (all games): ${m.today.gameCoins} / ${m.caps.gameCoins}. Each game’s top 3 of the day earn a gold, silver or bronze badge after midnight (Malaysia time).</p>`;
     if (d.coins) Sound.play('coin');
     dlg('#result-dialog').showModal();
   }
@@ -333,9 +384,11 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     boardUi.countriesReady = true;
     return true;
   }
-  async function openBoard(period = 'day', scope = 'global') {
+  async function openBoard(period = 'day', scope = 'global', game = null) {
     Sound.play('tap');
     const d = dlg('#board-dialog');
+    if (!$('#board-game').options.length) $('#board-game').innerHTML = GAMES.map((x) => `<option value="${x.id}">${x.name}</option>`).join('');
+    if (game) $('#board-game').value = game;
     for (const r of document.querySelectorAll('input[name="board"]')) r.checked = r.value === period;
     for (const r of document.querySelectorAll('input[name="bscope"]')) r.checked = r.value === scope;
     if (!d.open) d.showModal();
@@ -348,6 +401,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     const period = val('board') || 'day';
     const scope = val('bscope') || 'global';
     const sort = $('#board-sort').value;
+    const game = $('#board-game').value || 'kelip';
     const list = $('#board-list');
     const note = $('#board-note');
     $('#board-country-row').hidden = scope !== 'country';
@@ -356,9 +410,9 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
     try {
       let url;
       if (scope === 'countries') {
-        url = `/api/leaderboard/countries?period=${period}`;
+        url = `/api/leaderboard/countries?period=${period}&game=${game}`;
       } else {
-        const qs = new URLSearchParams({ period, scope, sort });
+        const qs = new URLSearchParams({ game, period, scope, sort });
         if (scope === 'country') {
           if (!(await fillBoardCountries())) throw new Error('Could not load the country list. Check your connection.');
           const cc = $('#board-country').value;
@@ -377,7 +431,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
         <li class="${r.callCode === mine ? 'me' : ''}"><span class="px rank">${r.rank}</span>
           <span class="who"><a href="/p/${encodeURIComponent(r.callCode)}">${esc(r.name || 'Name under review')}</a><small>${countryHtml(r.country)} · ${esc(r.callCode)} · T${r.tier}${b.sort === 'age' ? ` · ${fmtAge(r.ageHours)}` : ''}</small></span>
           <span class="px score">${r.score}</span></li>`).join('')}</ol>${b.me && b.me.rank > b.rows.length ? `<p>You: #${b.me.rank} with ${b.me.score}</p>` : ''}`
-        : `<p>${b.country ? `No scores from ${esc(countryName(b.country))} yet.` : 'No scores yet.'} Be the first to catch some fireflies!</p>`;
+        : `<p>${b.country ? `No scores from ${esc(countryName(b.country))} yet.` : 'No scores yet.'} Be the first to play ${esc(GAME_BY_ID[game]?.name || 'this game')}!</p>`;
     } catch (e) {
       if (seq !== boardUi.seq) return;
       note.textContent = '';
@@ -555,7 +609,7 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
   $('#social').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-open]');
     if (!b) return;
-    ({ checkin, game: playGame, shop: openShop, friends: () => openFriends(), board: () => openBoard(), share: () => openShare() })[b.dataset.open]?.();
+    ({ checkin, game: openGames, shop: openShop, friends: () => openFriends(), board: () => openBoard(), share: () => openShare() })[b.dataset.open]?.();
   });
   $('#coins-btn').addEventListener('click', openShop);
   $('#shop-list').addEventListener('click', shopClick);
@@ -565,11 +619,14 @@ export function initSocial({ $, api, toast, Sound, getPet, getMe, getCountries, 
   for (const r of document.querySelectorAll('input[name="board"], input[name="bscope"]')) r.addEventListener('change', () => { Sound.play('tap'); renderBoard(); });
   $('#board-country').addEventListener('change', renderBoard);
   $('#board-sort').addEventListener('change', renderBoard);
+  $('#board-game').addEventListener('change', () => { Sound.play('tap'); renderBoard(); });
+  $('#games-list').addEventListener('click', (e) => { const b = e.target.closest('[data-game]'); if (b) playGame(b.dataset.game); });
+  $('#games-board').addEventListener('click', () => { dlg('#games-dialog').close(); openBoard('day', 'global', lastGame); });
   $('#board-list').addEventListener('click', (e) => { if (e.target.closest('#board-set-country')) openCountry(); });
   $('#country-save').addEventListener('click', saveCountry);
   $('#share-body').addEventListener('click', shareClick);
-  $('#result-again').addEventListener('click', () => { dlg('#result-dialog').close(); playGame(); });
-  $('#result-board').addEventListener('click', () => { dlg('#result-dialog').close(); openBoard('day'); });
+  $('#result-again').addEventListener('click', () => { dlg('#result-dialog').close(); playGame(lastGame); });
+  $('#result-board').addEventListener('click', () => { dlg('#result-dialog').close(); openBoard('day', 'global', lastGame); });
   $('#pin-form').addEventListener('submit', savePin);
   $('#menu-pin').addEventListener('click', () => { $('#menu').close(); openPin(); });
   $('#menu-invite').addEventListener('click', () => { $('#menu').close(); openShare('invite'); });

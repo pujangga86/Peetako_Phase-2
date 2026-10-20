@@ -78,6 +78,87 @@ export const GAME = {
 export const maxCombo = () => GAME.comboSteps[0][1];
 export const coinsForFireflies = (n) => Math.floor(n / COIN.firefliesPerCoin);
 
+// ---------- all mini-games (decided 20 Oct 2026) ----------
+// Five games share one daily coin cap (COIN.gameMaxPerDay, kind 'game_coins'). Each has its own leaderboards and
+// daily top-3 badges. The server never replays a run: it checks that the result is possible in the time the run
+// took, then works out the score itself wherever it can (Ikut Rentak, Padan Motif, Panjat Pokok).
+export const GAMES = {
+  // Tangkap Kelip-kelip: tap fireflies. count = fireflies caught; 1 coin per 5.
+  kelip: { name: 'Tangkap Kelip-kelip', unit: 'firefly', units: 'fireflies', perCoin: COIN.firefliesPerCoin,
+    runMs: GAME.runMs, misses: GAME.misses, goldValue: GAME.goldValue, combo: GAME.comboSteps,
+    maxPerSecond: GAME.maxPerSecond, maxScore: GAME.maxScore },
+  // Ikut Rentak: repeat a growing pattern of sompoton, sape, agung and chik-chak. count = rounds cleared; 1 coin
+  // per round. Round r (from 1) is startLen + r - 1 notes long; score = 10 points per note repeated.
+  rentak: { name: 'Ikut Rentak', unit: 'round', units: 'rounds', perCoin: 1, startLen: 3, maxRounds: 40,
+    pointsPerNote: 10, minMsPerNote: 500 },
+  // Lidah Pantas: flick the tongue at bugs crossing the screen. count = bugs caught; 1 coin per 5.
+  lidah: { name: 'Lidah Pantas', unit: 'bug', units: 'bugs', perCoin: 5, runMs: 60_000, misses: 3, goldValue: 5,
+    combo: [[15, 3], [5, 2]], maxPerSecond: 2.5, maxScore: 3000 },
+  // Padan Motif: match pairs of Borneo motifs on three boards (6, 8 and 10 pairs). No clock. count = pairs
+  // matched; score = 10 a pair, −2 a wrong guess (never below 0), +50 for each board cleared; 1 coin per 3 pairs.
+  motif: { name: 'Padan Motif', unit: 'pair', units: 'pairs', perCoin: 3, boards: [6, 8, 10], pairPoints: 10,
+    missPenalty: 2, clearBonus: 50, minMsPerPair: 500, maxMisses: 2000 },
+  // Panjat Pokok: climb the tree, dodging branches, before the timer runs out. count = metres; score = metres;
+  // 1 coin per 20 m.
+  panjat: { name: 'Panjat Pokok', unit: 'metre', units: 'metres', perCoin: 20, maxPerSecond: 8, maxScore: 5000 },
+};
+export const GAME_IDS = Object.keys(GAMES);
+export const isGame = (id) => typeof id === 'string' && Object.hasOwn(GAMES, id);
+export const coinsFor = (game, count) => Math.floor(count / GAMES[game].perCoin);
+
+// What the client needs to set up a run of `game`.
+export function gameSetup(game) {
+  const g = GAMES[game];
+  const { name, unit, units, perCoin, ...rest } = g;
+  return { game, name, unit, units, perCoin, ...rest };
+}
+
+// Checks a finished run and returns { score, count } or { error } (an error code for the API).
+// body is what the client sent; elapsed is how long the run lasted in ms, measured by the server.
+export function judgeRun(game, body, elapsed) {
+  const g = GAMES[game];
+  const int = (v) => (Number.isInteger(v) && v >= 0 ? v : null);
+  const secs = elapsed / 1000;
+  if (game === 'kelip' || game === 'lidah') {
+    const score = int(Number(body.score));
+    const raw = body.count ?? body.fireflies;
+    const count = raw === undefined ? score : int(Number(raw)); // older clients sent fireflies only
+    if (score === null || count === null) return { error: 'bad_run' };
+    const topCombo = g.combo[0][1];
+    const maxCount = Math.floor((Math.min(elapsed, g.runMs + 10_000) / 1000) * g.maxPerSecond);
+    if (count > maxCount || score < count || score > Math.min(g.maxScore, count * g.goldValue * topCombo)) return { error: 'implausible' };
+    return { score, count };
+  }
+  if (game === 'rentak') {
+    const count = int(Number(body.count));
+    if (count === null) return { error: 'bad_run' };
+    if (count > g.maxRounds) return { error: 'implausible' };
+    let notes = 0;
+    for (let r = 1; r <= count; r++) notes += g.startLen + r - 1;
+    // Every note is played once by the game and once by the player.
+    if (elapsed < notes * g.minMsPerNote) return { error: 'implausible' };
+    return { score: notes * g.pointsPerNote, count };
+  }
+  if (game === 'motif') {
+    const count = int(Number(body.count));
+    const misses = int(Number(body.misses ?? 0));
+    if (count === null || misses === null) return { error: 'bad_run' };
+    const total = g.boards.reduce((a, b) => a + b, 0);
+    if (count > total || misses > g.maxMisses || elapsed < count * g.minMsPerPair) return { error: 'implausible' };
+    let cleared = 0;
+    for (let i = 0, sum = 0; i < g.boards.length; i++) { sum += g.boards[i]; if (count >= sum) cleared += 1; }
+    const score = Math.max(0, count * g.pairPoints - misses * g.missPenalty) + cleared * g.clearBonus;
+    return { score, count };
+  }
+  if (game === 'panjat') {
+    const count = int(Number(body.count));
+    if (count === null) return { error: 'bad_run' };
+    if (count > Math.min(g.maxScore, Math.floor(secs * g.maxPerSecond))) return { error: 'implausible' };
+    return { score: count, count };
+  }
+  return { error: 'bad_game' };
+}
+
 // ---------- Bond (decided 20 Oct 2026) ----------
 // Points shared by a pair of pets. Level names show as badges; Level 2 unlocks the shared selfie.
 export const BOND = {

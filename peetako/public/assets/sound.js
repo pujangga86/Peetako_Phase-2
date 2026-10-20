@@ -6,7 +6,7 @@
  *   PeetakoSound.toggle();          // call from a button click (first tap unlocks audio)
  *   PeetakoSound.play('eat');       // does nothing while sound is off
  *
- * Sounds: tap, eat, bathe, warm, play, levelUp, sape, agung, chikchak, coin, gift, error
+ * Sounds: tap, eat, bathe, warm, play, levelUp, sape, agung, chikchak, pad0-pad3 (Ikut Rentak), coin, gift, error
  * Borneo sounds (20 Oct 2026, GDD Visual and audio direction), all synthesized here, no audio files:
  *   care actions = sompoton-style reeds (Kadazandusun mouth organ), tier-up and hatch = a sape phrase
  *   (Orang Ulu lute), battle start = an agung (gong) strike, news = the gecko's own "chik-chak" call.
@@ -173,6 +173,17 @@
         noise(i * 0.095, 0.035, 0.55, 3600 - i * 260);
         tone(2700 - i * 170, i * 0.095, 0.03, 'square', 0.12);
       }
+    },
+    // Ikut Rentak pads (20 Oct 2026): four short, clearly different voices.
+    pad0: function () { reed([392, 494, 587], 0, 0.36, 0.3); },          // sompoton
+    pad1: function () { pluck(587, 0, 0.45, 0.6); pluck(294, 0, 0.6, 0.25); }, // sape
+    pad2: function () {                                                    // agung, short ring
+      var p = [[1, 1], [2.02, 0.4], [2.76, 0.25]];
+      for (var i = 0; i < p.length; i++) tone(131 * p[i][0], 0, 0.55 - i * 0.12, 'sine', 0.7 * p[i][1], 131 * p[i][0] * 0.99);
+      noise(0, 0.06, 0.2, 400);
+    },
+    pad3: function () {                                                    // chik-chak, two clicks
+      for (var i = 0; i < 2; i++) { noise(i * 0.09, 0.035, 0.55, 3400 - i * 300); tone(2600 - i * 200, i * 0.09, 0.03, 'square', 0.12); }
     },
     // coin collected (Phase 2C)
     coin: function () {

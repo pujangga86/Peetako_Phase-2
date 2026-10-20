@@ -711,3 +711,59 @@ body.kelip-open { overflow: hidden; }
 .ad-slot { display: block; width: 320px; max-width: 100%; height: 50px; margin: 12px auto; overflow: hidden; }
 .ad-slot[hidden] { display: none; }
 @media (min-width: 900px) { .ad-slot { width: 728px; height: 90px; } }
+
+/* =====================================================================================================
+   More mini-games (20 Oct 2026): game menu, Ikut Rentak, Lidah Pantas, Padan Motif, Panjat Pokok
+   ===================================================================================================== */
+.game-picks { display: grid; gap: 8px; margin: 8px 0; }
+.game-pick { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 10px; align-items: center; text-align: left; width: 100%;
+  min-height: 72px; padding: 8px 10px; background: #fff; color: var(--ink); border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); cursor: pointer; font: inherit; }
+.game-pick:hover { background: #FEF9C3; }
+.game-pick:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.game-pick:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.game-pick-icon svg { width: 52px; height: 52px; display: block; }
+.game-pick-text { display: grid; gap: 2px; min-width: 0; }
+.game-pick-text b { font-size: 10px; line-height: 1.5; }
+.game-pick-text span { font: 400 18px/1.15 'VT323', monospace; }
+.game-pick-text small { font: 400 16px/1.1 'VT323', monospace; color: var(--muted); }
+
+.mg-stage { position: absolute; inset: 0; display: grid; place-items: center; padding: 64px 12px 16px; }
+.mg:not(:has(canvas)) { background: radial-gradient(circle at 50% 30%, #2E2A6B, #0B1030 70%); }
+.mg-status { color: #fff; font-size: 12px; text-align: center; min-height: 1.6em; margin: 0 0 10px; text-shadow: 2px 2px 0 #000; }
+.mg .kelip-hud .mg-round, .mg .kelip-hud .mg-board, .mg .kelip-hud .mg-misses { color: #fff; }
+
+/* Ikut Rentak: four big pads */
+.mg-rentak .mg-stage { align-content: center; }
+.rentak-pads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; width: min(92vw, 62vh, 460px); }
+.rentak-pad { aspect-ratio: 1 / 1; display: grid; place-items: center; align-content: center; gap: 6px; background: color-mix(in srgb, var(--c) 45%, #1B1A2E);
+  border: 4px solid #000; box-shadow: 0 6px 0 #000; color: #fff; cursor: pointer; padding: 8px; transition: transform .06s, background .1s, filter .1s; }
+.rentak-pad .px { font-size: 9px; line-height: 1.4; }
+.rentak-icon svg { width: min(16vw, 72px); height: min(16vw, 72px); display: block; filter: grayscale(.5) brightness(.85); }
+.rentak-pad.on { background: var(--c); transform: translateY(4px); box-shadow: 0 2px 0 #000; filter: brightness(1.15); }
+.rentak-pad.on .rentak-icon svg { filter: none; transform: scale(1.12); }
+.rentak-pad:disabled { cursor: default; }
+.rentak-pad:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* Padan Motif: card grid */
+.motif-grid { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 8px;
+  width: min(94vw, calc((100dvh - 120px) * var(--cols) / 5.2), 520px); }
+.motif-card { position: relative; aspect-ratio: 3 / 4; padding: 0; border: 3px solid #000; box-shadow: 0 4px 0 #000; background: #fff; cursor: pointer; }
+.motif-back { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, #7F1D1D 0 8px, #991B1B 8px 16px);
+  display: grid; place-items: center; }
+.motif-back::after { content: ''; width: 34%; aspect-ratio: 1; transform: rotate(45deg); border: 3px solid #FEF3C7; }
+.motif-face { position: absolute; inset: 0; display: none; place-items: center; align-content: center; gap: 2px; background: #FFF8EC; }
+.motif-face svg { width: 70%; height: auto; }
+.motif-name { font: 400 14px/1 'VT323', monospace; color: var(--ink); }
+.motif-card.up .motif-face { display: grid; }
+.motif-card.up .motif-back { display: none; }
+.motif-card.matched { background: #DCFCE7; box-shadow: 0 1px 0 #000; transform: translateY(3px); }
+.motif-card.matched .motif-face { background: #DCFCE7; }
+.motif-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+/* Panjat Pokok: timer bar in the HUD */
+.mg-timer { flex: 1; max-width: 220px; height: 14px; border: 3px solid #000; background: rgba(0,0,0,.35); }
+.mg-timer i { display: block; height: 100%; width: 100%; background: #22C55E; transition: width .1s linear; }
+.mg-timer i.low { background: #E11D48; }
+.mg-panjat .kelip-canvas, .mg-lidah .kelip-canvas { cursor: pointer; }
+.mg-lidah .kelip-hud .kelip-score, .mg-lidah .kelip-hud .kelip-time, .mg-panjat .kelip-hud .kelip-score { color: #fff; }
+.mg .kelip-quit { margin-left: auto; }
