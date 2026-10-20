@@ -447,10 +447,38 @@ async function checkCountries() {
   expect('threshold is 3 players', c.MIN_COUNTRY_PLAYERS, 3);
 }
 
+// ---- daily reminders: streak at risk, daily cap, pet-voice messages (decided 20 Oct 2026) ----
+async function checkReminders() {
+  const P = await import(pathToFileURL(path.join(SRC, 'push.js')).href);
+  const HR = 3600_000;
+  const at = (iso) => Date.parse(iso); // Malaysia time is UTC+8: 12:00Z = 20:00 MYT
+  const now = at('2026-10-20T12:30:00Z');  // 20:30 MYT on 20 Oct
+  const pet = {
+    name: 'Kiki', type: 'organic', born_at: now - 10 * 24 * HR, last_cared_at: now - 2 * HR, died_at: null, ascended_at: null,
+    checkin_day: '2026-10-19', streak: 6, hib_month: null, hibernation_days_used: 0,
+    cycle_at: now - 2 * HR, dormant_sent: 0, urgent_sent: 0, last_sent: 0, tier_sent: 4, streak_day: null, sent_day: null, sent_count: 0,
+  };
+  expect('streak at risk from 20:00 MYT', P.pickAlert(pet, now), 'streak');
+  expect('not before 20:00 MYT', P.pickAlert(pet, at('2026-10-20T11:30:00Z')), null);
+  expect('not once checked in today', P.pickAlert({ ...pet, checkin_day: '2026-10-20' }, now), null);
+  expect('not for a streak already broken', P.pickAlert({ ...pet, checkin_day: '2026-10-18' }, now), null);
+  expect('not for a 1-day streak', P.pickAlert({ ...pet, streak: 1 }, now), null);
+  expect('only once a day', P.pickAlert({ ...pet, streak_day: '2026-10-20' }, now), null);
+  expect('daily cap stops capped alerts', P.pickAlert({ ...pet, sent_day: '2026-10-20', sent_count: 2 }, now), null);
+  expect('cap resets on a new day', P.pickAlert({ ...pet, sent_day: '2026-10-19', sent_count: 2 }, now), 'streak');
+  const dying = { ...pet, last_cared_at: now - 46 * HR, cycle_at: now - 46 * HR, born_at: now - 47 * HR, sent_day: '2026-10-20', sent_count: 2, hibernation_days_used: 3, hib_month: '2026-10' };
+  expect('last chance ignores the cap', P.pickAlert(dying, now), 'last');
+  const m = P.alertMessage('streak', pet, now);
+  expect('streak message in the pet\'s voice', [m.title, m.body, m.tag, m.badge], ['Kiki: "Our streak! 🔥"', '6 days in a row. Check in before midnight (Malaysia time) so we keep it going.', 'peetako-streak', true]);
+  expect('last chance names the stake', P.alertMessage('last', dying, now).body, 'Under 2 hours left. Care for me now, or I will fall.');
+  expect('tier news does not badge the icon', P.alertMessage('tier', pet, now).badge, false);
+}
+
 // ---- run, mask throwaway keys, compare ----
 let failed = false;
 try {
   await checkCountries();
+  await checkReminders();
   await scenario();
   const dump = {};
   for (const [t, order] of [...TABLES, ['rate_limits', 'bucket']]) {

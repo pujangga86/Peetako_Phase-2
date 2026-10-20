@@ -279,6 +279,12 @@ fieldset.plain legend { font: 400 10px/1.6 'Press Start 2P', monospace; margin-b
 .fact b { display: block; font: 400 7px/1.4 'Press Start 2P', monospace; }
 .fact span { display: block; font-size: 16px; line-height: 1.05; }
 .fact.urgent { background: #FFE4E6; border-color: #E11D48; }
+.streak-line { display: block; width: 100%; margin-top: 5px; border: 2px solid var(--ink); background: #FFF7E0; color: var(--ink); padding: 4px 8px;
+  font: inherit; font-size: 15px; line-height: 1.15; text-align: left; cursor: pointer; touch-action: manipulation; }
+.streak-line[hidden] { display: none; }
+.streak-line.done { background: #fff; cursor: default; }
+.streak-line.risk { background: #FFE4E6; border-color: #E11D48; color: #9F1239; animation: soc-pulse 1.6s ease-in-out infinite; }
+.streak-line:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
 .pv-code { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 10px; border: 3px solid var(--gold); background: var(--ink); color: var(--card); }
 .pv-code .px { font-size: 8px; color: var(--gold); }
 .pv-code #call-code { font-size: 20px; letter-spacing: 2px; white-space: nowrap; }
@@ -627,7 +633,7 @@ body.kelip-open { overflow: hidden; }
 .pub-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .soc.gold, .flicker { animation: none; }
+  .soc.gold, .flicker, .streak-line.risk { animation: none; }
 }
 
 /* =====================================================================================================

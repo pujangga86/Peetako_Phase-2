@@ -3,6 +3,7 @@
 // Uses only WebCrypto, so it runs on Workers without npm packages.
 import { deathTime, windowEnd, hibernationLeft, tierAt, TIERS, HOUR, DORMANT_AFTER_HOURS } from './game.js';
 import { petsWithAlerts, subscriptionsForPets, savePushOutcome } from './store.js';
+import { mytDay, prevDay, MYT_OFFSET } from './economy.js';
 
 const te = new TextEncoder();
 
@@ -11,10 +12,18 @@ export const URGENT_HOURS_LEFT = 12;   // "needs you" when this many hours of su
 export const LAST_HOURS_LEFT = 3;      // "last chance" — always sent, even in quiet hours
 export const QUIET_FROM = 22;          // local time, 22:00 ...
 export const QUIET_UNTIL = 8;          // ... to 08:00: only "last chance" alerts go out
-const PRIORITY = { last: 0, urgent: 1, dormant: 2, tier: 3 };
+// Streak at risk (decided 20 Oct 2026): from this Malaysia hour until the midnight reset, a pet whose owner checked in
+// yesterday but not yet today gets one reminder, if the streak is at least STREAK_MIN days long.
+export const STREAK_FROM_HOUR = 20;
+export const STREAK_MIN = 2;
+// Daily cap (decided 20 Oct 2026): at most this many alerts per pet per Malaysia day. "Last chance" is never
+// capped, because it is the alert that stops a pet from falling.
+export const MAX_PER_DAY = 2;
+const PRIORITY = { last: 0, urgent: 1, streak: 2, dormant: 3, tier: 4 };
 const DELIVERY = {                     // TTL = how long the push service may hold an undelivered alert
   last:    { ttl: 3 * 3600,  urgency: 'high',   topic: 'care' },
   urgent:  { ttl: 6 * 3600,  urgency: 'high',   topic: 'care' },
+  streak:  { ttl: 4 * 3600,  urgency: 'normal', topic: 'streak' },
   dormant: { ttl: 12 * 3600, urgency: 'normal', topic: 'care' },
   tier:    { ttl: 24 * 3600, urgency: 'low',    topic: 'tier' },
 };
@@ -134,6 +143,17 @@ export async function sendPush(sub, message, kind, sign) {
 }
 
 // ---------- what to send ----------
+const mytHour = (now) => new Date(now + MYT_OFFSET).getUTCHours();
+
+// True when the check-in streak ends at the next midnight (Malaysia time) unless the owner checks in first.
+export function streakAtRisk(row, now) {
+  const day = mytDay(now);
+  return mytHour(now) >= STREAK_FROM_HOUR && row.checkin_day === prevDay(day) && (row.streak || 0) >= STREAK_MIN;
+}
+
+// Capped alerts already delivered today (Malaysia day).
+const sentToday = (row, now) => (row.sent_day === mytDay(now) ? row.sent_count || 0 : 0);
+
 // row = pet joined with its notify_state columns (null if none yet).
 export function pickAlert(row, now) {
   // Alerts count down to the end of the survival window, before automatic hibernation starts.
@@ -147,33 +167,44 @@ export function pickAlert(row, now) {
   const tierSent = row.tier_sent ?? tier; // no state yet: treat the current tier as already announced
 
   if (hoursLeft <= LAST_HOURS_LEFT && !sent.last) return 'last';
+  if (sentToday(row, now) >= MAX_PER_DAY) return null;
   if (hoursLeft <= URGENT_HOURS_LEFT && !sent.urgent) return 'urgent';
+  if (streakAtRisk(row, now) && row.streak_day !== mytDay(now)) return 'streak';
   if (sinceCare >= DORMANT_AFTER_HOURS && !sent.dormant) return 'dormant';
   if (tier > tierSent) return 'tier';
   return null;
 }
 
+// Alerts speak in the pet's own voice (decided 20 Oct 2026): warm, honest about what is at stake, never guilt-tripping.
 export function alertMessage(kind, pet, now) {
   const name = pet.name;
   const robot = pet.type === 'robot';
   const left = (windowEnd(pet) - now) / HOUR;
   const sleeps = hibernationLeft(pet) > 0;
-  const base = { url: '/', tag: kind === 'tier' ? 'peetako-tier' : 'peetako-care' };
+  // badge: the service worker marks the app icon until the owner opens the game (care and streak alerts only).
+  const base = { url: '/', tag: kind === 'tier' ? 'peetako-tier' : kind === 'streak' ? 'peetako-streak' : 'peetako-care', badge: kind !== 'tier' };
   if (kind === 'dormant') {
     return robot
-      ? { ...base, title: `${name} switched to standby`, body: `No care for a day. Tap to power ${name} back up.` }
-      : { ...base, title: `${name} has gone dormant`, body: `A whole day without care. Tap to wake ${name} up.` };
+      ? { ...base, title: `${name}: "Switching to standby… 🔋"`, body: 'No care for a whole day. Can you power me back up?' }
+      : { ...base, title: `${name}: "I fell asleep waiting… 💤"`, body: 'A whole day without care. Come and wake me up?' };
   }
   if (kind === 'urgent') {
     const h = Math.round(left);
-    return { ...base, title: `${name} needs you`, body: `About ${h} hours left before ${name}'s survival window runs out.` };
+    return robot
+      ? { ...base, title: `${name}: "Battery low! ⚡"`, body: `About ${h} hours before my survival window runs out. Come and check on me?` }
+      : { ...base, title: `${name}: "I'm getting hungry… 🦗"`, body: `About ${h} hours before my survival window runs out. Come and see me?` };
   }
   if (kind === 'last') {
     const h = Math.max(1, Math.ceil(left));
-    return { ...base, title: `Last chance for ${name}!`, body: `Under ${h} hour${h === 1 ? '' : 's'} left. Care for ${name} now or it will ${sleeps ? 'go into hibernation' : 'fall'}.` };
+    const what = sleeps ? 'I will have to hibernate' : 'I will fall';
+    return { ...base, title: `${name}: "Please hurry! 🆘"`, body: `Under ${h} hour${h === 1 ? '' : 's'} left. Care for me now, or ${what}.` };
+  }
+  if (kind === 'streak') {
+    const n = pet.streak || 0;
+    return { ...base, title: `${name}: "Our streak! 🔥"`, body: `${n} days in a row. Check in before midnight (Malaysia time) so we keep it going.` };
   }
   const t = tierAt(now - pet.born_at);
-  return { ...base, title: `${name} is now a ${TIERS[t][pet.type]}!`, body: `Tier ${t} reached. New backdrop: ${TIERS[t].backdrop}.` };
+  return { ...base, title: `${name}: "I'm a ${TIERS[t][pet.type]} now! 🎉"`, body: `Tier ${t} reached. Come and see my new home: ${TIERS[t].backdrop}.` };
 }
 
 // Flags after sending `kind`: a stronger alert implies the weaker care alerts are done too.
@@ -187,6 +218,10 @@ function nextState(row, kind, now) {
   if (kind === 'urgent') s.urgent = s.dormant = 1;
   if (kind === 'dormant') s.dormant = 1;
   if (kind === 'tier') s.tier = tierAt(now - row.born_at);
+  const day = mytDay(now);
+  s.streakDay = kind === 'streak' ? day : row.streak_day ?? null;
+  s.sentDay = day;
+  s.sentCount = sentToday(row, now) + (kind === 'last' ? 0 : 1);
   return s;
 }
 
@@ -234,7 +269,10 @@ export async function pushRun(env, now = Date.now()) {
     let notify = null;
     if (delivered) {
       const st = nextState(row, kind, now);
-      notify = { petId: row.id, cycleAt: row.last_cared_at, dormant: st.dormant, urgent: st.urgent, last: st.last, tier: st.tier };
+      notify = {
+        petId: row.id, cycleAt: row.last_cared_at, dormant: st.dormant, urgent: st.urgent, last: st.last, tier: st.tier,
+        streakDay: st.streakDay, sentDay: st.sentDay, sentCount: st.sentCount,
+      };
     }
     // Save after every pet: if the run is cut short (e.g. CPU limit), nobody gets the same alert twice.
     await savePushOutcome(env, { now, deliveries, notify });

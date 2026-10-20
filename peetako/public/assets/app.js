@@ -189,6 +189,8 @@ function renderPet(pet) {
   const prevTier = state.lastTier;
   state.pet = pet;
   state.lastTier = pet.tier;
+  renderStreak();
+  updateAppBadge();
   applyTheme(pet.palette);
   $('#stage').className = `pv-screen ${pet.status}`;
   renderScene();
@@ -296,12 +298,65 @@ function renderPet(pet) {
 function renderMe(me) {
   if (!me) return;
   state.me = me;
+  state.meAt = Date.now(); // resetsInMs counts from this moment
   $('#coin-count').textContent = String(me.coins);
   $('#coins-btn').setAttribute('aria-label', `${me.coins} coins. Open the shop`);
   $('#checkin-btn').hidden = !me.canCheckIn;
   $('#pet-medals').innerHTML = badgeHtml(me.badges);
   state.social?.showNews(me);
+  renderStreak();
+  updateAppBadge();
 }
+
+// ---------- daily reminders (decided 20 Oct 2026) ----------
+// Streak line under the facts. From STREAK_RISK_HOURS before the midnight reset (Malaysia time) an unchecked
+// streak turns red with a countdown, the same moment the server sends its "streak at risk" alert (20:00 MYT).
+const STREAK_RISK_HOURS = 4;
+const STREAK_BONUS_EVERY = 7; // economy.js COIN.streakEvery
+const fmtCountdown = (ms) => { const m = Math.max(1, Math.ceil(ms / 60_000)); return m < 60 ? `${m}m` : `${Math.floor(m / 60)}h ${m % 60}m`; };
+function renderStreak() {
+  const el = $('#streak-line');
+  const { me, pet } = state;
+  if (!me || !pet || !['active', 'dormant'].includes(pet.status)) { el.hidden = true; return; }
+  const msLeft = Math.max(0, (state.meAt || Date.now()) + me.resetsInMs - Date.now());
+  const n = me.streak || 0;
+  const days = (k) => `${k} day${k === 1 ? '' : 's'}`;
+  let text;
+  let risk = false;
+  if (me.checkedIn) {
+    const toBonus = STREAK_BONUS_EVERY - (n % STREAK_BONUS_EVERY);
+    text = `🔥 Streak ${n} · checked in today ✓${toBonus < STREAK_BONUS_EVERY ? ` · bonus in ${days(toBonus)}` : ''}`;
+  } else if (!n) {
+    text = '🔥 Check in today to start a streak';
+  } else {
+    risk = msLeft <= STREAK_RISK_HOURS * 3600_000;
+    const bonus = (n + 1) % STREAK_BONUS_EVERY === 0 ? ' and win the streak bonus' : '';
+    text = risk
+      ? `🔥 Streak ${n} at risk! Check in within ${fmtCountdown(msLeft)}${bonus}`
+      : `🔥 Streak ${n} · check in today to make it ${n + 1}${bonus}`;
+  }
+  el.textContent = text;
+  el.classList.toggle('risk', risk);
+  el.classList.toggle('done', !!me.checkedIn);
+  el.disabled = !!me.checkedIn;
+  el.setAttribute('aria-label', me.checkedIn ? text.replace('🔥 ', '') : `${text.replace('🔥 ', '')}. Tap to check in.`);
+  el.hidden = false;
+}
+
+// App icon badge (App Badging API; works for the installed app where the browser supports it): one mark for each
+// thing waiting, i.e. today's check-in and every stat that shows a need. Cleared when nothing is waiting.
+function updateAppBadge() {
+  if (!('setAppBadge' in navigator)) return;
+  const { me, pet } = state;
+  let n = 0;
+  if (pet && ['active', 'dormant'].includes(pet.status)) {
+    if (me && !me.checkedIn) n++;
+    n += Object.values(pet.stats || {}).filter((v) => v < NEED_BELOW).length;
+    if (pet.status === 'dormant' || pet.hibernation?.active) n = Math.max(n, 1);
+  }
+  (n ? navigator.setAppBadge(n) : navigator.clearAppBadge()).catch(() => {});
+}
+function clearAppBadge() { if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(() => {}); }
 function earnedText(earned) {
   if (!earned) return '';
   const parts = [];
@@ -475,6 +530,7 @@ async function toggleAlerts() {
 
 // Leaving this device: stop alerts for the pet here (the browser permission stays for next time).
 async function detachAlerts() {
+  clearAppBadge();
   const sub = state.alertsOn ? await currentSubscription().catch(() => null) : null;
   if (sub) { try { await api('/api/push/unsubscribe', { endpoint: sub.endpoint }); } catch { /* ignore */ } }
   setBell(false);
@@ -752,6 +808,8 @@ function wire() {
     openHatch();
   });
   $('#alerts-btn').addEventListener('click', toggleAlerts);
+  // The streak line checks in when today's check-in is still open (same handler as the CHECK-IN button).
+  $('#streak-line').addEventListener('click', () => { if (state.me?.canCheckIn) $('#checkin-btn').click(); });
   $('#ascend-open').addEventListener('click', openAscend);
   $('#ascend-check').addEventListener('change', (e) => { $('#ascend-confirm').disabled = !e.target.checked; });
   $('#ascend-confirm').addEventListener('click', confirmAscend);

@@ -2,7 +2,7 @@
 // Strategy: network first, cache as fallback. Online players always get the latest deploy;
 // the cache is only used when the network fails.
 // The game API (/api/*) is never touched: pet state must always come live from the server.
-const CACHE = 'peetako-p2-v16';
+const CACHE = 'peetako-p2-v17';
 const SHELL = [
   '/',
   '/assets/style.css',
@@ -61,14 +61,17 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
   let d = {};
   try { d = event.data ? event.data.json() : {}; } catch { /* not JSON */ }
-  event.waitUntil(self.registration.showNotification(d.title || 'Peetako', {
+  const shown = self.registration.showNotification(d.title || 'Peetako', {
     body: d.body || 'Your Peetako needs you.',
     icon: '/icons/icon-192.png',
     badge: '/icons/badge-96.png',
     tag: d.tag || 'peetako-care',
     renotify: true,
     data: { url: d.url || '/' },
-  }));
+  });
+  // Mark the installed app's icon (App Badging API, where supported) until the game is opened again.
+  const marked = d.badge && self.navigator.setAppBadge ? self.navigator.setAppBadge().catch(() => {}) : Promise.resolve();
+  event.waitUntil(Promise.all([shown, marked]));
 });
 
 // Tapping an alert opens the game, reusing an open Peetako window if there is one.

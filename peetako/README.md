@@ -128,6 +128,13 @@ Alerts stay switched off until both steps are done:
 The hourly cron (`5 * * * *`) sends at most `PUSH_MAX_PER_RUN` alerts per run (Workers Free: 50 outgoing requests and
 10 ms CPU per run). Rules and wording are in `src/push.js`.
 
+Daily reminders (20 Oct 2026, migration `0006_reminders.sql`): alerts speak in the pet's own voice; a **streak at risk**
+alert goes out once a day from 20:00 MYT when the owner checked in yesterday (streak of 2 or more) but not yet today;
+at most **2 alerts per pet per MYT day** (`MAX_PER_DAY`), except "last chance", which is never capped. Care and streak
+alerts set a badge on the installed app's icon (App Badging API, where supported); the page sets the badge to the number
+of things waiting (today's check-in plus each stat under 40) and clears it when nothing is. The pet screen shows a
+streak line that turns red with a countdown in the last 4 hours before the midnight reset; tapping it checks in.
+
 ### Custom domain
 
 Worker → **Settings → Domains & Routes → Add custom domain** (e.g. `peetako.com`) once the domain is on Cloudflare.

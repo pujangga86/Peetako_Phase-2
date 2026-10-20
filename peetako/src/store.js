@@ -562,7 +562,8 @@ export async function deleteSubscription(env, { endpoint, petId }) {
 // (cycle_at, dormant_sent, urgent_sent, last_sent, tier_sent; null when none yet).
 export async function petsWithAlerts(env) {
   const { results } = await env.DB.prepare(
-    `SELECT pet.*, ns.cycle_at, ns.dormant_sent, ns.urgent_sent, ns.last_sent, ns.tier_sent
+    `SELECT pet.*, ns.cycle_at, ns.dormant_sent, ns.urgent_sent, ns.last_sent, ns.tier_sent,
+            ns.streak_day, ns.sent_day, ns.sent_count
        FROM pet LEFT JOIN notify_state ns ON ns.pet_id = pet.id
       WHERE pet.died_at IS NULL AND pet.ascended_at IS NULL AND pet.id IN (SELECT pet_id FROM push_subscriptions)`
   ).all();
@@ -578,7 +579,7 @@ export async function subscriptionsForPets(env, petIds) {
 
 // Records what happened to one pet's alert in a single write:
 //   deliveries: [{ endpoint, ok: true } | { endpoint, gone: true }] in send order
-//   notify:     { petId, cycleAt, dormant, urgent, last, tier } or null when nothing was delivered
+//   notify:     { petId, cycleAt, dormant, urgent, last, tier, streakDay, sentDay, sentCount } or null when nothing was delivered
 export async function savePushOutcome(env, { now, deliveries, notify }) {
   const writes = [];
   for (const d of deliveries) {
@@ -587,10 +588,13 @@ export async function savePushOutcome(env, { now, deliveries, notify }) {
   }
   if (notify) {
     writes.push(env.DB.prepare(
-      `INSERT INTO notify_state (pet_id, cycle_at, dormant_sent, urgent_sent, last_sent, tier_sent) VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+      `INSERT INTO notify_state (pet_id, cycle_at, dormant_sent, urgent_sent, last_sent, tier_sent, streak_day, sent_day, sent_count)
+            VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
        ON CONFLICT(pet_id) DO UPDATE SET cycle_at = excluded.cycle_at, dormant_sent = excluded.dormant_sent,
-         urgent_sent = excluded.urgent_sent, last_sent = excluded.last_sent, tier_sent = excluded.tier_sent`
-    ).bind(notify.petId, notify.cycleAt, notify.dormant, notify.urgent, notify.last, notify.tier));
+         urgent_sent = excluded.urgent_sent, last_sent = excluded.last_sent, tier_sent = excluded.tier_sent,
+         streak_day = excluded.streak_day, sent_day = excluded.sent_day, sent_count = excluded.sent_count`
+    ).bind(notify.petId, notify.cycleAt, notify.dormant, notify.urgent, notify.last, notify.tier,
+      notify.streakDay ?? null, notify.sentDay ?? null, notify.sentCount ?? 0));
   }
   if (writes.length) await env.DB.batch(writes);
 }
