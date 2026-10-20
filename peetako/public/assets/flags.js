@@ -24,7 +24,7 @@ export const flagEmoji = (code) => (isRealCountry(code)
 // A small inline flag. Decorative: the country name is always written next to it.
 export function flagHtml(code) {
   if (!isRealCountry(code)) return '<span class="flag globe" aria-hidden="true">🌐</span>';
-  return `<img class="flag" src="/assets/flags/${code.toLowerCase()}.svg" alt="" width="24" height="18" loading="lazy" decoding="async" data-cc="${code}">`;
+  return `<img class="flag" src="/assets/flags/${code.toLowerCase()}.svg" alt="" width="24" height="18" data-cc="${code}">`;
 }
 // "🇲🇾 Malaysia" as HTML: flag and name together (name is escaped).
 export const countryHtml = (code) => `${flagHtml(code)} <span class="cname">${esc(countryName(code))}</span>`;
