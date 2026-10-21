@@ -10638,7 +10638,7 @@
      "ageHours": 120,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",
@@ -11316,7 +11316,7 @@
      "ageHours": 96,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",
@@ -11483,7 +11483,7 @@
      "ageHours": 120,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",
@@ -11650,7 +11650,7 @@
      "ageHours": 144,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",
@@ -11817,7 +11817,7 @@
      "ageHours": 164,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",
@@ -30437,7 +30437,7 @@
      "ageHours": 121,
      "tier": 3,
      "tierName": "Sentinel",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Guardian",
@@ -30558,7 +30558,7 @@
      "ageHours": 121,
      "tier": 3,
      "tierName": "Sentinel",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Guardian",
@@ -31834,7 +31834,7 @@
      "palette": "laut",
      "tier": 3,
      "tierName": "Sentinel",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "status": "dead",
      "ageHours": 121,
      "careDays": 1,
@@ -40276,7 +40276,7 @@
      "ageHours": 158,
      "tier": 3,
      "tierName": "Bujang Berani (Brave Warrior)",
-     "backdrop": "Rainforest (Danum / Bako)",
+     "backdrop": "Rainforest (Danum Valley)",
      "nextTier": {
       "tier": 4,
       "name": "Panglima (Champion)",

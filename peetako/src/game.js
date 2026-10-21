@@ -12,7 +12,7 @@ export const TIERS = [
   { day: 0,  organic: 'Egg',                           robot: 'Core',        survive: 48,  backdrop: 'Longhouse' },
   { day: 1,  organic: 'Hatchling',                     robot: 'Prototype',   survive: 48,  backdrop: 'Kampung garden' },
   { day: 2,  organic: 'Scout',                         robot: 'Unit',        survive: 60,  backdrop: 'Sago garden (Mukah)' },
-  { day: 4,  organic: 'Bujang Berani (Brave Warrior)', robot: 'Sentinel',    survive: 72,  backdrop: 'Rainforest (Danum / Bako)' },
+  { day: 4,  organic: 'Bujang Berani (Brave Warrior)', robot: 'Sentinel',    survive: 72,  backdrop: 'Rainforest (Danum Valley)' },
   { day: 7,  organic: 'Panglima (Champion)',           robot: 'Guardian',    survive: 96,  backdrop: 'Kinabatangan River' },
   { day: 14, organic: 'Hero',                          robot: 'Titan',       survive: 120, backdrop: 'Mulu Caves' },
   { day: 21, organic: 'Legend',                        robot: 'Apex',        survive: 168, backdrop: 'Semporna sea, Bajau stilt village' },
