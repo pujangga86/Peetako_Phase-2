@@ -211,16 +211,44 @@
   var musicSeed = 0;
   var musicPaused = false; // paused while a mini-game is open (20 Oct 2026); the saved setting is unchanged
   try { musicOn = localStorage.getItem(MUSIC_KEY) === 'on'; } catch (e) {}
+  // Livelier loop (26 Oct 2026): a steady ~132 BPM groove instead of one phrase every 7 s.
+  // Four 8-note sape bars (indices into SAPE, -1 = rest) cycle, with a drone on beats 1 and 3
+  // and a soft chik-chak tick on the off-beats. Scheduled ahead on the audio clock so it does not drift.
+  var MUSIC_BPM = 132;
+  var MUSIC_EIGHTH = 60 / MUSIC_BPM / 2;
+  var MUSIC_BARS = [
+    [3, 5, 4, 5, 6, 5, 4, 3],
+    [5, 6, 7, 6, 5, 4, 5, -1],
+    [3, 4, 5, -1, 6, 5, 4, 5],
+    [6, 5, 6, 7, 8, 7, 5, 6]
+  ];
+  var musicNext = 0;
+  function scheduleBar(offset, bar) {
+    var pat = MUSIC_BARS[bar % MUSIC_BARS.length];
+    for (var i = 0; i < pat.length; i++) {
+      var t = offset + i * MUSIC_EIGHTH;
+      if (pat[i] >= 0) pluck(SAPE[pat[i]], t, 0.38, 0.2);
+      if (i % 4 === 0) pluck(SAPE[0], t, 0.9, 0.13);
+      if (i % 2 === 1) noise(t, 0.03, 0.07, 4200);
+    }
+  }
   function musicTick() {
-    if (!musicOn || musicPaused || !ctx || document.hidden) return;
-    sapePhrase(0, 0.22, musicSeed);
-    musicSeed = (musicSeed + 3) % 5;
+    if (!musicOn || !ctx) return;
+    if (musicPaused || document.hidden) { musicNext = 0; return; }
+    var now = ctx.currentTime;
+    if (musicNext < now) musicNext = now + 0.05;
+    while (musicNext < now + 0.6) {
+      scheduleBar(musicNext - now, musicSeed);
+      musicSeed = (musicSeed + 1) % MUSIC_BARS.length;
+      musicNext += MUSIC_EIGHTH * 8;
+    }
   }
   function startMusic() {
     if (!ensureContext()) return;
     clearInterval(musicTimer);
+    musicNext = 0;
     musicTick();
-    musicTimer = setInterval(musicTick, 7000);
+    musicTimer = setInterval(musicTick, 250);
   }
   function stopMusic() { clearInterval(musicTimer); musicTimer = null; }
   // Browsers only allow audio after a gesture, so a saved "on" starts at the first tap.
