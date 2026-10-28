@@ -11,13 +11,13 @@ import { pushRun, validSubscription, validTimeZone } from './push.js';
 import {
   isUniqueViolation, createPet, petByCodeKey, petById, savePet, createSession, deleteSession, deleteOtherSessions,
   saveAscension, saveSubscription, deleteSubscription, petsNotCaredSince, recordDeathsAndPurge, purgeFallenAlerts,
-  savePinFailure, savePinSuccess, savePinHash, codeKeysTaken, payTierReward, earnCapped, settleReferral, countDaily,
+  savePinFailure, savePinSuccess, savePinHash, codeKeysTaken, payTierReward, earnCapped, settleReferral, countDaily, dailyCounts,
   addEvent, purgeSocial, setCountryOnce, claimLegacy, unclaimLegacy, passLegacy, awardBadges,
 } from './store.js';
 import { COUNTRIES, UNDISCLOSED, countryChoice, suggestedCountry } from './countries.js';
 import {
   hmac, sha256, newToken, json, fail, readBody, readCookie, rateLimit, petFromSession, ipHash, COOKIE,
-  NO_SESSION, SLOW_DOWN,
+  NO_SESSION, SLOW_DOWN, sameSecret,
 } from './http.js';
 import { buildMe, socialRoute, publicPage } from './social.js';
 import { CODE_MIN, CODE_MAX, prefix, codeSuffix, codeKeyOf, suggestion } from './codes.js';
@@ -35,6 +35,19 @@ function pinProblem(pin) {
   return null;
 }
 const pinHash = (env, codeKey, pin) => hmac(env, `pin:${codeKey}:${pin}`);
+const pinMatches = async (env, row, pin) => sameSecret(await pinHash(env, row.code_key, String(pin || '')), row.pin_hash);
+
+// Counts a wrong PIN against the pet and returns the lock (ms timestamp, 0 when none) and the streak now.
+async function recordPinFailure(env, row, now) {
+  const day = mytDay(now);
+  const count = (row.pin_fail_day === day ? row.pin_fail_count : 0) + 1;
+  let streak = row.pin_fail_streak + 1;
+  let lockedUntil = 0;
+  if (count >= PIN_LOCK.perDay) { lockedUntil = now + PIN_LOCK.dayLockMs; streak = 0; }
+  else if (streak >= PIN_LOCK.streak) { lockedUntil = now + PIN_LOCK.streakLockMs; streak = 0; }
+  await savePinFailure(env, row.id, { streak, day, count, lockedUntil });
+  return { lockedUntil, streak };
+}
 
 function cleanName(raw) {
   const n = String(raw || '').replace(/\s+/g, ' ').trim();
@@ -87,9 +100,12 @@ async function payReferral(env, p, now) {
     return (await settleReferral(env, { petId: p.id, state: 2, newPlayerCoins: COIN.referralNewPlayer })) ? { me: COIN.referralNewPlayer, inviter: 0 } : null;
   }
   const day = mytDay(now);
-  const paid = await earnCapped(env, inviter.id, day, 'ref_coins', COIN.referral, COIN.referral * COIN.referralMaxPerDay);
-  if (paid < COIN.referral) return null; // inviter at today's cap: try again at a later care action
+  const cap = COIN.referral * COIN.referralMaxPerDay;
+  const used = (await dailyCounts(env, inviter.id, day)).ref_coins || 0;
+  if (used + COIN.referral > cap) return null; // inviter at today's cap: try again at a later care action
+  // Settle first: only one request can win this, so parallel care actions never pay the inviter twice.
   if (!(await settleReferral(env, { petId: p.id, state: 1, newPlayerCoins: COIN.referralNewPlayer }))) return null;
+  await earnCapped(env, inviter.id, day, 'ref_coins', COIN.referral, cap);
   await addEvent(env, { petId: inviter.id, kind: 'referral', fromPet: p.id, data: { coins: COIN.referral }, at: now });
   return { me: COIN.referralNewPlayer, inviter: COIN.referral };
 }
@@ -173,14 +189,8 @@ async function login(env, req) {
     const mins = Math.ceil((row.pin_locked_until - now) / 60000);
     return fail(429, 'pin_locked', `Too many wrong PINs. This Peetako is locked for ${mins >= 120 ? `${Math.ceil(mins / 60)} hours` : `${mins} minutes`}.`, { retryAfterMin: mins });
   }
-  if ((await pinHash(env, codeKey, b.pin)) !== row.pin_hash) {
-    const day = mytDay(now);
-    const count = (row.pin_fail_day === day ? row.pin_fail_count : 0) + 1;
-    let streak = row.pin_fail_streak + 1;
-    let lockedUntil = 0;
-    if (count >= PIN_LOCK.perDay) { lockedUntil = now + PIN_LOCK.dayLockMs; streak = 0; }
-    else if (streak >= PIN_LOCK.streak) { lockedUntil = now + PIN_LOCK.streakLockMs; streak = 0; }
-    await savePinFailure(env, row.id, { streak, day, count, lockedUntil });
+  if (!(await pinMatches(env, row, b.pin))) {
+    const { lockedUntil, streak } = await recordPinFailure(env, row, now);
     if (lockedUntil) return fail(429, 'pin_locked', `Wrong PIN. Too many tries: this Peetako is locked for ${lockedUntil - now >= DAY ? '24 hours' : '15 minutes'}.`);
     return fail(401, 'wrong_pin', `Wrong PIN. ${PIN_LOCK.streak - streak} ${PIN_LOCK.streak - streak === 1 ? 'try' : 'tries'} left before a 15-minute lock.`);
   }
@@ -201,14 +211,8 @@ async function changePin(env, req) {
   const b = await readBody(req);
   const now = Date.now();
   if (row.pin_locked_until > now) return fail(429, 'pin_locked', 'Too many wrong PINs. Try again later.');
-  if ((await pinHash(env, row.code_key, String(b.oldPin || ''))) !== row.pin_hash) {
-    const day = mytDay(now);
-    const count = (row.pin_fail_day === day ? row.pin_fail_count : 0) + 1;
-    let streak = row.pin_fail_streak + 1;
-    let lockedUntil = 0;
-    if (count >= PIN_LOCK.perDay) { lockedUntil = now + PIN_LOCK.dayLockMs; streak = 0; }
-    else if (streak >= PIN_LOCK.streak) { lockedUntil = now + PIN_LOCK.streakLockMs; streak = 0; }
-    await savePinFailure(env, row.id, { streak, day, count, lockedUntil });
+  if (!(await pinMatches(env, row, b.oldPin))) {
+    await recordPinFailure(env, row, now);
     return fail(401, 'wrong_pin', 'Your current PIN is not right.');
   }
   const err = pinProblem(String(b.newPin || ''));
@@ -318,7 +322,7 @@ async function claimLegacyEgg(env, req) {
       : fail(403, 'too_young', 'A Legacy Egg needs a Peetako that lived at least 30 days.');
   }
   const b = await readBody(req);
-  if ((await pinHash(env, row.code_key, String(b.pin || ''))) !== row.pin_hash) return fail(401, 'wrong_pin', 'That is not this Peetako’s PIN.');
+  if (!(await pinMatches(env, row, b.pin))) return fail(401, 'wrong_pin', 'That is not this Peetako’s PIN.');
   const name = cleanName(b.name);
   if (!name) return fail(400, 'bad_name', 'Name must be 2–16 letters, numbers, spaces, hyphens or apostrophes.');
   if (isBlocked(name)) return fail(400, 'name_blocked', 'Please choose a kinder name.');

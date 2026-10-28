@@ -226,10 +226,10 @@ async function pamper(env, req) {
   const counts = await dailyCounts(env, row.id, day);
   if ((counts.pampers || 0) >= PAMPER.maxPerDay) return fail(429, 'pamper_cap', `You can Pamper ${PAMPER.maxPerDay} times a day. More tomorrow!`);
   if (counts[`pamper:${t.id}`]) return fail(429, 'pamper_again', 'You already Pampered this Peetako today.');
-  await countDaily(env, row.id, day, `pamper:${t.id}`);
-  await countDaily(env, row.id, day, 'pampers');
   const tp = advance(t, now);
   if (tp.died_at) return fail(409, 'target_ended', 'Only a living Peetako can be Pampered.');
+  await countDaily(env, row.id, day, `pamper:${t.id}`);
+  await countDaily(env, row.id, day, 'pampers');
   tp.mood = Math.min(100, tp.mood + PAMPER.gain);
   await saveMood(env, tp);
   const mp = advance(row, now);
@@ -533,8 +533,9 @@ async function adminResolve(env, req) {
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 export async function publicPage(env, req, url) {
-  const raw = decodeURIComponent(url.pathname.slice(3)).replace(/\/$/, '');
-  const t = await targetFrom(env, raw);
+  let raw = '';
+  try { raw = decodeURIComponent(url.pathname.slice(3)).replace(/\/$/, ''); } catch { /* malformed %-escape: treated as not found */ }
+  const t = raw ? await targetFrom(env, raw) : null;
   const now = Date.now();
   const origin = url.origin;
   if (!t) {

@@ -141,11 +141,6 @@ export async function dailyCounts(env, petId, day) {
   return Object.fromEntries(results.map((r) => [r.kind, r.n]));
 }
 
-const dailyAdd = (env, petId, day, kind, n) => env.DB.prepare(
-  `INSERT INTO daily (pet_id, day, kind, n) VALUES (?1, ?2, ?3, ?4)
-   ON CONFLICT(pet_id, day, kind) DO UPDATE SET n = n + excluded.n`
-).bind(petId, day, kind, n);
-
 // Counts one event of `kind` for today (battles, Pampers, ...). Returns the new count.
 export async function countDaily(env, petId, day, kind, n = 1) {
   const row = await env.DB.prepare(
@@ -156,16 +151,20 @@ export async function countDaily(env, petId, day, kind, n = 1) {
 }
 
 // Pays coins against a daily cap kept under `kind`. Returns the coins actually paid (0 at the cap).
+// The read, the coin payment and the counter update run in one batch (one transaction), so parallel
+// requests cannot each see room under the cap and pay past it.
 export async function earnCapped(env, petId, day, kind, amount, cap) {
-  const row = await env.DB.prepare('SELECT n FROM daily WHERE pet_id = ?1 AND day = ?2 AND kind = ?3').bind(petId, day, kind).first();
-  const grant = Math.max(0, Math.min(amount, cap - (row ? row.n : 0)));
-  if (grant > 0) {
-    await env.DB.batch([
-      dailyAdd(env, petId, day, kind, grant),
-      env.DB.prepare('UPDATE pet SET coins = coins + ?1 WHERE id = ?2').bind(grant, petId),
-    ]);
-  }
-  return grant;
+  const room = '?5 - COALESCE((SELECT n FROM daily WHERE pet_id = ?1 AND day = ?2 AND kind = ?3), 0)';
+  const grantSql = `MAX(0, MIN(?4, ${room}))`;
+  const [read] = await env.DB.batch([
+    env.DB.prepare('SELECT n FROM daily WHERE pet_id = ?1 AND day = ?2 AND kind = ?3').bind(petId, day, kind),
+    env.DB.prepare(`UPDATE pet SET coins = coins + ${grantSql} WHERE id = ?1`).bind(petId, day, kind, amount, cap),
+    env.DB.prepare(
+      `INSERT INTO daily (pet_id, day, kind, n) SELECT ?1, ?2, ?3, g FROM (SELECT ${grantSql} AS g) WHERE g > 0
+       ON CONFLICT(pet_id, day, kind) DO UPDATE SET n = n + excluded.n`
+    ).bind(petId, day, kind, amount, cap),
+  ]);
+  return Math.max(0, Math.min(amount, cap - (read.results[0]?.n ?? 0)));
 }
 
 export async function addCoins(env, petId, n) {
